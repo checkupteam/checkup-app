@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">checkup</string>
+    <string name="title_activity_main">checkup</string>
+    <string name="package_name">ionic.checkup</string>
+    <string name="custom_url_scheme">ionic.checkup</string>
+</resources>
