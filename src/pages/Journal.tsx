@@ -71,7 +71,12 @@ const Journal: React.FC = () => {
                 className="flex flex-col gap-1 items-center"
                 onClick={() => setMood(name)}
             >
-                <Icon className={`text-5xl text-` + color} />
+                <Icon
+                    className={"text-5xl text-" + color}
+                    style={{
+                        opacity: mood === name ? 1 : 0.4,
+                    }}
+                />
                 <div>{label}</div>
             </div>
         );
@@ -131,7 +136,7 @@ const Journal: React.FC = () => {
                         </IonToolbar>
                     </IonHeader>
                     <div className="p-3 flex flex-col gap-3 w-full flex-1 shrink-0 h-0">
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-3">
                             <div className="text-xl font-bold px-2">
                                 How are you feeling today?
                             </div>
@@ -157,13 +162,13 @@ const Journal: React.FC = () => {
                                 <Mood
                                     label="Good"
                                     icon={FaFaceSmile}
-                                    color="green-400"
+                                    color="green-500"
                                     name="good"
                                 />
                                 <Mood
                                     label="Great"
                                     icon={FaFaceLaugh}
-                                    color="green-600"
+                                    color="green-700"
                                     name="great"
                                 />
                             </div>
