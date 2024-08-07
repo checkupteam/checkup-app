@@ -1,8 +1,10 @@
 import { IonHeader, IonToolbar, useIonRouter } from "@ionic/react";
+import { useState } from "react";
 import { FaPlus, FaStar } from "react-icons/fa";
 
 const JournalList: React.FC = () => {
     const router = useIonRouter();
+    const [favorites, setFavorites] = useState(false);
 
     return (
         <>
@@ -10,7 +12,12 @@ const JournalList: React.FC = () => {
                 <IonToolbar>
                     <div className="flex justify-between items-center px-2 pl-3 text-2xl font-bold">
                         <div className="py-2">Journal</div>
-                        <div className="flex gap-1 px-2 p-1 items-center bg-white/10 w-fit rounded-lg text-sm h-fit">
+                        <div
+                            className={`flex gap-1 px-2 p-1 items-center w-fit rounded-lg text-sm h-fit ${
+                                favorites ? "bg-accent" : "bg-white/10"
+                            }`}
+                            onClick={() => setFavorites((c) => !c)}
+                        >
                             <FaStar />
                             <div>favorites</div>
                         </div>
