@@ -17,12 +17,13 @@ import {
     FaFaceMeh,
     FaFaceSmile,
 } from "react-icons/fa6";
+import { Moods } from "../../types/journal";
 
 const JournalEntry: React.FC = () => {
     const router = useIonRouter();
     const [keyboardVisible, setKeyboardVisible] = useState(false);
     const [content, setContent] = useState("");
-    const [mood, setMood] = useState("okay");
+    const [mood, setMood] = useState<Moods>(Moods.OKAY);
     const [photo, setPhoto] = useState<string | null>(null);
     const [favorite, setFavorite] = useState(false);
 
@@ -55,7 +56,7 @@ const JournalEntry: React.FC = () => {
         label: string;
         icon: IconType;
         color: string;
-        name: string;
+        name: Moods;
     }> = ({ label, icon, color, name }) => {
         const Icon = icon;
 
@@ -112,31 +113,31 @@ const JournalEntry: React.FC = () => {
                             label="Terrible"
                             icon={FaFaceFrown}
                             color="red-500"
-                            name="terrible"
+                            name={Moods.TERRIBLE}
                         />
                         <Mood
                             label="Bad"
                             icon={FaFaceFrownOpen}
                             color="orange-500"
-                            name="bad"
+                            name={Moods.BAD}
                         />
                         <Mood
                             label="Okay"
                             icon={FaFaceMeh}
                             color="yellow-500"
-                            name="okay"
+                            name={Moods.OKAY}
                         />
                         <Mood
                             label="Good"
                             icon={FaFaceSmile}
                             color="green-500"
-                            name="good"
+                            name={Moods.GOOD}
                         />
                         <Mood
                             label="Great"
                             icon={FaFaceLaugh}
                             color="green-700"
-                            name="great"
+                            name={Moods.GREAT}
                         />
                     </div>
                 </div>
