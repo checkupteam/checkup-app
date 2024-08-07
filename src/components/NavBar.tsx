@@ -4,7 +4,7 @@ import { FaBook, FaCalendarAlt, FaClipboardList, FaUser } from "react-icons/fa";
 import { FaHouse } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const routesWithBar = ["/journal", "/home"];
+const routesWithBar = ["/journal", "/home", "/calendar"];
 
 const RouteIcon: React.FC<{ icon: React.ReactNode; path: string }> = ({
     icon,
@@ -33,11 +33,11 @@ const NavBar: React.FC = () => {
         routesWithBar.includes(router.routeInfo.pathname) && (
             <div className="fixed p-3 bottom-0 left-0 w-full flex flex-col">
                 <div className="bg-primary/30 rounded-full w-full h-18 flex justify-evenly items-center text-2xl text-background">
-                    <FaCalendarAlt />
+                    <RouteIcon icon={<FaCalendarAlt />} path="/calendar" />                    
                     <RouteIcon icon={<FaBook />} path="/journal" />
-                    <RouteIcon icon={<FaHouse />} path="/home" />
+                    <RouteIcon icon={<FaHouse />} path="/home" />                    
                     <FaClipboardList />
-                    <FaUser />
+                    <FaUser /> 
                 </div>
             </div>
         )
