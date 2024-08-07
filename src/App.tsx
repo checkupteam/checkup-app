@@ -1,6 +1,12 @@
 import { KonstaProvider } from "konsta/react";
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import {
+    createAnimation,
+    CreateAnimation,
+    IonApp,
+    IonRouterOutlet,
+    setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
@@ -39,7 +45,6 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/global.css";
-
 
 setupIonicReact();
 
