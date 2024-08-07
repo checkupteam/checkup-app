@@ -2,10 +2,22 @@ import React, { useState } from 'react';
 import { FaSmile, FaRegStar, FaStar, FaBed } from 'react-icons/fa';
 import { IonHeader, IonToolbar } from '@ionic/react';
 
+
+function daysInThisMonth() {
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    }
+
+function todaysDay() {
+    let now = new Date();
+    return now.getDate();
+    }
+
+
 const Calendar = () => {
     const [view, setView] = useState('month');
     const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const dates_month = Array.from({ length: 30 }, (_, i) => i + 1);
+    const dates_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
     const dates_week = dates_month.slice(0, 7);
 
     return (
