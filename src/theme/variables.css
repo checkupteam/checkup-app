@@ -1,2 +1,14 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #2b2a2e;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #ffffff;
+    }
+}
