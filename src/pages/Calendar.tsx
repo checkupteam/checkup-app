@@ -6,6 +6,9 @@ import {
     IonToolbar,
 } from "@ionic/react";
 import { FaFaceSmile } from "react-icons/fa6";
+import { FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
+import { FaBed } from "react-icons/fa";
 
 const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const dates = [1, 2, 3, 4, 5, 6, 7];
@@ -44,9 +47,45 @@ const Calendar: React.FC = () => {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-col w-full p-4">
-                <div className="flex flex-row w-full bg-black/30 p-2">
-                    <div className="w-[40px]"><FaFaceSmile /></div>
+            <div className="flex flex-col gap-3 px-4">
+                <div className="flex flex-col w-full">
+                    <div className="flex flex-row w-full bg-black/30 p-2 rounded-xl items-center justify-between gap-4">
+                        <div className="text-[50px] text-green-400">
+                            <FaFaceSmile />
+                        </div>
+                        <div className="flex flex-col flex-1">
+                            <div className="text-xl font-bold">Title</div>
+                            <div className="text-lg opacity-45">date</div>
+                        </div>
+                        <div className="text-[26px] opacity-45">
+                            <FaRegStar />
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col w-full">
+                    <div className="flex flex-row w-full bg-black/30 p-2 rounded-xl items-center justify-between gap-4">
+                        <div className="text-[50px] text-green-400">
+                            <FaFaceSmile />
+                        </div>
+                        <div className="flex flex-col flex-1">
+                            <div className="text-xl font-bold">Title</div>
+                            <div className="text-lg opacity-45">date</div>
+                        </div>
+                        <div className="text-[26px] text-accent">
+                            <FaStar />
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col w-full">
+                    <div className="flex flex-row w-full bg-black/30 p-2 rounded-xl items-center justify-between gap-4">
+                        <div className="text-[50px] text-blue-400">
+                            <FaBed />
+                        </div>
+                        <div className="flex flex-col flex-1">
+                            <div className="text-xl font-bold">Sleep</div>
+                            <div className="text-lg opacity-45">8h 35min</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
