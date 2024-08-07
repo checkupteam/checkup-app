@@ -1,15 +1,15 @@
 import type { CapacitorConfig } from "@capacitor/cli";
+import { KeyboardResize, KeyboardStyle } from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
     appId: "ionic.checkup",
     appName: "checkup",
     webDir: "dist",
     plugins: {
-        CapacitorSQLite: {
-            iosDatabaseLocation: "Library/CapacitorDatabase",
-            iosIsEncryption: true,
-            iosKeychainPrefix: "checkup",
-            androidIsEncryption: true,
+        Keyboard: {
+            resize: KeyboardResize.Body,
+            style: KeyboardStyle.Dark,
+            resizeOnFullScreen: true,
         },
     },
 };
