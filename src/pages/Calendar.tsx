@@ -2,22 +2,36 @@ import React, { useState } from 'react';
 import { FaSmile, FaRegStar, FaStar, FaBed } from 'react-icons/fa';
 import { IonHeader, IonToolbar } from '@ionic/react';
 
+let now = new Date();
+const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function daysInThisMonth() {
-    let now = new Date();
     return new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
     }
 
-function todaysDay() {
-    let now = new Date();
-    return now.getDate();
+function getDay() {
+    let day = now.getDay();
+    
+    return weekDays[day-1];
     }
 
+function addPrevDays() {
+    let arr = [];
+    for (let i = 0; i < 4; i++) {
+        arr.push('_');
+    }
+    return arr;
+    }
+
+function getFirstDayName() {
+    let firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+    return firstDay;
+}
 
 const Calendar = () => {
-    const [view, setView] = useState('month');
-    const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const dates_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
+    const [view, setView] = useState('month');    
+    const day_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
+    const dates_month = [...addPrevDays(), ...day_month];
     const dates_week = dates_month.slice(0, 7);
 
     return (
@@ -36,14 +50,14 @@ const Calendar = () => {
             <div className="p-4">
                 <div className="grid grid-cols-7 text-center text-xs mb-2">
                     {weekDays.map((day, index) => (
-                        <div key={index} className={`${index === 0 ? 'text-accent' : 'text-white'} font-bold`}>
+                        <div key={index} className={`${getDay() === day ? 'text-accent' : 'text-white'} font-bold`}>
                             {day}
                         </div>
                     ))}
                 </div>
                 <div className={`grid grid-cols-7 text-center text-lg border-gray-700 ${view === 'month' ? 'border-0' : 'border-b'}`}>
                     {(view === 'month' ? dates_month : dates_week).map((date, index) => (
-                        <div key={index} className={`${index === 0 ? 'text-accent' : 'text-white'} p-1 font-bold`}>
+                        <div key={index} className={`${date === now.getDate()-1 ? 'text-accent' : 'text-white'} p-1 font-bold`}>
                             {date}
                         </div>
                     ))}
