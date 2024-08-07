@@ -7,6 +7,7 @@ import {
     useIonRouter,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
+import { IconType } from "react-icons";
 import {
     FaArrowLeft,
     FaImage,
@@ -57,6 +58,25 @@ const Journal: React.FC = () => {
         console.log(image);
     };
 
+    const Mood: React.FC<{
+        label: string;
+        icon: IconType;
+        color: string;
+        name: string;
+    }> = ({ label, icon, color, name }) => {
+        const Icon = icon;
+
+        return (
+            <div
+                className="flex flex-col gap-1 items-center"
+                onClick={() => setMood(name)}
+            >
+                <Icon className={`text-5xl text-` + color} />
+                <div>{label}</div>
+            </div>
+        );
+    };
+
     return (
         <div>
             <IonRouterOutlet className="flex flex-col overflow-hidden">
@@ -94,10 +114,7 @@ const Journal: React.FC = () => {
                                 >
                                     <FaArrowLeft />
                                 </div>
-                                <div
-                                    className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap"
-                                    contentEditable
-                                >
+                                <div className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap">
                                     New Entry
                                 </div>
                                 <div
@@ -119,26 +136,36 @@ const Journal: React.FC = () => {
                                 How are you feeling today?
                             </div>
                             <div className="flex justify-evenly font-bold text-xs text-white/40">
-                                <div className="flex flex-col gap-1 items-center">
-                                    <FaFaceFrown className="text-5xl text-red-500/50" />
-                                    <div>Terrible</div>
-                                </div>
-                                <div className="flex flex-col gap-1 items-center">
-                                    <FaFaceFrownOpen className="text-5xl text-orange-500/50" />
-                                    <div>Bad</div>
-                                </div>
-                                <div className="flex flex-col gap-1 items-center">
-                                    <FaFaceMeh className="text-5xl text-yellow-500/50" />
-                                    <div>Okay</div>
-                                </div>
-                                <div className="flex flex-col gap-1 items-center">
-                                    <FaFaceSmile className="text-5xl text-green-600/50" />
-                                    <div>Good</div>
-                                </div>
-                                <div className="flex flex-col gap-1 items-center">
-                                    <FaFaceLaugh className="text-5xl text-green-400/50" />
-                                    <div>Great</div>
-                                </div>
+                                <Mood
+                                    label="Terrible"
+                                    icon={FaFaceFrown}
+                                    color="red-500"
+                                    name="terrible"
+                                />
+                                <Mood
+                                    label="Bad"
+                                    icon={FaFaceFrownOpen}
+                                    color="orange-500"
+                                    name="bad"
+                                />
+                                <Mood
+                                    label="Okay"
+                                    icon={FaFaceMeh}
+                                    color="yellow-500"
+                                    name="okay"
+                                />
+                                <Mood
+                                    label="Good"
+                                    icon={FaFaceSmile}
+                                    color="green-400"
+                                    name="good"
+                                />
+                                <Mood
+                                    label="Great"
+                                    icon={FaFaceLaugh}
+                                    color="green-600"
+                                    name="great"
+                                />
                             </div>
                         </div>
                         <div className="flex-1 shrink-0 h-0 overflow-auto bg-primary/40 rounded-2xl p-3 outline-none relative">
