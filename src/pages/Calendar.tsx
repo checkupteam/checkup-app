@@ -4,9 +4,23 @@ import { IonHeader, IonToolbar } from '@ionic/react';
 
 let now = new Date();
 const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const [view, setView] = useState('month');    
+const day_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
+const dates_month = [...addPrevDays(), ...day_month];
+const dates_week = dates_month.slice(nearestMonday(), nearestMonday() + 7);
+
+function nearestMonday() {
+    let day = now.getDay();
+    let diff = now.getDate() - day + (day == 0 ? -6 : 1);
+    return diff
+    }
 
 function daysInThisMonth() {
     return new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    }
+
+function daysInPrevMonth() {
+    return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
     }
 
 function getDay() {
@@ -16,11 +30,14 @@ function getDay() {
     }
 
 function addPrevDays() {
+    const x = getFirstDayName();
     let arr = [];
-    for (let i = 0; i < 4; i++) {
-        arr.push('_');
+    let j = (daysInPrevMonth() - 7) + x;
+
+    for (let i = j; i <= 31; i++) {
+        arr.push(i);
     }
-    return arr;
+    return arr; 
     }
 
 function getFirstDayName() {
@@ -28,12 +45,7 @@ function getFirstDayName() {
     return firstDay;
 }
 
-const Calendar = () => {
-    const [view, setView] = useState('month');    
-    const day_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
-    const dates_month = [...addPrevDays(), ...day_month];
-    const dates_week = dates_month.slice(0, 7);
-
+const Calendar: React.FC = () => {
     return (
         <div>
             <IonHeader>
@@ -57,7 +69,7 @@ const Calendar = () => {
                 </div>
                 <div className={`grid grid-cols-7 text-center text-lg border-gray-700 ${view === 'month' ? 'border-0' : 'border-b'}`}>
                     {(view === 'month' ? dates_month : dates_week).map((date, index) => (
-                        <div key={index} className={`${date === now.getDate()-1 ? 'text-accent' : 'text-white'} p-1 font-bold`}>
+                        <div key={index} className={`${date === now.getDate()-1 ? 'text-accent' : 'text-white' && index < getFirstDayName() ? 'opacity-30' : 'opacity-100' } p-1 font-bold`}>
                             {date}
                         </div>
                     ))}
