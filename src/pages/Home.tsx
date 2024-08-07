@@ -8,10 +8,9 @@ import {
 
 const Home: React.FC = () => {
     return (
-        <div>
+        <div className="min-h-full">
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Journal</IonTitle>
                 </IonToolbar>
             </IonHeader>
             {/* <IonContent fullscreen>
@@ -22,7 +21,17 @@ const Home: React.FC = () => {
                 </IonHeader>
                 <ExploreContainer />
             </IonContent> */}
+            <div className="flex min-w-full min-h-full p-4">
+                <div className="flex flex-col p-2 gap-2 relative bg-black/30 min-w-1/2">
+                    <div>Friday</div>
+                    <div>5.01</div>
+                </div>
+            </div>
+        
+        
+        
         </div>
+        
     );
 };
 
