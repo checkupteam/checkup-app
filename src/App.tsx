@@ -10,7 +10,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
-import Journal from "./pages/Journal";
+import Journal from "./pages/journal";
 import Calendar from "./pages/Calendar";
 
 import "tailwindcss/tailwind.css";
