@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { FaSmile, FaRegStar, FaStar, FaBed } from "react-icons/fa";
 import { IonHeader, IonToolbar } from "@ionic/react";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { styled } from "@mui/material/styles";
 
 function nearestMonday() {
     let day = now.getDay();
@@ -12,8 +13,8 @@ function nearestMonday() {
     return diff;
 }
 
-function daysInThisMonth() {
-    return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+function daysInDisplayedMonth(month = month_now_number, year = year_now) {
+    return new Date(year, month + 1, 0).getDate();
 }
 
 function daysInPrevMonth() {
@@ -36,14 +37,14 @@ function addPrevDays() {
     return arr_front;
 }
 
-function lackingDays() {
-    let jestPierwszaWNocyMamDość = addPrevDays().length + daysInThisMonth();
+function lackingDays(displayedMonth: number) {
+    let jestPierwszaWNocyMamDość = addPrevDays().length + displayedMonth;
     return jestPierwszaWNocyMamDość;
 }
 
 function addLastDays() {
     let arr_back = [];
-    const j = lackingDays();
+    const j = lackingDays(displayedMonth);
     let lastDays = 1;
     for (let i = j; i < 35; i++) {
         arr_back.push(lastDays);
@@ -52,25 +53,46 @@ function addLastDays() {
     return arr_back;
 }
 
-function getFirstDayName() {
-    let firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay();
+function getFirstDayName(month = now.getMonth(), year = now.getFullYear()) {
+    let firstDay = new Date(year, month, 1).getDay();
     return firstDay;
 }
 
+const StyledDatePicker = styled(DatePicker)(({ theme }) => ({
+    "& .MuiOutlinedInput-notchedOutline": {
+        border: "none",
+    },
+    input: {
+        color: "white",
+        fontSize: "1.2rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "0",
+        width: "auto",
+    },
+    ".MuiInputBase-root": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "0",
+    },
+}));
 
 let now = new Date();
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const month = months[new Date().getMonth()];
+
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const year = now.getFullYear();
-const day_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
+const month_now = months[new Date().getMonth()];
+let month_now_number = new Date().getMonth();
+let year_now = new Date().getFullYear();
+let displayedMonth = daysInDisplayedMonth();
+const day_month = Array.from({ length: displayedMonth}, (_, i) => i + 1);
 const dates_month = [...addPrevDays(), ...day_month, ...addLastDays()];
 const dates_week = dates_month.slice(nearestMonday() - 1, nearestMonday() + 6);
 
-
 const Calendar: React.FC = () => {
-    const [view, setView] = useState("month");
-    const displayedMonth = useState(now.getMonth());
+    const [view, setView] = React.useState("month");
     return (
         <div>
             <IonHeader>
@@ -98,16 +120,14 @@ const Calendar: React.FC = () => {
                 </div>
                 <div className={`grid grid-cols-7 text-center text-lg border-gray-700 ${view === "month" ? "border-0" : "border-b"}`}>
                     {(view === "month" ? dates_month : dates_week).map((date, index) => (
-                        <div key={index} className={`${date === now.getDate() ? "text-accent" : "text-white" && (index < getFirstDayName() - 1 || index > lackingDays() - 1) && view === "month" ? "opacity-30" : "opacity-100"} p-1 font-bold`}>
+                        <div key={index} className={`${date === now.getDate() ? "text-accent" : "text-white" && (index < getFirstDayName(month_now_number, year_now) - 1 || index > lackingDays(displayedMonth) - 1) && view === "month" ? "opacity-30" : "opacity-100"} p-1 font-bold`}>
                             {date}
                         </div>
                     ))}
                 </div>
                 <div className={`w-full justify-center border-b border-gray-700 p-2 font-bold text-xl ${view === "month" ? "flex" : "hidden"}`}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DatePicker']}>
-                            <DatePicker label={'"month" and "year"'} views={['month', 'year']} />
-                        </DemoContainer>
+                        <StyledDatePicker defaultValue={dayjs(`${year_now}-${month_now}`)} views={["month", "year"]} onChange={(newValue) => {const { $y, $M } = Object(newValue); displayedMonth = daysInDisplayedMonth($M, $y); year_now = $y; month_now_number = $M; console.log(year_now, month_now_number, displayedMonth)}}/>
                     </LocalizationProvider>
                 </div>
             </div>
