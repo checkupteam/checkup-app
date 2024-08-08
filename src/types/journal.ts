@@ -9,8 +9,9 @@ export enum Moods {
 export type JournalEntry = {
     title: string;
     content: string;
-    date: Date;
+    date: number;
     mood: Moods;
+    favorite: boolean;
 };
 
 export interface JournalState {

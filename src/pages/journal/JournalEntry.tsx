@@ -18,8 +18,11 @@ import {
     FaFaceSmile,
 } from "react-icons/fa6";
 import { Moods } from "../../types/journal";
+import { useDispatch } from "react-redux";
+import { addJournalEntry } from "../../store/journal";
 
 const JournalEntry: React.FC = () => {
+    const dispatch = useDispatch();
     const router = useIonRouter();
     const [keyboardVisible, setKeyboardVisible] = useState(false);
     const [content, setContent] = useState("");
@@ -74,6 +77,19 @@ const JournalEntry: React.FC = () => {
                 <div>{label}</div>
             </div>
         );
+    };
+
+    const newEntry = () => {
+        dispatch(
+            addJournalEntry({
+                title: "New Entry",
+                content,
+                mood,
+                date: new Date().getTime(),
+                favorite,
+            })
+        );
+        router.push("/journal");
     };
 
     return (
@@ -167,7 +183,10 @@ const JournalEntry: React.FC = () => {
                         <div className="bg-primary/30 rounded-full flex-[1] flex justify-center items-center text-xl">
                             <FaMicrophone />
                         </div>
-                        <div className="bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase">
+                        <div
+                            className="bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase"
+                            onClick={newEntry}
+                        >
                             save
                         </div>
                     </div>

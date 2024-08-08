@@ -12,6 +12,7 @@ const storage = new Storage({
 });
 
 await storage.defineDriver(cordovaSQLiteDriver);
+await storage.create();
 
 export const store = configureStore({
     reducer: {
