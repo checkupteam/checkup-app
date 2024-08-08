@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
 import Journal from "./pages/Journal";
 import Calendar from "./pages/Calendar";
+import TaskManager from "./pages/TaskManager";
 
 import "tailwindcss/tailwind.css";
 
@@ -51,6 +52,7 @@ const App: React.FC = () => (
                     <Route path="/home" component={Home} />
                     <Route path="/journal" component={Journal} />
                     <Route path="/calendar" component={Calendar} />
+                    <Route path="/tasks" component={TaskManager} />
                     <Redirect exact from="/" to="/home" />
                 </IonRouterOutlet>
                 <NavBar />
