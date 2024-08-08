@@ -1,6 +1,7 @@
 body {
     background-color: var(--background);
-    --ion-toolbar-background: transparent;
+    --ion-toolbar-background: var(--header);
+    --ion-background-color: var(--background);
 }
 
 .header-ios ion-toolbar:last-of-type {
