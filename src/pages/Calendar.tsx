@@ -56,7 +56,23 @@ function getFirstDayName() {
 }
 
 let now = new Date();
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+const month = months[new Date().getMonth()];
 const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const year = now.getFullYear();
 const day_month = Array.from({ length: daysInThisMonth() }, (_, i) => i + 1);
 const dates_month = [...addPrevDays(), ...day_month, ...addLastDays()];
 const dates_week = dates_month.slice(nearestMonday()-1, nearestMonday() + 6);
@@ -91,7 +107,7 @@ const Calendar: React.FC = () => {
                         </div>
                     ))}
                 </div>
-                <div className={`w-full justify-center border-b border-gray-700 p-2 font-bold text-xl ${view === 'month' ? 'flex' : 'hidden'}`}>September 2024</div>
+                <div className={`w-full justify-center border-b border-gray-700 p-2 font-bold text-xl ${view === 'month' ? 'flex' : 'hidden'}`}>{month} {year}</div>
             </div>
             <div className="flex flex-col gap-3 px-4">
                 <div className="flex flex-col w-full">
