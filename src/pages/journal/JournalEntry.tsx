@@ -55,9 +55,9 @@ const JournalEntry: React.FC = () => {
     const Mood: React.FC<{
         label: string;
         icon: IconType;
-        color: string;
+        className: string;
         name: Moods;
-    }> = ({ label, icon, color, name }) => {
+    }> = ({ label, icon, className, name }) => {
         const Icon = icon;
 
         return (
@@ -66,7 +66,7 @@ const JournalEntry: React.FC = () => {
                 onClick={() => setMood(name)}
             >
                 <Icon
-                    className={"text-5xl text-" + color}
+                    className={"text-5xl " + className}
                     style={{
                         opacity: mood === name ? 1 : 0.4,
                     }}
@@ -112,31 +112,31 @@ const JournalEntry: React.FC = () => {
                         <Mood
                             label="Terrible"
                             icon={FaFaceFrown}
-                            color="red-500"
+                            className="text-red-500"
                             name={Moods.TERRIBLE}
                         />
                         <Mood
                             label="Bad"
                             icon={FaFaceFrownOpen}
-                            color="orange-500"
+                            className="text-orange-500"
                             name={Moods.BAD}
                         />
                         <Mood
                             label="Okay"
                             icon={FaFaceMeh}
-                            color="yellow-500"
+                            className="text-yellow-500"
                             name={Moods.OKAY}
                         />
                         <Mood
                             label="Good"
                             icon={FaFaceSmile}
-                            color="green-500"
+                            className="text-green-500"
                             name={Moods.GOOD}
                         />
                         <Mood
                             label="Great"
                             icon={FaFaceLaugh}
-                            color="green-700"
+                            className="text-green-700"
                             name={Moods.GREAT}
                         />
                     </div>
