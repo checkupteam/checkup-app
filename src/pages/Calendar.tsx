@@ -1,12 +1,7 @@
 import * as React from "react";
 import { FaSmile, FaRegStar, FaStar, FaBed } from "react-icons/fa";
 import { IonHeader, IonToolbar } from "@ionic/react";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
-import { styled } from "@mui/material/styles";
-
+import { IonDatetime, IonDatetimeButton, IonModal } from '@ionic/react';
 function nearestMonday() {
     let day = now.getDay();
     let diff = now.getDate() - day + (day == 0 ? -6 : 1) + addPrevDays().length;
@@ -58,26 +53,6 @@ function getFirstDayName(month = now.getMonth(), year = now.getFullYear()) {
     return firstDay;
 }
 
-const StyledDatePicker = styled(DatePicker)(({ theme }) => ({
-    "& .MuiOutlinedInput-notchedOutline": {
-        border: "none",
-    },
-    input: {
-        color: "white",
-        fontSize: "1.2rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "0",
-        width: "auto",
-    },
-    ".MuiInputBase-root": {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "0",
-    },
-}));
 
 let now = new Date();
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -125,11 +100,13 @@ const Calendar: React.FC = () => {
                         </div>
                     ))}
                 </div>
-                <div className={`w-full justify-center border-b border-gray-700 p-2 font-bold text-xl ${view === "month" ? "flex" : "hidden"}`}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <StyledDatePicker defaultValue={dayjs(`${year_now}-${month_now}`)} views={["month", "year"]} onChange={(newValue) => {const { $y, $M } = Object(newValue); displayedMonth = daysInDisplayedMonth($M, $y); year_now = $y; month_now_number = $M; console.log(year_now, month_now_number, displayedMonth)}}/>
-                    </LocalizationProvider>
-                </div>
+                    <div>
+                        <IonDatetimeButton datetime="datetime" presentation="month-year"></IonDatetimeButton>
+
+                        <IonModal keepContentsMounted={true}>
+                            <IonDatetime id="datetime" presentation="month-year"  showDefaultButtons={true}></IonDatetime>
+                        </IonModal>
+                    </div>
             </div>
             <div className="flex flex-col gap-3 px-4">
                 <div className="flex flex-col w-full">
@@ -143,20 +120,6 @@ const Calendar: React.FC = () => {
                         </div>
                         <div className="self-stretch w-11 aspect-square flex justify-center items-center text-2xl opacity-45">
                             <FaRegStar />
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col w-full">
-                    <div className="flex flex-row w-full bg-black/30 p-2 rounded-xl items-center justify-between gap-4">
-                        <div className="text-[50px] text-green-400">
-                            <FaSmile />
-                        </div>
-                        <div className="flex flex-col flex-1">
-                            <div className="text-xl font-bold">Title</div>
-                            <div className="text-lg opacity-45">date</div>
-                        </div>
-                        <div className="text-[26px] text-accent">
-                            <FaStar />
                         </div>
                     </div>
                 </div>
