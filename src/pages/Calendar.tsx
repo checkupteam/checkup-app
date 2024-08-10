@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FaSmile, FaRegStar, FaStar, FaBed } from "react-icons/fa";
 import { IonHeader, IonToolbar } from "@ionic/react";
-import { IonDatetime, IonDatetimeButton, IonButton, IonButtons, IonModal } from '@ionic/react';
+import { IonDatetime, IonDatetimeButton, IonButton, IonButtons, IonModal } from "@ionic/react";
 function nearestMonday() {
     let day = now.getDay();
     let diff = now.getDate() - day + (day == 0 ? -6 : 1) + addPrevDays().length;
@@ -55,10 +55,10 @@ function getFirstDayName(month = now.getMonth(), year = now.getFullYear()) {
 
 const confirm = () => {
     console.log("confirm");
-}
-  const cancel = () => {
+};
+const cancel = () => {
     console.log("cancel");
-  };
+};
 
 let now = new Date();
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -68,7 +68,7 @@ const month_now = months[new Date().getMonth()];
 let month_now_number = new Date().getMonth();
 let year_now = new Date().getFullYear();
 let displayedMonth = daysInDisplayedMonth();
-const day_month = Array.from({ length: displayedMonth}, (_, i) => i + 1);
+const day_month = Array.from({ length: displayedMonth }, (_, i) => i + 1);
 const dates_month = [...addPrevDays(), ...day_month, ...addLastDays()];
 const dates_week = dates_month.slice(nearestMonday() - 1, nearestMonday() + 6);
 
@@ -101,17 +101,21 @@ const Calendar: React.FC = () => {
                 </div>
                 <div className={`grid grid-cols-7 text-center text-lg border-gray-700 ${view === "month" ? "border-0" : "border-b"}`}>
                     {(view === "month" ? dates_month : dates_week).map((date, index) => (
-                        <div key={index} className={`${date === now.getDate() ? "text-accent" : "text-white" && (index < getFirstDayName(month_now_number, year_now) - 1 || index > lackingDays(displayedMonth) - 1) && view === "month" ? "opacity-30" : "opacity-100"} p-1 font-bold`}>
+                        <div
+                            key={index}
+                            className={`${
+                                date === now.getDate() ? "text-accent" : "text-white" && (index < getFirstDayName(month_now_number, year_now) - 1 || index > lackingDays(displayedMonth) - 1) && view === "month" ? "opacity-30" : "opacity-100"
+                            } p-1 font-bold`}
+                        >
                             {date}
                         </div>
                     ))}
                 </div>
-                <div className={`${view === 'week' ? "hidden" : "flex border-b"} w-full justify-center border-gray-700 p-2`}>
-                    <IonDatetimeButton datetime="datetime" ></IonDatetimeButton>
+                <div className={`${view === "week" ? "hidden" : "flex border-b"} w-full justify-center border-gray-700 p-2`}>
+                    <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
 
                     <IonModal keepContentsMounted={true}>
-                        <IonDatetime id="datetime" presentation="month-year"  showDefaultButtons={true}>
-                        </IonDatetime>
+                        <IonDatetime id="datetime" presentation="month-year" showDefaultButtons={true}></IonDatetime>
                     </IonModal>
                 </div>
             </div>
