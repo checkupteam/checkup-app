@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FaSmile, FaRegStar, FaStar, FaBed } from "react-icons/fa";
 import { IonHeader, IonToolbar } from "@ionic/react";
-import { IonDatetime, IonDatetimeButton, IonModal } from '@ionic/react';
+import { IonDatetime, IonDatetimeButton, IonButton, IonButtons, IonModal } from '@ionic/react';
 function nearestMonday() {
     let day = now.getDay();
     let diff = now.getDate() - day + (day == 0 ? -6 : 1) + addPrevDays().length;
@@ -53,6 +53,12 @@ function getFirstDayName(month = now.getMonth(), year = now.getFullYear()) {
     return firstDay;
 }
 
+const confirm = () => {
+    console.log("confirm");
+}
+  const cancel = () => {
+    console.log("cancel");
+  };
 
 let now = new Date();
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -100,13 +106,14 @@ const Calendar: React.FC = () => {
                         </div>
                     ))}
                 </div>
-                    <div>
-                        <IonDatetimeButton datetime="datetime" presentation="month-year"></IonDatetimeButton>
+                <div className={`${view === 'week' ? "hidden" : "flex border-b"} w-full justify-center border-gray-700 p-2`}>
+                    <IonDatetimeButton datetime="datetime" ></IonDatetimeButton>
 
-                        <IonModal keepContentsMounted={true}>
-                            <IonDatetime id="datetime" presentation="month-year"  showDefaultButtons={true}></IonDatetime>
-                        </IonModal>
-                    </div>
+                    <IonModal keepContentsMounted={true}>
+                        <IonDatetime id="datetime" presentation="month-year"  showDefaultButtons={true}>
+                        </IonDatetime>
+                    </IonModal>
+                </div>
             </div>
             <div className="flex flex-col gap-3 px-4">
                 <div className="flex flex-col w-full">
