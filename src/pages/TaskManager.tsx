@@ -1,18 +1,14 @@
-
-import React, { useState } from "react";
-import { IonHeader, IonToolbar } from "@ionic/react";
-
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 
 const TaskManager: React.FC = () => {
     return (
         <div>
             <IonHeader>
                 <IonToolbar>
-                    <div>Tasks</div>
+                    <IonTitle>Task Manager</IonTitle>
                 </IonToolbar>
             </IonHeader>
-        <div>kutas</div>
-        </div>    
+        </div>
     );
 };
 

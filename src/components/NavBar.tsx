@@ -4,7 +4,7 @@ import { FaBook, FaCalendarAlt, FaClipboardList, FaUser } from "react-icons/fa";
 import { FaHouse } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const routesWithBar = ["/journal", "/home", "/calendar", "/task"];
+const routesWithBar = ["/journal", "/home", "/calendar", "/tasks"];
 
 const RouteIcon: React.FC<{ icon: React.ReactNode; path: string }> = ({
     icon,
@@ -36,7 +36,7 @@ const NavBar: React.FC = () => {
                     <RouteIcon icon={<FaCalendarAlt />} path="/calendar" />                    
                     <RouteIcon icon={<FaBook />} path="/journal" />
                     <RouteIcon icon={<FaHouse />} path="/home" /> 
-                    <RouteIcon icon={<FaClipboardList />} path="/task" />            
+                    <RouteIcon icon={<FaClipboardList />} path="/tasks" />            
                     <FaUser /> 
                 </div>
             </div>
