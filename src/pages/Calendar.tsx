@@ -2,92 +2,59 @@ import * as React from "react";
 import { FaSmile, FaRegStar, FaStar, FaBed } from "react-icons/fa";
 import { IonHeader, IonToolbar } from "@ionic/react";
 import { IonDatetime, IonDatetimeButton, IonButton, IonButtons, IonModal } from "@ionic/react";
-function nearestMonday() {
-    let day = now.getDay();
-    let diff = now.getDate() - day + (day == 0 ? -6 : 1) + addPrevDays().length;
-    return diff;
-}
-
-function daysInDisplayedMonth(month = month_now_number, year = year_now) {
-    return new Date(year, month + 1, 0).getDate();
-}
-
-function daysInPrevMonth() {
-    return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-}
-
-function getDay() {
-    let day = now.getDay();
-    return weekDays[day - 1];
-}
-
-function addPrevDays() {
-    const x = getFirstDayName();
-    let arr_front = [];
-    let j = daysInPrevMonth() - 6 + x;
-
-    for (let i = j; i <= 31; i++) {
-        arr_front.push(i);
-    }
-    return arr_front;
-}
-
-function lackingDays(displayedMonth: number) {
-    let jestPierwszaWNocyMamDość = addPrevDays().length + displayedMonth;
-    return jestPierwszaWNocyMamDość;
-}
-
-function addLastDays() {
-    let arr_back = [];
-    const j = lackingDays(displayedMonth);
-    let lastDays = 1;
-    for (let i = j; i < 35; i++) {
-        arr_back.push(lastDays);
-        lastDays++;
-    }
-    return arr_back;
-}
-
-function getFirstDayName(month = now.getMonth(), year = now.getFullYear()) {
-    let firstDay = new Date(year, month, 1).getDay();
-    return firstDay;
-}
-
-const confirm = () => {
-    console.log("confirm");
-};
-const cancel = () => {
-    console.log("cancel");
-};
-
-let now = new Date();
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const month_now = months[new Date().getMonth()];
-let month_now_number = new Date().getMonth();
-let year_now = new Date().getFullYear();
-let displayedMonth = daysInDisplayedMonth();
-const day_month = Array.from({ length: displayedMonth }, (_, i) => i + 1);
-const dates_month = [...addPrevDays(), ...day_month, ...addLastDays()];
-const dates_week = dates_month.slice(nearestMonday() - 1, nearestMonday() + 6);
 
 const Calendar: React.FC = () => {
-    const [view, setView] = React.useState("month");
+    function getDay() {
+        let day = now.getDay();
+        return weekDays[day - 1];
+    }
+
+    function displayCalendar(month: number = now.getMonth()+1, year: number = now.getFullYear()) {
+        const firstDay = new Date(year, month - 1, 0);
+        const lastDay = new Date(year, month, 0);
+        const firstDayWeek = firstDay.getDay();
+        const days = lastDay.getDate();
+        const calendar = [];
+        let day_now = 1;
+        let day_prev = new Date(year, month, 0).getDate() - firstDayWeek + 1;
+        let day_next = 1;
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDayWeek) {
+                    calendar.push("a" + day_prev);
+                    day_prev++;
+                } else if (day_now > days) {
+                    calendar.push("a" + day_next);
+                    day_next++;
+                } else {
+                    calendar.push(String(day_now));
+                    day_now++;
+                }
+            }
+        }
+        return calendar;
+    }
+
+    const confirm = () => {
+        console.log("confirm");
+    };
+    const cancel = () => {
+        console.log("cancel");
+    };
+
+    let now = new Date();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const month_now = months[new Date().getMonth()];
+    let displayedMonth = displayCalendar();
+
     return (
         <div>
             <IonHeader>
                 <IonToolbar>
                     <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold">
                         <div className="py-2">Calendar</div>
-                        <div className="flex gap-1">
-                            <button className={`flex gap-2 px-2 p-1 items-center w-fit rounded-xl text-sm h-fit ${view === "month" ? "bg-accent" : "bg-white/10"}`} onClick={() => setView("month")}>
-                                Month
-                            </button>
-                            <button className={`flex gap-1 px-2 p-1 items-center w-fit rounded-xl text-sm h-fit ${view === "week" ? "bg-accent" : "bg-white/10"}`} onClick={() => setView("week")}>
-                                Week
-                            </button>
-                        </div>
                     </div>
                 </IonToolbar>
             </IonHeader>
@@ -99,23 +66,23 @@ const Calendar: React.FC = () => {
                         </div>
                     ))}
                 </div>
-                <div className={`grid grid-cols-7 text-center text-lg border-gray-700 ${view === "month" ? "border-0" : "border-b"}`}>
-                    {(view === "month" ? dates_month : dates_week).map((date, index) => (
-                        <div
-                            key={index}
-                            className={`${
-                                date === now.getDate() ? "text-accent" : "text-white" && (index < getFirstDayName(month_now_number, year_now) - 1 || index > lackingDays(displayedMonth) - 1) && view === "month" ? "opacity-30" : "opacity-100"
-                            } p-1 font-bold`}
-                        >
-                            {date}
+                <div className={`grid grid-cols-7 text-center text-lg`}>
+                    {displayedMonth.map((date, index) => (
+                        <div key={index} className={`${date.includes("a") ? "text-white/20" : "text-white"}`}>
+                            {date.includes("a") ? date.replace("a", "") : date}
                         </div>
                     ))}
                 </div>
-                <div className={`${view === "week" ? "hidden" : "flex border-b"} w-full justify-center border-gray-700 p-2`}>
+                <div className={`flex border-b w-full justify-center border-gray-700 p-2`}>
                     <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
 
                     <IonModal keepContentsMounted={true}>
-                        <IonDatetime id="datetime" presentation="month-year" showDefaultButtons={true}></IonDatetime>
+                        <IonDatetime id="datetime" presentation="month-year" >
+                            <IonButtons slot="buttons">
+                                <IonButton onClick={cancel}>Cancel</IonButton>
+                                <IonButton onClick={confirm}>Confirm</IonButton>
+                            </IonButtons>
+                        </IonDatetime>
                     </IonModal>
                 </div>
             </div>
