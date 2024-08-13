@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { IonRouterOutlet, IonHeader, IonPage, useIonRouter, IonToolbar } from "@ionic/react";
-import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
-import { MdOutlineCheckCircle } from "react-icons/md";
-import { FaArrowLeft, FaPlus, FaStar } from "react-icons/fa";
+import { MdOutlineRadioButtonUnchecked, MdOutlineCheckCircle } from "react-icons/md";
+import { FaArrowLeft, FaPlus } from "react-icons/fa";
 import { Route } from "react-router";
 
 const TaskManager: React.FC = () => {
@@ -36,12 +35,12 @@ const TaskManager: React.FC = () => {
                         </div>
                     </div>
                     <div className="p-3 overflow-auto">
-                        <div className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl" onClick={() => router.push("/task/add")}>
+                        <div className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl" onClick={() => router.push("/tasks/add")}>
                             <FaPlus />
                         </div>
                     </div>
                 </Route>
-                <Route exact path="/task/add">
+                <Route exact path="/tasks/add">
                     <IonHeader className="shadow-none bg-primary/20">
                         <IonToolbar>
                             <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold gap-1">
@@ -50,6 +49,9 @@ const TaskManager: React.FC = () => {
                                 </div>
                                 <div className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap" contentEditable>
                                     New Task
+                                </div>
+                                <div className="">
+
                                 </div>
                             </div>
                         </IonToolbar>
