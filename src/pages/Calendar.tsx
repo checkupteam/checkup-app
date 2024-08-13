@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useRef, useState } from "react";
 import { FaSmile, FaRegStar, FaStar, FaBed } from "react-icons/fa";
 import { IonHeader, IonToolbar } from "@ionic/react";
 import { IonDatetime, IonDatetimeButton, IonButton, IonButtons, IonModal } from "@ionic/react";
@@ -9,7 +9,7 @@ const Calendar: React.FC = () => {
         return weekDays[day - 1];
     }
 
-    function displayCalendar(month: number = now.getMonth()+1, year: number = now.getFullYear()) {
+    function displayCalendar(month: number = now.getMonth() + 1, year: number = now.getFullYear()) {
         const firstDay = new Date(year, month - 1, 0);
         const lastDay = new Date(year, month, 0);
         const firstDayWeek = firstDay.getDay();
@@ -49,6 +49,9 @@ const Calendar: React.FC = () => {
     const month_now = months[new Date().getMonth()];
     let displayedMonth = displayCalendar();
 
+    const modal = useRef<HTMLIonModalElement>(null);
+    const [value, setValue] = useState(new Date().toISOString());
+
     return (
         <div>
             <IonHeader>
@@ -74,13 +77,13 @@ const Calendar: React.FC = () => {
                     ))}
                 </div>
                 <div className={`flex border-b w-full justify-center border-gray-700 p-2`}>
-                    <IonDatetimeButton datetime="datetime"></IonDatetimeButton>
+                    <IonDatetimeButton datetime="datetime" ></IonDatetimeButton>
 
-                    <IonModal keepContentsMounted={true}>
-                        <IonDatetime id="datetime" presentation="month-year" >
+                    <IonModal keepContentsMounted={true} ref={modal} trigger="open-modal" onDidDismiss={({ detail }) => console.log("didDismiss", JSON.stringify(detail))}>
+                        <IonDatetime id="datetime" presentation="month-year" value={value} onIonChange={( ) => setValue(value)}>
                             <IonButtons slot="buttons">
-                                <IonButton onClick={cancel}>Cancel</IonButton>
-                                <IonButton onClick={confirm}>Confirm</IonButton>
+                                <IonButton onClick={() => modal.current!.dismiss(null, "cancel")}>Cancel</IonButton>
+                                <IonButton onClick={() => modal.current!.dismiss(value, 'confirm')}>Confirm</IonButton>
                             </IonButtons>
                         </IonDatetime>
                     </IonModal>
