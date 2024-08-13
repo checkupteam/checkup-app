@@ -4,6 +4,7 @@ http://ionicframework.com/docs/theming/ */
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #2b2a2e;
+        --header: #222225;
     }
 }
 
