@@ -68,7 +68,7 @@ const Home: React.FC = () => {
                             Journal
                         </div>
                         {todayEntires.length == 0 ? (
-                            <div className="opacity-40 text-sm">
+                            <div className="opacity-40 text-sm mx-1">
                                 NO ENTRIES TODAY
                             </div>
                         ) : (
