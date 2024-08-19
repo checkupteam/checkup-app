@@ -31,6 +31,7 @@ import {
     updateJournalEntry,
 } from "../../store/journal";
 import { RouteComponentProps, useHistory } from "react-router";
+import { Capacitor } from "@capacitor/core";
 
 interface JournalEntryPageProps
     extends RouteComponentProps<{
@@ -59,17 +60,19 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
             setFavorite(entry.favorite);
         }
 
-        Keyboard.addListener("keyboardWillShow", () => {
-            setKeyboardVisible(true);
-        });
+        if (Capacitor.getPlatform() != "web") {
+            Keyboard.addListener("keyboardWillShow", () => {
+                setKeyboardVisible(true);
+            });
 
-        Keyboard.addListener("keyboardDidHide", () => {
-            setKeyboardVisible(false);
-        });
+            Keyboard.addListener("keyboardDidHide", () => {
+                setKeyboardVisible(false);
+            });
 
-        return () => {
-            Keyboard.removeAllListeners();
-        };
+            return () => {
+                Keyboard.removeAllListeners();
+            };
+        }
     }, []);
 
     const selectPhoto = async () => {
