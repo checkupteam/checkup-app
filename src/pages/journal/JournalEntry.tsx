@@ -207,13 +207,13 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                             onChange={(e) => setContent(e.target.value)}
                             placeholder="Write something you would like to share..."
                         />
-                        {photo && (
+                        {/* {photo && (
                             <img
                                 src={`data:image/jpeg;base64,${photo}`}
                                 alt="photo"
                                 className="w-full aspect-w-16 aspect-h-9 rounded-lg mt-3"
                             />
-                        )}
+                        )} */}
                     </div>
                     {!keyboardVisible && (
                         <div className="flex gap-2 h-12">
