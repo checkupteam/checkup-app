@@ -1,15 +1,94 @@
 import React, { useRef, useState } from "react";
-import { FaSmile, FaRegStar, FaBed } from "react-icons/fa";
-import { IonContent, IonHeader, IonPage, IonToolbar } from "@ionic/react";
+import { FaSmile, FaRegStar, FaBed, FaStar } from "react-icons/fa";
+import {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonToolbar,
+    useIonRouter,
+} from "@ionic/react";
 import { IonDatetime, IonDatetimeButton, IonModal } from "@ionic/react";
+import { JournalEntry } from "../types/journal";
+import { selectJournalEntires, updateJournalEntry } from "../store/journal";
+import { useDispatch, useSelector } from "react-redux";
+import Mood from "../components/Mood";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+const JournalItem: React.FC<{ entry: JournalEntry; index: number }> = ({
+    entry,
+    index,
+}) => {
+    const dispatch = useDispatch();
+    const router = useIonRouter();
+
+    const switchFavoriteStatus = () => {
+        dispatch(
+            updateJournalEntry({
+                index,
+                favorite: !entry.favorite,
+            })
+        );
+    };
+
+    return (
+        <div
+            key={entry.date}
+            className="bg-white/5 p-3 px-4 rounded-lg flex gap-3 items-center"
+        >
+            <div
+                className="flex gap-3 flex-1 shrink-0 w-0 items-center"
+                onClick={() => router.push(`/journal/edit/${index}`)}
+            >
+                <Mood mood={entry.mood} className="text-4xl" />
+                <div className="flex flex-col justify-center flex-1">
+                    <div className="text-xl font-bold leading-6">
+                        {entry.title}
+                    </div>
+                    <div className="text-neutral-500 leading-5 font-semibold">
+                        {new Date(entry.date)
+                            .toLocaleString("en-US", {
+                                month: "2-digit",
+                                day: "2-digit",
+                                year: "numeric",
+                            })
+                            .replaceAll("/", ".")}
+                    </div>
+                </div>
+            </div>
+            <div className="self-stretch w-8 text-xl flex justify-center items-center">
+                {entry.favorite ? (
+                    <FaStar
+                        className="text-accent"
+                        onClick={() => switchFavoriteStatus()}
+                    />
+                ) : (
+                    <FaRegStar
+                        className="text-white/20"
+                        onClick={() => switchFavoriteStatus()}
+                    />
+                )}
+            </div>
+        </div>
+    );
+};
+
 const Calendar: React.FC = () => {
+    const journalEntries = useSelector(selectJournalEntires);
     const [currDate, setDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const datetime = useRef<null | HTMLIonDatetimeElement>(null);
     const now = new Date();
+    const selectedEntries = journalEntries
+        .map((entry, index) => ({
+            ...entry,
+            index,
+        }))
+        .filter(
+            (entry) =>
+                new Date(entry.date).toDateString() ===
+                selectedDate.toDateString()
+        );
 
     function getWeekDay() {
         let day = selectedDate.getDay();
@@ -119,7 +198,22 @@ const Calendar: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 px-4">
-                    <div className="flex flex-col w-full">
+                    {selectedEntries.length == 0 ? (
+                        <div className="text-center text-white/20 font-bold uppercase py-2">
+                            no entries
+                        </div>
+                    ) : (
+                        <>
+                            {selectedEntries.map((entry, index) => (
+                                <JournalItem
+                                    key={entry.date}
+                                    entry={entry}
+                                    index={entry.index}
+                                />
+                            ))}
+                        </>
+                    )}
+                    {/* <div className="flex flex-col w-full">
                         <div className="flex flex-row w-full bg-black/30 p-3 rounded-xl items-center justify-between gap-3">
                             <div className="text-5xl text-green-400">
                                 <FaSmile />
@@ -147,7 +241,7 @@ const Calendar: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </IonContent>
         </IonPage>
