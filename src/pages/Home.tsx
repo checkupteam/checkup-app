@@ -50,10 +50,10 @@ const Home: React.FC = () => {
                         to={"/calendar"}
                         className="flex flex-col p-3 gap-1 relative bg-black/30 aspect-square rounded-2xl overflow-hidden text-white"
                     >
-                        <div className="text-2xl font-bold text-accent leading-7">
+                        <div className="text-2xl font-bold text-accent leading-7 z-10">
                             {weekDays[day - 1]}
                         </div>
-                        <div className="text-4xl leading-8 font-light">
+                        <div className="text-4xl leading-8 font-light z-10">
                             {date}.{month}
                         </div>
                         <div className="absolute text-accent/80 text-9xl -bottom-5 -right-2 rotate-[40deg]">
@@ -94,10 +94,12 @@ const Home: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex flex-col p-3 gap-1 relative bg-black/30 aspect-square rounded-2xl overflow-hidden text-white">
-                        <div className="text-3xl font-bold text-accent leading-7">
+                        <div className="text-3xl font-bold text-accent leading-7 z-10">
                             Health
                         </div>
-                        <div className="text-lg font-semibold">1235 steps</div>
+                        <div className="text-lg font-semibold z-10">
+                            1235 steps
+                        </div>
                         <div className="absolute text-accent/80 text-9xl -bottom-5 -right-0 rotate-[30deg]">
                             <BsFillHeartPulseFill />
                         </div>
