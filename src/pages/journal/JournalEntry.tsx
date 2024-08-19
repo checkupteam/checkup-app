@@ -39,8 +39,9 @@ interface JournalEntryPageProps
 
 const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     const entries = useSelector(selectJournalEntires);
-    const id = match.params.id ? parseInt(match.params.id) : undefined;
-    const entry = id ? entries[id] : null;
+    const id =
+        match.params.id !== undefined ? parseInt(match.params.id) : undefined;
+    const entry = id !== undefined ? entries[id] : null;
     const dispatch = useDispatch();
     const router = useIonRouter();
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -107,7 +108,6 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     };
 
     const saveEntry = () => {
-        console.log(entry, id);
         if (entry && id !== undefined) {
             dispatch(
                 updateJournalEntry({
