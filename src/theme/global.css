@@ -2,6 +2,7 @@ body {
     background-color: var(--background);
     --ion-toolbar-background: var(--header);
     --ion-background-color: var(--background);
+    --ion-text-color: white;
 }
 
 .header-ios ion-toolbar:last-of-type {

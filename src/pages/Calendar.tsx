@@ -123,9 +123,9 @@ const Calendar: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader>
+            <IonHeader className="shadow-none">
                 <IonToolbar>
-                    <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold">
+                    <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold text-white">
                         <div className="py-2">Calendar</div>
                     </div>
                 </IonToolbar>

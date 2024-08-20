@@ -98,7 +98,7 @@ const JournalList: React.FC = () => {
         <IonPage>
             <IonHeader className="shadow-none">
                 <IonToolbar>
-                    <div className="flex justify-between items-center px-2 pl-3 text-2xl font-bold h-10">
+                    <div className="flex justify-between items-center px-2 pl-3 text-2xl font-bold h-10 text-white">
                         <div>Journal</div>
                         <div
                             className={`flex gap-1 px-2 p-1 items-center w-fit rounded-lg text-sm h-fit ${
@@ -219,7 +219,7 @@ const JournalList: React.FC = () => {
                         </>
                     )}
                     <div
-                        className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl"
+                        className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
                         onClick={() => history.push("/journal/add")}
                     >
                         <FaPlus />

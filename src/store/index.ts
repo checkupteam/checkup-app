@@ -3,16 +3,16 @@ import { journalSlice } from "./journal";
 import { Drivers, Storage } from "@ionic/storage";
 import cordovaSQLiteDriver from "localforage-cordovasqlitedriver";
 
-const storage = new Storage({
-    driverOrder: [
-        cordovaSQLiteDriver._driver,
-        Drivers.IndexedDB,
-        Drivers.LocalStorage,
-    ],
-});
+// const storage = new Storage({
+//     driverOrder: [
+//         cordovaSQLiteDriver._driver,
+//         Drivers.IndexedDB,
+//         Drivers.LocalStorage,
+//     ],
+// });
 
-await storage.defineDriver(cordovaSQLiteDriver);
-await storage.create();
+// await storage.defineDriver(cordovaSQLiteDriver);
+// await storage.create();
 
 export const store = configureStore({
     reducer: {
@@ -20,9 +20,9 @@ export const store = configureStore({
     },
 });
 
-store.subscribe(() => {
-    storage.set("journalEntires", store.getState().journal.entires);
-});
+// store.subscribe(() => {
+//     storage.set("journalEntires", store.getState().journal.entires);
+// });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
