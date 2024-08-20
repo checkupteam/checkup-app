@@ -42,7 +42,7 @@ const Home: React.FC = () => {
     return (
         <IonPage>
             <IonHeader className="shadow-none">
-                <IonToolbar h-0></IonToolbar>
+                <IonToolbar></IonToolbar>
             </IonHeader>
             <IonContent scrollY={false}>
                 <div className="grid grid-cols-2 w-full p-3 gap-3">
