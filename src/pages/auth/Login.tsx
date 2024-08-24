@@ -6,11 +6,33 @@ import {
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
+import { useForm } from "react-hook-form";
 import { FaLock, FaUser } from "react-icons/fa";
 import { Route, useHistory } from "react-router";
+import { useLoginMutation } from "../../api/auth";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../store/auth";
 
 const Login: React.FC = () => {
     const router = useIonRouter();
+    const dispatch = useDispatch();
+    const { register, handleSubmit } = useForm();
+    const [login, { status, error, data }] = useLoginMutation();
+    const [errorText, setErrorText] = useState<string | null>(null);
+
+    const onSubmit = (data: any) => {
+        login(data);
+    };
+
+    useEffect(() => {
+        if (status === "fulfilled") {
+            if (data.access_token) dispatch(setToken(data.access_token));
+            router.push("/");
+        } else if (status === "rejected") {
+            setErrorText((error as any).data.message);
+        }
+    }, [status]);
 
     return (
         <IonPage>
@@ -28,12 +50,16 @@ const Login: React.FC = () => {
                     <div className="text-2xl font-semibold pb-1 border-b-2 border-black/20 w-full uppercase">
                         {/* Login */}
                     </div>
-                    <form className="flex flex-col gap-2 mt-5 w-full text-xl">
+                    <form
+                        className="flex flex-col gap-2 mt-5 w-full text-xl"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
                             <FaUser className="text-xl w-5" />
                             <input
-                                type="text"
-                                placeholder="Username"
+                                type="email"
+                                placeholder="Email"
+                                {...register("email", { required: true })}
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
                             />
                         </div>
@@ -42,10 +68,15 @@ const Login: React.FC = () => {
                             <input
                                 type="password"
                                 placeholder="Password"
+                                {...register("pass", { required: true })}
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
                             />
                         </div>
-
+                        {errorText && (
+                            <div className="text-red-500 font-semibold text-base text-center h-6">
+                                {errorText}
+                            </div>
+                        )}
                         <button className="bg-accent text-white p-2 rounded-lg h-12 font-semibold mt-6 uppercase">
                             Login
                         </button>
@@ -53,12 +84,12 @@ const Login: React.FC = () => {
                             <div className="text-white/90 font-semibold text-lg">
                                 Don't have account?
                             </div>
-                            <button
-                                className="text-white font-semibold cursor-pointer w-full bg-white/10 h-12 rounded-lg uppercase"
-                                onClick={() => router.push("/auth/singup")}
+                            <div
+                                className="text-white font-semibold cursor-pointer w-full bg-white/10 h-12 rounded-lg uppercase flex justify-center items-center"
+                                onClick={() => router.push("/auth/signup")}
                             >
                                 Sign Up
-                            </button>
+                            </div>
                         </div>
                     </form>
                     {/* <div className="absolute bottom-10 bg-black opacity-25 w-full h-56">

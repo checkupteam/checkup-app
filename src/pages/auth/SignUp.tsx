@@ -6,10 +6,35 @@ import {
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
-import { FaLock, FaUser } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { FaAt, FaLock, FaMailBulk, FaUser } from "react-icons/fa";
+import { useSingupMutation } from "../../api/auth";
+import { useEffect, useState } from "react";
+import { QueryStatus } from "@reduxjs/toolkit/query";
 
 const SignUp: React.FC = () => {
     const router = useIonRouter();
+    const { register, handleSubmit } = useForm();
+    const [signup, { status, error }] = useSingupMutation();
+    const [errorText, setErrorText] = useState<string | null>(null);
+
+    const onSubmit = (data: any) => {
+        if (data.hash !== data.repeatPassword) {
+            setErrorText("Passwords do not match");
+            return;
+        }
+
+        delete data.repeatPassword;
+        signup(data);
+    };
+
+    useEffect(() => {
+        if (status === QueryStatus.fulfilled) {
+            router.push("/auth/login");
+        } else if (status === QueryStatus.rejected) {
+            setErrorText((error as any).data.message);
+        }
+    }, [status]);
 
     return (
         <IonPage>
@@ -21,16 +46,36 @@ const SignUp: React.FC = () => {
                     <div className="text-7xl h-1/3 flex justify-center items-center">
                         LOGO
                     </div>
-                    <div className="text-2xl font-semibold pb-1 border-b-2 border-black/20 w-full uppercase">
-                        {/* Login */}
-                    </div>
-                    <form className="flex flex-col gap-2 mt-5 w-full text-xl">
+                    <div className="text-2xl font-semibold pb-1 border-b-2 border-black/20 w-full uppercase"></div>
+                    <form
+                        className="flex flex-col gap-2 mt-5 w-full text-xl"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
                             <FaUser className="text-xl w-5" />
                             <input
                                 type="text"
-                                placeholder="Username"
+                                placeholder="Name"
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
+                                {...register("name", { required: true })}
+                            />
+                        </div>
+                        <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
+                            <FaUser className="text-xl w-5" />
+                            <input
+                                type="text"
+                                placeholder="Surname"
+                                className="bg-transparent border-none outline-none placeholder:text-white/20"
+                                {...register("surname", { required: true })}
+                            />
+                        </div>
+                        <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
+                            <FaAt className="text-xl w-5" />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className="bg-transparent border-none outline-none placeholder:text-white/20"
+                                {...register("email", { required: true })}
                             />
                         </div>
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
@@ -39,6 +84,7 @@ const SignUp: React.FC = () => {
                                 type="password"
                                 placeholder="Password"
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
+                                {...register("hash", { required: true })}
                             />
                         </div>
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
@@ -47,22 +93,29 @@ const SignUp: React.FC = () => {
                                 type="password"
                                 placeholder="Repeat Password"
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
+                                {...register("repeatPassword", {
+                                    required: true,
+                                })}
                             />
                         </div>
-
-                        <button className="bg-accent text-white p-2 rounded-lg h-12 font-semibold mt-6 uppercase">
+                        {errorText && (
+                            <div className="text-red-500 font-semibold text-base text-center h-6">
+                                {errorText}
+                            </div>
+                        )}
+                        <button className="bg-accent text-white p-2 rounded-lg h-12 font-semibold mt-2 uppercase">
                             Sign Up
                         </button>
                         <div className="border-t-2 border-black/20 w-full mt-2 flex flex-col items-center pt-2 gap-2">
                             <div className="text-white/90 font-semibold text-lg">
                                 Already have account?
                             </div>
-                            <button
-                                className="text-white font-semibold cursor-pointer w-full bg-white/10 h-12 rounded-lg uppercase"
+                            <div
+                                className="text-white font-semibold cursor-pointer w-full bg-white/10 h-12 rounded-lg uppercase flex justify-center items-center"
                                 onClick={() => router.push("/auth/login")}
                             >
                                 Login
-                            </button>
+                            </div>
                         </div>
                     </form>
                     {/* <div className="absolute bottom-10 bg-black opacity-25 w-full h-56">
