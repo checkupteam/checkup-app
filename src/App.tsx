@@ -1,19 +1,13 @@
 import { KonstaProvider } from "konsta/react";
 import { Redirect, Route } from "react-router-dom";
-import {
-    createAnimation,
-    CreateAnimation,
-    IonApp,
-    IonRouterOutlet,
-    setupIonicReact,
-} from "@ionic/react";
+import { createAnimation, CreateAnimation, IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
 import Journal from "./pages/journal";
 import Calendar from "./pages/Calendar";
 import AuthPage from "./pages/auth";
-import TaskManager from "./pages/TaskManager";
+import Task from "./pages/tasks";
 
 import "tailwindcss/tailwind.css";
 
@@ -56,13 +50,13 @@ const App: React.FC = () => (
         <IonApp>
             <IonReactRouter>
                 <IonRouterOutlet>
-                    {/* <AuthChecker> */}
-                    <Route path="/home" component={Home} />
-                    <Route path="/journal" component={Journal} />
-                    <Route path="/calendar" component={Calendar} />
-                    <Route path="/tasks" component={TaskManager} />
-                    <Redirect exact from="/" to="/home" />
-                    {/* </AuthChecker> */}
+                    <AuthChecker>
+                        <Route path="/home" component={Home} />
+                        <Route path="/journal" component={Journal} />
+                        <Route path="/calendar" component={Calendar} />
+                        <Route path="/tasks" component={Task} />
+                        <Redirect exact from="/" to="/home" />
+                    </AuthChecker>
                     <Route path="/auth" component={AuthPage} />
                 </IonRouterOutlet>
                 <NavBar />
