@@ -3,13 +3,16 @@ import { IonRouterOutlet, IonHeader, IonPage, useIonRouter, IonToolbar } from "@
 import { MdOutlineRadioButtonUnchecked, MdOutlineCheckCircle } from "react-icons/md";
 import { FaArrowLeft, FaPlus } from "react-icons/fa";
 import { Route } from "react-router";
+import { MdEdit } from "react-icons/md";
 
 const TaskManager: React.FC = () => {
     const router = useIonRouter();
     const [hidder, setHidder] = useState(true);
     const [task, checkTask] = useState(false);
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
+
     return (
-        <div>
+        <IonPage>
             <IonRouterOutlet className="flex flex-col overflow-hidden">
                 <Route exact path="/tasks">
                     <IonHeader>
@@ -47,18 +50,30 @@ const TaskManager: React.FC = () => {
                                 <div className="flex justify-center items-center h-10 w-10" onClick={() => router.goBack()}>
                                     <FaArrowLeft />
                                 </div>
-                                <div className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap" contentEditable>
-                                    New Task
-                                </div>
-                                <div className="">
-
+                                <div className="flex flex-row items-center gap-2 flex-1">
+                                    <div className="py-2 outline-none overflow-x-auto whitespace-nowrap" contentEditable>
+                                        New Task
+                                    </div>
+                                    <MdEdit className="opacity-30"/>
                                 </div>
                             </div>
                         </IonToolbar>
                     </IonHeader>
+                    <div className="flex flex-col p-3 w-full h-full bg-primary/40 gap-6">
+                        <textarea name="" id="" placeholder="Add description" className="w-full flex flex-1 flex-start outline-none resize-none rounded-2xl text-xl p-3"></textarea>
+
+                        {!keyboardVisible && (
+                            <div
+                                className="bg-accent rounded-full h-12 flex justify-center items-center text-lg font-bold uppercase"
+                                // onClick={saveEntry}
+                            >
+                                save
+                            </div>
+                        )}
+                    </div>
                 </Route>
             </IonRouterOutlet>
-        </div>
+        </IonPage>
     );
 };
 

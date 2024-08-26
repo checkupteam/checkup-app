@@ -56,13 +56,13 @@ const App: React.FC = () => (
         <IonApp>
             <IonReactRouter>
                 <IonRouterOutlet>
-                    <AuthChecker>
+                    {/* <AuthChecker> */}
                         <Route path="/home" component={Home} />
                         <Route path="/journal" component={Journal} />
                         <Route path="/calendar" component={Calendar} />
                         <Route path="/tasks" component={TaskManager} />
                         <Redirect exact from="/" to="/home" />
-                    </AuthChecker>
+                    {/* </AuthChecker> */}
                     <Route path="/auth" component={AuthPage} />
                 </IonRouterOutlet>
                 <NavBar />
