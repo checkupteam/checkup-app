@@ -1,11 +1,18 @@
 import { KonstaProvider } from "konsta/react";
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import {
+    createAnimation,
+    CreateAnimation,
+    IonApp,
+    IonRouterOutlet,
+    setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
-import Journal from "./pages/Journal";
+import Journal from "./pages/journal";
 import Calendar from "./pages/Calendar";
+import AuthPage from "./pages/auth";
 import TaskManager from "./pages/TaskManager";
 
 import "tailwindcss/tailwind.css";
@@ -40,7 +47,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/global.css";
-
+import AuthChecker from "./components/AuthChecker";
 
 setupIonicReact();
 
@@ -49,11 +56,14 @@ const App: React.FC = () => (
         <IonApp>
             <IonReactRouter>
                 <IonRouterOutlet>
-                    <Route path="/home" component={Home} />
-                    <Route path="/journal" component={Journal} />
-                    <Route path="/calendar" component={Calendar} />
-                    <Route path="/tasks" component={TaskManager} />
-                    <Redirect exact from="/" to="/home" />
+                    <AuthChecker>
+                        <Route path="/home" component={Home} />
+                        <Route path="/journal" component={Journal} />
+                        <Route path="/calendar" component={Calendar} />
+                        <Route path="/tasks" component={TaskManager} />
+                        <Redirect exact from="/" to="/home" />
+                    </AuthChecker>
+                    <Route path="/auth" component={AuthPage} />
                 </IonRouterOutlet>
                 <NavBar />
             </IonReactRouter>
