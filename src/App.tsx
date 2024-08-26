@@ -47,7 +47,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/global.css";
-import AuthChecker from "./components/AuthChecker";
+import PrivateRoute from "./components/PrivateRoute";
 
 setupIonicReact();
 
@@ -56,14 +56,20 @@ const App: React.FC = () => (
         <IonApp>
             <IonReactRouter>
                 <IonRouterOutlet>
-                    {/* <AuthChecker> */}
-                    <Route path="/home" component={Home} />
-                    <Route path="/journal" component={Journal} />
-                    <Route path="/calendar" component={Calendar} />
-                    <Route path="/tasks" component={TaskManager} />
-                    <Redirect exact from="/" to="/home" />
-                    {/* </AuthChecker> */}
                     <Route path="/auth" component={AuthPage} />
+                    <PrivateRoute path="/home">
+                        <Home />
+                    </PrivateRoute>
+                    <PrivateRoute path="/journal">
+                        <Journal />
+                    </PrivateRoute>
+                    <PrivateRoute path="/calendar">
+                        <Calendar />
+                    </PrivateRoute>
+                    <PrivateRoute path="/tasks">
+                        <TaskManager />
+                    </PrivateRoute>
+                    <Redirect exact from="/" to="/home" />
                 </IonRouterOutlet>
                 <NavBar />
             </IonReactRouter>

@@ -51,23 +51,25 @@ const SignUp: React.FC = () => {
                         className="flex flex-col gap-2 mt-5 w-full text-xl"
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
-                            <FaUser className="text-xl w-5" />
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                className="bg-transparent border-none outline-none placeholder:text-white/20"
-                                {...register("name", { required: true })}
-                            />
-                        </div>
-                        <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
-                            <FaUser className="text-xl w-5" />
-                            <input
-                                type="text"
-                                placeholder="Surname"
-                                className="bg-transparent border-none outline-none placeholder:text-white/20"
-                                {...register("surname", { required: true })}
-                            />
+                        <div className="flex gap-2 w-full">
+                            <div className="flex-1 w-0 rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
+                                <FaUser className="text-xl w-5" />
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    className="bg-transparent border-none outline-none placeholder:text-white/20 w-0 flex-1"
+                                    {...register("name", { required: true })}
+                                />
+                            </div>
+                            <div className="flex-1 w-0 rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
+                                <FaUser className="text-xl w-5" />
+                                <input
+                                    type="text"
+                                    placeholder="Surname"
+                                    className="bg-transparent border-none outline-none placeholder:text-white/20 w-0 flex-1"
+                                    {...register("surname", { required: true })}
+                                />
+                            </div>
                         </div>
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
                             <FaAt className="text-xl w-5" />
