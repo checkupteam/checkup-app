@@ -49,7 +49,6 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     const [content, setContent] = useState("");
     const [mood, setMood] = useState<Moods>(Moods.OKAY);
     const [title, setTitle] = useState("New Entry");
-    const [photo, setPhoto] = useState<string | null>(null);
     const [favorite, setFavorite] = useState(false);
 
     useEffect(() => {
@@ -77,13 +76,15 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
 
     const selectPhoto = async () => {
         const image = await Camera.getPhoto({
-            quality: 90,
+            quality: 50,
             allowEditing: false,
-            resultType: CameraResultType.Base64,
+            resultType: CameraResultType.DataUrl,
         });
 
-        setPhoto(image.base64String ?? null);
-        console.log(image);
+        setContent(
+            content +
+                `<img src="${image.dataUrl}" alt="photo" class="w-full rounded-lg my-1" />`
+        );
     };
 
     const Mood: React.FC<{
@@ -203,13 +204,18 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                             />
                         </div>
                     </div>
-                    <div className="flex-1 shrink-0 h-0 overflow-auto bg-primary/40 rounded-2xl p-3 outline-none relative">
-                        <textarea
-                            className="w-full h-full bg-transparent outline-none placeholder:text-white/40 placeholder:font-bold"
+                    <div
+                        className="flex-1 shrink-0 h-0 overflow-auto bg-primary/40 rounded-2xl p-3 outline-none relative pb-32"
+                        contentEditable
+                        dangerouslySetInnerHTML={{ __html: content }}
+                        onBlur={(e) => setContent(e.currentTarget.innerHTML)}
+                    >
+                        {/* <textarea
+                            className="w-full h-full bg-transparent outline-none placeholder:text-white/40 placeholder:font-bold resize-none"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             placeholder="Write something you would like to share..."
-                        />
+                        /> */}
                         {/* {photo && (
                             <img
                                 src={`data:image/jpeg;base64,${photo}`}
