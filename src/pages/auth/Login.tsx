@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         if (status === "fulfilled") {
             if (data.access_token) dispatch(setToken(data.access_token));
-            router.push("/");
+            router.push("/home");
         } else if (status === "rejected") {
             setErrorText((error as any).data.message);
         }
