@@ -9,36 +9,32 @@ import {
 } from "@ionic/react";
 import { IonDatetime, IonDatetimeButton, IonModal } from "@ionic/react";
 import { JournalEntry } from "../types/journal";
-import { selectJournalEntires, updateJournalEntry } from "../store/journal";
-import { useDispatch, useSelector } from "react-redux";
 import Mood from "../components/Mood";
+import {
+    useGetJournalEntriesQuery,
+    useUpdateJournalEntryMutation,
+} from "../api/journal";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const JournalItem: React.FC<{ entry: JournalEntry; index: number }> = ({
-    entry,
-    index,
-}) => {
-    const dispatch = useDispatch();
+const JournalItem: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
     const router = useIonRouter();
+    const [updateJournalEntry] = useUpdateJournalEntryMutation();
 
     const switchFavoriteStatus = () => {
-        dispatch(
-            updateJournalEntry({
-                index,
-                favorite: !entry.favorite,
-            })
-        );
+        updateJournalEntry({
+            id: entry.id,
+            changes: {
+                isFavorite: !entry.isFavorite,
+            },
+        });
     };
 
     return (
-        <div
-            key={entry.date}
-            className="bg-white/5 p-3 px-4 rounded-lg flex gap-3 items-center"
-        >
+        <div className="bg-white/5 p-3 px-4 rounded-lg flex gap-3 items-center">
             <div
                 className="flex gap-3 flex-1 shrink-0 w-0 items-center"
-                onClick={() => router.push(`/journal/edit/${index}`)}
+                onClick={() => router.push(`/journal/edit/${entry.id}`)}
             >
                 <Mood mood={entry.mood} className="text-4xl" />
                 <div className="flex flex-col justify-center flex-1">
@@ -46,7 +42,7 @@ const JournalItem: React.FC<{ entry: JournalEntry; index: number }> = ({
                         {entry.title}
                     </div>
                     <div className="text-neutral-500 leading-5 font-semibold">
-                        {new Date(entry.date)
+                        {new Date(entry.createdAt)
                             .toLocaleString("en-US", {
                                 month: "2-digit",
                                 day: "2-digit",
@@ -57,7 +53,7 @@ const JournalItem: React.FC<{ entry: JournalEntry; index: number }> = ({
                 </div>
             </div>
             <div className="self-stretch w-8 text-xl flex justify-center items-center">
-                {entry.favorite ? (
+                {entry.isFavorite ? (
                     <FaStar
                         className="text-accent"
                         onClick={() => switchFavoriteStatus()}
@@ -74,21 +70,15 @@ const JournalItem: React.FC<{ entry: JournalEntry; index: number }> = ({
 };
 
 const Calendar: React.FC = () => {
-    const journalEntries = useSelector(selectJournalEntires);
     const [currDate, setDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const datetime = useRef<null | HTMLIonDatetimeElement>(null);
     const now = new Date();
-    const selectedEntries = journalEntries
-        .map((entry, index) => ({
-            ...entry,
-            index,
-        }))
-        .filter(
-            (entry) =>
-                new Date(entry.date).toDateString() ===
-                selectedDate.toDateString()
-        );
+    const { data: journalEntries } = useGetJournalEntriesQuery({
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        day: now.getDate(),
+    });
 
     function getWeekDay() {
         let day = selectedDate.getDay();
@@ -198,18 +188,14 @@ const Calendar: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 px-4">
-                    {selectedEntries.length == 0 ? (
+                    {!journalEntries || journalEntries.length == 0 ? (
                         <div className="text-center text-white/20 font-bold uppercase py-2">
                             no entries
                         </div>
                     ) : (
                         <>
-                            {selectedEntries.map((entry, index) => (
-                                <JournalItem
-                                    key={entry.date}
-                                    entry={entry}
-                                    index={entry.index}
-                                />
+                            {journalEntries.map((entry, index) => (
+                                <JournalItem key={entry.id} entry={entry} />
                             ))}
                         </>
                     )}

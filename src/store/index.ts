@@ -1,7 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { journalSlice } from "./journal";
-import { Drivers, Storage } from "@ionic/storage";
-import cordovaSQLiteDriver from "localforage-cordovasqlitedriver";
 import { authSlice } from "./auth";
 import { api } from "../api";
 import CapacitorStorage from "redux-persist-capacitor";
@@ -21,7 +18,6 @@ const persistedAuthReducer = persistReducer<
 
 export const store = configureStore({
     reducer: {
-        [journalSlice.name]: journalSlice.reducer,
         [authSlice.name]: persistedAuthReducer,
         [api.reducerPath]: api.reducer,
     },

@@ -7,36 +7,33 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { FaPlus, FaRegStar, FaStar } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { selectJournalEntires, updateJournalEntry } from "../../store/journal";
 import Mood from "../../components/Mood";
 import { JournalEntry } from "../../types/journal";
 import { useHistory } from "react-router";
+import {
+    useGetJournalEntriesQuery,
+    useUpdateJournalEntryMutation,
+} from "../../api/journal";
+import Loading from "../../components/Loading";
 
-const ListItem: React.FC<{ entry: JournalEntry; index: number }> = ({
-    entry,
-    index,
-}) => {
-    const dispatch = useDispatch();
+const ListItem: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
     const router = useIonRouter();
+    const [updateJournalEntry] = useUpdateJournalEntryMutation();
 
     const switchFavoriteStatus = () => {
-        dispatch(
-            updateJournalEntry({
-                index,
-                favorite: !entry.favorite,
-            })
-        );
+        updateJournalEntry({
+            id: entry.id,
+            changes: {
+                isFavorite: !entry.isFavorite,
+            },
+        });
     };
 
     return (
-        <div
-            key={entry.date}
-            className="bg-white/5 p-3 px-4 rounded-lg flex gap-3 items-center"
-        >
+        <div className="bg-white/5 p-3 px-4 rounded-lg flex gap-3 items-center">
             <div
                 className="flex gap-3 flex-1 shrink-0 w-0 items-center"
-                onClick={() => router.push(`/journal/edit/${index}`)}
+                onClick={() => router.push(`/journal/edit/${entry.id}`)}
             >
                 <Mood mood={entry.mood} className="text-4xl" />
                 <div className="flex flex-col justify-center flex-1">
@@ -44,7 +41,7 @@ const ListItem: React.FC<{ entry: JournalEntry; index: number }> = ({
                         {entry.title}
                     </div>
                     <div className="text-neutral-500 leading-5 font-semibold">
-                        {new Date(entry.date)
+                        {new Date(entry.createdAt)
                             .toLocaleString("en-US", {
                                 month: "2-digit",
                                 day: "2-digit",
@@ -55,7 +52,7 @@ const ListItem: React.FC<{ entry: JournalEntry; index: number }> = ({
                 </div>
             </div>
             <div className="self-stretch w-8 text-xl flex justify-center items-center">
-                {entry.favorite ? (
+                {entry.isFavorite ? (
                     <FaStar
                         className="text-accent"
                         onClick={() => switchFavoriteStatus()}
@@ -73,26 +70,48 @@ const ListItem: React.FC<{ entry: JournalEntry; index: number }> = ({
 
 const JournalList: React.FC = () => {
     const history = useHistory();
-    const dispatch = useDispatch();
-    const entries = useSelector(selectJournalEntires);
-    const router = useIonRouter();
+    const { data: entries, isLoading } = useGetJournalEntriesQuery({
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+    });
     const [favorites, setFavorites] = useState(false);
 
-    const switchFavoriteStatus = (index: number) => {
-        dispatch(
-            updateJournalEntry({
-                index,
-                favorite: !entries[index].favorite,
-            })
-        );
-    };
+    const filtredEntries = entries?.filter(
+        (entry) => !favorites || entry.isFavorite
+    );
 
-    const filtredEntries = entries
-        .map((entry, index) => ({
-            ...entry,
-            index,
-        }))
-        .filter((entry) => (favorites ? entry.favorite : true));
+    const getEntiresByRange = (type: "day" | "week" | "month") => {
+        const today = new Date().setHours(0, 0, 0, 0);
+        const weekStart = new Date(today - (today % 86400000) - 86400000 * 6);
+        switch (type) {
+            case "day":
+                return filtredEntries?.filter((entry) => {
+                    const date = new Date(entry.createdAt).setHours(0, 0, 0, 0);
+                    return today === date;
+                });
+            case "week":
+                return filtredEntries?.filter((entry) => {
+                    const date = new Date(entry.createdAt);
+                    return (
+                        date >= weekStart &&
+                        date < new Date(today) &&
+                        date <= new Date()
+                    );
+                });
+            case "month":
+                const monthStart = new Date(
+                    today - (today % 86400000) - 86400000 * 30
+                );
+                return filtredEntries?.filter((entry) => {
+                    const date = new Date(entry.createdAt);
+                    return (
+                        date >= monthStart &&
+                        date < weekStart &&
+                        date <= new Date()
+                    );
+                });
+        }
+    };
 
     return (
         <IonPage>
@@ -113,118 +132,47 @@ const JournalList: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <div className="p-3 pb-0 overflow-auto flex flex-col gap-2 h-full">
-                    {entries.length == 0 ? (
-                        <div className="text-center w-full text-neutral-600 font-bold uppercase py-4 mt-3">
-                            no entires
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <div className="p-3 pb-0 overflow-auto flex flex-col gap-2 h-full">
+                        {!filtredEntries || filtredEntries.length == 0 ? (
+                            <div className="text-center w-full text-neutral-600 font-bold uppercase py-4 mt-3">
+                                no entires
+                            </div>
+                        ) : (
+                            <>
+                                <div className="text-center uppercase font-semibold text-sm text-white/20">
+                                    today
+                                </div>
+                                {getEntiresByRange("day")?.map((entry) => (
+                                    <ListItem key={entry.id} entry={entry} />
+                                ))}
+                                <div className="bg-primary/20 h-[1px]"></div>
+                                <div className="text-center uppercase font-semibold text-sm text-white/20">
+                                    this week
+                                </div>
+                                {getEntiresByRange("week")?.map((entry) => (
+                                    <ListItem key={entry.id} entry={entry} />
+                                ))}
+                                <div className="bg-primary/20 h-[1px]"></div>
+                                <div className="text-center uppercase font-semibold text-sm text-white/20">
+                                    this month
+                                </div>
+                                {getEntiresByRange("month")?.map((entry) => (
+                                    <ListItem key={entry.id} entry={entry} />
+                                ))}
+                                <div className="bg-primary/20 h-[1px]"></div>
+                            </>
+                        )}
+                        <div
+                            className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
+                            onClick={() => history.push("/journal/add")}
+                        >
+                            <FaPlus />
                         </div>
-                    ) : (
-                        <>
-                            <div className="text-center uppercase font-semibold text-sm text-white/20">
-                                today
-                            </div>
-                            {filtredEntries
-                                .filter((entry) => {
-                                    const today = new Date().setHours(
-                                        0,
-                                        0,
-                                        0,
-                                        0
-                                    );
-                                    return (
-                                        today ===
-                                        new Date(entry.date).setHours(
-                                            0,
-                                            0,
-                                            0,
-                                            0
-                                        )
-                                    );
-                                })
-                                .map((entry) => (
-                                    <ListItem
-                                        key={entry.index}
-                                        entry={entry}
-                                        index={entry.index}
-                                    />
-                                ))}
-                            <div className="bg-primary/20 h-[1px]"></div>
-                            <div className="text-center uppercase font-semibold text-sm text-white/20">
-                                this week
-                            </div>
-                            {filtredEntries
-                                .filter((entry) => {
-                                    const date = new Date(entry.date);
-                                    const today = new Date().setHours(
-                                        0,
-                                        0,
-                                        0,
-                                        0
-                                    );
-                                    const weekStart = new Date(
-                                        today -
-                                            (today % 86400000) -
-                                            86400000 * 6
-                                    );
-                                    return (
-                                        date >= weekStart &&
-                                        date < new Date(today) &&
-                                        date <= new Date()
-                                    );
-                                })
-                                .map((entry) => (
-                                    <ListItem
-                                        key={entry.index}
-                                        entry={entry}
-                                        index={entry.index}
-                                    />
-                                ))}
-                            <div className="bg-primary/20 h-[1px]"></div>
-                            <div className="text-center uppercase font-semibold text-sm text-white/20">
-                                this month
-                            </div>
-                            {filtredEntries
-                                .filter((entry) => {
-                                    const date = new Date(entry.date);
-                                    const today = new Date().setHours(
-                                        0,
-                                        0,
-                                        0,
-                                        0
-                                    );
-                                    const monthStart = new Date(
-                                        today -
-                                            (today % 86400000) -
-                                            86400000 * 30
-                                    );
-                                    const weekStart = new Date(
-                                        today -
-                                            (today % 86400000) -
-                                            86400000 * 6
-                                    );
-                                    return (
-                                        date >= monthStart &&
-                                        date < weekStart &&
-                                        date <= new Date()
-                                    );
-                                })
-                                .map((entry) => (
-                                    <ListItem
-                                        key={entry.index}
-                                        entry={entry}
-                                        index={entry.index}
-                                    />
-                                ))}
-                            <div className="bg-primary/20 h-[1px]"></div>
-                        </>
-                    )}
-                    <div
-                        className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
-                        onClick={() => history.push("/journal/add")}
-                    >
-                        <FaPlus />
                     </div>
-                </div>
+                )}
             </IonContent>
         </IonPage>
     );

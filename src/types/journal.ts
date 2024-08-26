@@ -1,19 +1,18 @@
 export enum Moods {
-    TERRIBLE = "terrible",
-    BAD = "bad",
-    OKAY = "okay",
-    GOOD = "good",
-    GREAT = "great",
+    TERRIBLE = 1,
+    BAD = 2,
+    OKAY = 3,
+    GOOD = 4,
+    GREAT = 5,
 }
 
 export type JournalEntry = {
+    id: number;
+    createdAt: string;
+    updatedAt: string;
     title: string;
-    content: string;
-    date: number;
     mood: Moods;
-    favorite: boolean;
+    isFavorite: boolean;
+    text: string;
+    createdDate: number;
 };
-
-export interface JournalState {
-    entires: JournalEntry[];
-}

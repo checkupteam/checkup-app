@@ -57,11 +57,11 @@ const App: React.FC = () => (
             <IonReactRouter>
                 <IonRouterOutlet>
                     {/* <AuthChecker> */}
-                        <Route path="/home" component={Home} />
-                        <Route path="/journal" component={Journal} />
-                        <Route path="/calendar" component={Calendar} />
-                        <Route path="/tasks" component={TaskManager} />
-                        <Redirect exact from="/" to="/home" />
+                    <Route path="/home" component={Home} />
+                    <Route path="/journal" component={Journal} />
+                    <Route path="/calendar" component={Calendar} />
+                    <Route path="/tasks" component={TaskManager} />
+                    <Redirect exact from="/" to="/home" />
                     {/* </AuthChecker> */}
                     <Route path="/auth" component={AuthPage} />
                 </IonRouterOutlet>
