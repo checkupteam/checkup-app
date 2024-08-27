@@ -1,0 +1,30 @@
+name: iOS starter workflow
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build app
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Workspace
+        run: |
+          project_name=$(basename $(realpath ios/App/App.xcworkspace))
+          scheme=$project_name
+          xcodebuild -workspace $1/$project_name.xcworkspace -scheme $scheme clean archive -configuration release -archivePath $project_name.xcarchive
+          first_arg=$project_name.xcarchive
+          source_dir="${first_arg%/}/Products/Applications"
+          new_folder="Payload"
+          rm -rf $new_folder
+          mkdir $new_folder
+          cp -a $source_dir/* $new_folder
+          filename=$(find $new_folder -type d -name '*.app' -exec basename {} \; | head -n 1)
+          zip -rmq "${filename%.*}.ipa" $new_folder
