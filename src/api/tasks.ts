@@ -6,17 +6,19 @@ const TaskApi = api.injectEndpoints({
         getTasks: build.query<
             TaskEntry[],
             {
-                year: number;
-                month: number;
-                day?: number;
+                limit?: number;
+                order?: "asc" | "desc";
+                userId: number,
+                isDone?: boolean,
             }
         >({
             query: (args) => ({
                 url: `/tasks`,
                 params: {
-                    day: args.day && args.day.toString().padStart(2, "0"),
-                    month: args.month.toString().padStart(2, "0"),
-                    year: args.year,
+                    limit: args.limit,
+                    order: args.order,
+                    userId: args.userId,
+                    isDone: args.isDone,
                 },
             }),
             providesTags: (result) =>
@@ -32,8 +34,7 @@ const TaskApi = api.injectEndpoints({
         }),
         getTask: build.query<TaskEntry, number>({
             query: (id) => `/task${id}`,
-            providesTags: (result, error, id) =>
-                result ? [{ type: "Task", id }] : [],
+            providesTags: (result, error, id) => (result ? [{ type: "Task", id }] : []),
         }),
         createTask: build.mutation<
             TaskEntry,
@@ -50,18 +51,13 @@ const TaskApi = api.injectEndpoints({
             }),
             invalidatesTags: ["Task"],
         }),
-        updateTask: build.mutation<
-            TaskEntry,
-            { id: number; changes: Partial<TaskEntry> }
-        >({
+        updateTask: build.mutation<TaskEntry, { id: number; changes: Partial<TaskEntry> }>({
             query: ({ id, changes }) => ({
                 url: `/task/update/${id}`,
                 method: "PATCH",
                 body: changes,
             }),
-            invalidatesTags: (result, error, { id }) => [
-                { type: "Task", id },
-            ],
+            invalidatesTags: (result, error, { id }) => [{ type: "Task", id }],
         }),
         deleteTask: build.mutation<void, number>({
             query: (id) => ({
@@ -74,10 +70,4 @@ const TaskApi = api.injectEndpoints({
     overrideExisting: false,
 });
 
-export const {
-    useGetTasksQuery,
-    useGetTaskQuery,
-    useCreateTaskMutation,
-    useUpdateTaskMutation,
-    useDeleteTaskMutation,
-} = TaskApi;
+export const { useGetTasksQuery, useGetTaskQuery, useCreateTaskMutation, useUpdateTaskMutation, useDeleteTaskMutation } = TaskApi;

@@ -38,8 +38,10 @@ const TaskList: React.FC = () => {
     const [updateTask] = useUpdateTaskMutation();
     const history = useHistory();
     const { data: entries, isLoading } = useGetTasksQuery({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
+        limit: 10,
+        order: "desc",
+        userId: 1,
+        isDone: false,
     });
 
     return (
