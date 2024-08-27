@@ -19,7 +19,7 @@ jobs:
         run: |
           project_name=$(basename $(realpath ios/App/App.xcworkspace))
           scheme=$project_name
-          xcodebuild -workspace $1/$project_name.xcworkspace -scheme $scheme clean archive -configuration release -archivePath $project_name.xcarchive
+          xcodebuild -workspace ios/App/$project_name -scheme $scheme clean archive -configuration release -archivePath $project_name.xcarchive
           first_arg=$project_name.xcarchive
           source_dir="${first_arg%/}/Products/Applications"
           new_folder="Payload"
