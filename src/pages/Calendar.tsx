@@ -14,6 +14,7 @@ import {
     useGetJournalEntriesQuery,
     useUpdateJournalEntryMutation,
 } from "../api/journal";
+import Loading from "../components/Loading";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -74,10 +75,10 @@ const Calendar: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const datetime = useRef<null | HTMLIonDatetimeElement>(null);
     const now = new Date();
-    const { data: journalEntries } = useGetJournalEntriesQuery({
-        year: now.getFullYear(),
-        month: now.getMonth() + 1,
-        day: now.getDate(),
+    const { data: journalEntries, isLoading } = useGetJournalEntriesQuery({
+        year: selectedDate.getFullYear(),
+        month: selectedDate.getMonth() + 1,
+        day: selectedDate.getDate(),
     });
 
     function getWeekDay() {
@@ -188,7 +189,9 @@ const Calendar: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 px-4">
-                    {!journalEntries || journalEntries.length == 0 ? (
+                    {isLoading ? (
+                        <Loading />
+                    ) : !journalEntries || journalEntries.length == 0 ? (
                         <div className="text-center text-white/20 font-bold uppercase py-2">
                             no entries
                         </div>
