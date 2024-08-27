@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Recreate ios project
+        run: |
+          rm -rf ios
+          npm install @capacitor/ios
+          npx cap add ios
       - name: Build Workspace
         run: |
           project_name=$(basename $(realpath ios/App/App.xcworkspace))
