@@ -1,11 +1,7 @@
-name: iOS starter workflow
+name: iOS Starter Workflow
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [ "main" ]
-  # pull_request:
-  #   branches: [ "main" ]
 
 jobs:
   build:
@@ -15,26 +11,42 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
       - name: Build web
         run: |
           npm install
           npm run build
           npx cap sync
+
       - name: Recreate ios project
         run: |
           rm -rf ios
           npx cap add ios
-      - name: Install pod deps
+
+      - name: Install CocoaPods
+        run: sudo gem install cocoapods
+
+      - name: Install pod dependencies
         run: |
           cd ios/App
           pod install
+
       - name: Build Project
         run: |
-          project_name=$(basename $(realpath ios/App/App))
-          scheme=$project_name
-          xcodebuild -project ios/App/$project_name.xcodeproj -scheme $scheme clean archive -configuration release -archivePath $project_name.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-          first_arg=$project_name.xcarchive
-          source_dir="${first_arg%/}/Products/Applications"
+          cd ios/App
+          project_name=$(xcodebuild -list -json | jq -r '.project.schemes[0]')
+          xcodebuild -workspace App.xcworkspace -scheme "$project_name" clean archive -configuration Release -archivePath $project_name.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          
+      - name: Create IPA
+        run: |
+          cd ios/App
+          archive_path="$project_name.xcarchive"
+          source_dir="${archive_path%/}/Products/Applications"
           new_folder="Payload"
           rm -rf $new_folder
           mkdir $new_folder
