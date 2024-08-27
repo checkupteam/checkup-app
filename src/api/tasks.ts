@@ -4,27 +4,22 @@ import { TaskEntry } from "../types/tasks";
 const TaskApi = api.injectEndpoints({
     endpoints: (build) => ({
         getTasks: build.query<
-            TaskEntry[],
+            { docs: TaskEntry[] },
             {
-                limit?: number;
-                order?: "asc" | "desc";
-                userId: number,
-                isDone?: boolean,
+                page: number;
+                limit: number;
+                orderBy: "asc" | "desc";
+                isDone?: boolean;
             }
         >({
             query: (args) => ({
-                url: `/tasks`,
-                params: {
-                    limit: args.limit,
-                    order: args.order,
-                    userId: args.userId,
-                    isDone: args.isDone,
-                },
+                url: `/taskManager/tasks`,
+                params: args,
             }),
             providesTags: (result) =>
-                result
+                result?.docs
                     ? [
-                          ...result.map(({ id }) => ({
+                          ...result.docs.map(({ id }) => ({
                               type: "Task" as const,
                               id,
                           })),
@@ -34,7 +29,8 @@ const TaskApi = api.injectEndpoints({
         }),
         getTask: build.query<TaskEntry, number>({
             query: (id) => `/task${id}`,
-            providesTags: (result, error, id) => (result ? [{ type: "Task", id }] : []),
+            providesTags: (result, error, id) =>
+                result ? [{ type: "Task", id }] : [],
         }),
         createTask: build.mutation<
             TaskEntry,
@@ -45,15 +41,18 @@ const TaskApi = api.injectEndpoints({
             }
         >({
             query: (body) => ({
-                url: `/task/create`,
+                url: `/taskManager/task`,
                 method: "POST",
                 body,
             }),
             invalidatesTags: ["Task"],
         }),
-        updateTask: build.mutation<TaskEntry, { id: number; changes: Partial<TaskEntry> }>({
+        updateTask: build.mutation<
+            TaskEntry,
+            { id: number; changes: Partial<TaskEntry> }
+        >({
             query: ({ id, changes }) => ({
-                url: `/task/update/${id}`,
+                url: `/taskManager/task/${id}`,
                 method: "PATCH",
                 body: changes,
             }),
@@ -70,4 +69,10 @@ const TaskApi = api.injectEndpoints({
     overrideExisting: false,
 });
 
-export const { useGetTasksQuery, useGetTaskQuery, useCreateTaskMutation, useUpdateTaskMutation, useDeleteTaskMutation } = TaskApi;
+export const {
+    useGetTasksQuery,
+    useGetTaskQuery,
+    useCreateTaskMutation,
+    useUpdateTaskMutation,
+    useDeleteTaskMutation,
+} = TaskApi;

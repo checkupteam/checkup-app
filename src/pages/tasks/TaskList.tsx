@@ -1,6 +1,16 @@
 import React, { useState } from "react";
-import { IonRouterOutlet, IonHeader, IonPage, useIonRouter, IonToolbar } from "@ionic/react";
-import { MdOutlineRadioButtonUnchecked, MdOutlineCheckCircle } from "react-icons/md";
+import {
+    IonRouterOutlet,
+    IonHeader,
+    IonPage,
+    useIonRouter,
+    IonToolbar,
+    IonContent,
+} from "@ionic/react";
+import {
+    MdOutlineRadioButtonUnchecked,
+    MdOutlineCheckCircle,
+} from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { TaskEntry } from "../../types/tasks";
 import { useHistory } from "react-router";
@@ -23,10 +33,27 @@ const TaskItem: React.FC<{ entry: TaskEntry }> = ({ entry }) => {
     };
     return (
         <div className="flex flex-row w-full bg-black/30 p-2 rounded-xl items-center justify-between gap-4">
-            <div className="text-5xl flex items-start text-white">{entry.isDone ? <MdOutlineCheckCircle onClick={() => checkTaskDb()} /> : <MdOutlineRadioButtonUnchecked onClick={() => checkTaskDb()} />}</div>
-            <div className="flex flex-col flex-1" onClick={() => setHidder(!hidder)}>
+            <div className="text-5xl flex items-start text-white">
+                {entry.isDone ? (
+                    <MdOutlineCheckCircle onClick={() => checkTaskDb()} />
+                ) : (
+                    <MdOutlineRadioButtonUnchecked
+                        onClick={() => checkTaskDb()}
+                    />
+                )}
+            </div>
+            <div
+                className="flex flex-col flex-1"
+                onClick={() => setHidder(!hidder)}
+            >
                 <div className="text-xl font-bold">{entry.title}</div>
-                <div className={`text-lg opacity-45 text-wrap overflow-hidden ${hidder ? "h-8" : "max-h-full"} `}>{entry.text}</div>
+                <div
+                    className={`text-lg opacity-45 text-wrap overflow-hidden ${
+                        hidder ? "h-8" : "max-h-full"
+                    } `}
+                >
+                    {entry.text}
+                </div>
             </div>
         </div>
     );
@@ -38,33 +65,40 @@ const TaskList: React.FC = () => {
     const [updateTask] = useUpdateTaskMutation();
     const history = useHistory();
     const { data: entries, isLoading } = useGetTasksQuery({
+        page: 1,
         limit: 10,
-        order: "desc",
-        userId: 1,
+        orderBy: "desc",
         isDone: false,
     });
 
     return (
         <IonPage>
-            <IonRouterOutlet className="flex flex-col overflow-hidden">
-                <IonHeader>
-                    <IonToolbar>
-                        <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold">
-                            <div className="py-2">Tasks</div>
-                        </div>
-                    </IonToolbar>
-                </IonHeader>
+            <IonHeader>
+                <IonToolbar>
+                    <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold">
+                        <div className="py-2">Tasks</div>
+                    </div>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent>
                 <div className="flex flex-col gap-3 p-4">
-                    <div className="flex flex-col w-full">
-                        <div className="flex flex-row w-full bg-black/30 p-2 rounded-xl items-center justify-between gap-4">{isLoading ? <Loading /> : entries?.map((entry) => <TaskItem entry={entry} />)}</div>
+                    <div className="flex flex-col w-full gap-3">
+                        {isLoading ? (
+                            <Loading />
+                        ) : (
+                            entries?.docs.map((entry) => (
+                                <TaskItem key={entry.id} entry={entry} />
+                            ))
+                        )}
                     </div>
                 </div>
-                <div className="p-3 overflow-auto">
-                    <div className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl" onClick={() => history.push("/tasks/add")}>
-                        <FaPlus />
-                    </div>
+                <div
+                    className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl"
+                    onClick={() => history.push("/tasks/add")}
+                >
+                    <FaPlus />
                 </div>
-            </IonRouterOutlet>
+            </IonContent>
         </IonPage>
     );
 };
