@@ -40,16 +40,27 @@ jobs:
         run: |
           cd ios/App
           project_name=$(xcodebuild -list -json | jq -r '.project.schemes[0]')
-          xcodebuild -workspace App.xcworkspace -scheme "$project_name" clean archive -configuration Release -archivePath $project_name.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+          xcodebuild -workspace App.xcworkspace -scheme "$project_name" clean archive -configuration Release -archivePath App.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
           
       - name: Create IPA
         run: |
           cd ios/App
-          archive_path="$project_name.xcarchive"
+          archive_path="App.xcarchive"
           source_dir="${archive_path%/}/Products/Applications"
           new_folder="Payload"
           rm -rf $new_folder
           mkdir $new_folder
           cp -a $source_dir/* $new_folder
-          filename=$(find $new_folder -type d -name '*.app' -exec basename {} \; | head -n 1)
-          zip -rmq "${filename%.*}.ipa" $new_folder
+          zip -rmq "App.ipa" $new_folder
+          cd ../../
+          mkdir -p build
+          mv ios/App/App.ipa build/
+
+      - name: Push
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: build # The branch name where you want to push the assets
+          FOLDER: build # The directory where your assets are generated
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
+          MESSAGE: "Build: ({sha}) {msg}" # The commit message
