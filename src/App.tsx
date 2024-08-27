@@ -50,7 +50,6 @@ const App: React.FC = () => (
         <IonApp>
             <IonReactRouter>
                 <IonRouterOutlet>
-
                     <Route path="/auth" component={AuthPage} />
                     <PrivateRoute path="/home">
                         <Home />
