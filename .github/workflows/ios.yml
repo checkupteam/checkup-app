@@ -28,7 +28,7 @@ jobs:
         run: |
           project_name=$(basename $(realpath ios/App/App))
           scheme=$project_name
-          xcodebuild -project ios/App/$project_name.xcodeproj -scheme $scheme clean archive -configuration release -archivePath $project_name.xcarchive
+          xcodebuild -project ios/App/$project_name.xcodeproj -scheme $scheme clean archive -configuration release -archivePath $project_name.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
           first_arg=$project_name.xcarchive
           source_dir="${first_arg%/}/Products/Applications"
           new_folder="Payload"
