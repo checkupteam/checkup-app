@@ -24,6 +24,10 @@ jobs:
         run: |
           rm -rf ios
           npx cap add ios
+      - name: Install pod deps
+        run: |
+          cd ios/App
+          pod install
       - name: Build Project
         run: |
           project_name=$(basename $(realpath ios/App/App))
