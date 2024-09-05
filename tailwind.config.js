@@ -1,3 +1,4 @@
+const { keyframes } = require("@emotion/react");
 const konstaConfig = require("konsta/config");
 
 module.exports = konstaConfig({
@@ -8,6 +9,18 @@ module.exports = konstaConfig({
                 background: "var(--background)",
                 accent: "#5938bc",
                 primary: "#000000",
+            },
+            keyframes: {
+                fadeIn: {
+                    "0%": { opacity: 0 },
+                    "100%": { opacity: 1 },
+                },
+            },
+            animation: {
+                fadeIn: "fadeIn 0.1s ease-in-out",
+            },
+            backdropBlur: {
+                xs: "2px",
             },
         },
     },
