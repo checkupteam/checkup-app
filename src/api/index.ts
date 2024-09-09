@@ -1,4 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+    createApi,
+    fetchBaseQuery,
+    TagTypesFromApi,
+} from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
@@ -11,6 +15,14 @@ export const api = createApi({
             return headers;
         },
     }),
-    tagTypes: ["JournalEntry", "Task"],
+    tagTypes: ["JournalEntry", "Task", "Goal"],
     endpoints: () => ({}),
 });
+
+export const tagProvider = <T>(
+    tagName: TagTypesFromApi<typeof api>,
+    callbackFn: (value: T, index: number, array: T[]) => any
+) => {
+    return (result: T[]) =>
+        result ? [...result.map(callbackFn), tagName] : [tagName];
+};

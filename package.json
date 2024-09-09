@@ -11,7 +11,7 @@
     "test.unit": "vitest",
     "lint": "eslint",
     "ionic:build": "npm run build",
-    "ionic:serve": "npm run dev -- --open"
+    "ionic:serve": "npm run dev -- --open --host"
   },
   "dependencies": {
     "@capacitor/android": "6.1.1",

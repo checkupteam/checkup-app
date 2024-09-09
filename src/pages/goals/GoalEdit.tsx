@@ -5,7 +5,7 @@ import {
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     FaArrowLeft,
     FaCheckCircle,
@@ -13,24 +13,57 @@ import {
     FaPlus,
     FaRegCircle,
 } from "react-icons/fa";
+import GoalStep from "../../components/goals/Step";
+import GoalPhase from "../../components/goals/Phase";
+import { RouteComponentProps } from "react-router";
+import {
+    useCreatePhaseMutation,
+    useGetGoalQuery,
+    useUpdateGoalMutation,
+} from "../../api/goals";
+import { useDebounce } from "@reactuses/core";
+import Loading from "../../components/Loading";
 
-const StepItem: React.FC = () => {
-    return (
-        <div className="bg-white/5 rounded-md flex items-center px-2 font-semibold h-14 gap-3">
-            <FaCheckCircle className="text-accent w-6 h-6 ml-2" />
-            <div className="flex flex-col">
-                <div className="text-lg leading-5">Eat a sandwich</div>
-                <div className="text-white/50 leading-4">
-                    with butter and ham
-                </div>
-            </div>
-        </div>
-    );
-};
+interface GoalEditProps
+    extends RouteComponentProps<{
+        id?: string;
+    }> {}
 
-const GoalEdit: React.FC = () => {
+const GoalEdit: React.FC<GoalEditProps> = ({ match }) => {
+    const id = match.params.id && parseInt(match.params.id);
+    if (!id) return null;
+
     const router = useIonRouter();
-    const [title, setTitle] = useState("New Goal");
+    const { data } = useGetGoalQuery(id);
+    const [updateGoal] = useUpdateGoalMutation();
+    const [createPhase] = useCreatePhaseMutation();
+    const titleInput = useRef<HTMLInputElement | null>(null);
+    const [title, setTitle] = useState("");
+    const debouncedTitle = useDebounce(title, 500);
+
+    useEffect(() => {
+        if (!data) return;
+        console.log(data);
+        setTitle(data.title);
+    }, [data]);
+
+    useEffect(() => {
+        if (debouncedTitle.length == 0) return;
+        updateGoal({
+            id,
+            changes: {
+                title: debouncedTitle,
+            },
+        });
+    }, [debouncedTitle]);
+
+    const handleCreatePhase = () => {
+        createPhase({
+            goalId: id,
+            title: "Phase " + (data && data.Phase.length + 1),
+            isDone: false,
+        });
+    };
 
     return (
         <IonPage>
@@ -47,70 +80,31 @@ const GoalEdit: React.FC = () => {
                             className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap bg-transparent"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
+                            ref={titleInput}
+                        />
+                        <FaPen
+                            className="text-white/50 text-sm mr-1"
+                            onClick={() => titleInput.current?.focus()}
                         />
                     </div>
                 </IonToolbar>
             </IonHeader>
             <IonContent scrollY={false}>
                 <div className="h-full flex flex-col gap-3 p-3">
-                    <div className="flex flex-col gap-6 flex-1 h-0">
-                        <div className="flex flex-col gap-1.5">
-                            <div className="bg-white/5 rounded-md flex justify-between items-center px-2 font-semibold">
-                                <div>Phase 1</div>
-                                <div className="text-white/50 text-sm">1/2</div>
-                            </div>
-                            <StepItem />
-                            <div className="bg-white/5 rounded-md flex items-center px-2 font-semibold h-14 gap-3">
-                                <FaRegCircle className="text-white/20 w-6 h-6 ml-2" />
-                                <div className="flex flex-col">
-                                    <div className="text-lg leading-5">
-                                        Eat a sandwich
-                                    </div>
-                                    <div className="text-white/50 leading-4">
-                                        with butter and ham
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-accent rounded-md flex justify-center items-center gap-1 font-bold uppercase h-8">
-                                <FaPlus />
-                                <div>Add Step</div>
-                            </div>
+                    {data ? (
+                        <div className="flex flex-col gap-6 flex-1 h-0">
+                            {data.Phase.map((phase) => (
+                                <GoalPhase key={phase.id} phase={phase} />
+                            ))}
                         </div>
-                        <div className="flex flex-col gap-1.5">
-                            <div className="bg-white/5 rounded-md flex justify-between items-center px-2 font-semibold">
-                                <div>Phase 2</div>
-                                <div className="text-white/50 text-sm">1/2</div>
-                            </div>
-                            <div className="bg-white/5 rounded-md flex items-center px-2 font-semibold h-14 gap-3">
-                                <FaCheckCircle className="text-accent w-6 h-6 ml-2" />
-                                <div className="flex flex-col">
-                                    <div className="text-lg leading-5">
-                                        Eat a sandwich
-                                    </div>
-                                    <div className="text-white/50 leading-4">
-                                        with butter and ham
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-white/5 rounded-md flex items-center px-2 font-semibold h-14 gap-3">
-                                <FaRegCircle className="text-white/20 w-6 h-6 ml-2" />
-                                <div className="flex flex-col">
-                                    <div className="text-lg leading-5">
-                                        Eat a sandwich
-                                    </div>
-                                    <div className="text-white/50 leading-4">
-                                        with butter and ham
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-accent rounded-md flex justify-center items-center gap-1 font-bold uppercase h-8">
-                                <FaPlus />
-                                <div>Add Step</div>
-                            </div>
-                        </div>
-                    </div>
+                    ) : (
+                        <Loading />
+                    )}
                     <div className="flex gap-2 h-12">
-                        <div className="bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase">
+                        <div
+                            className="bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase"
+                            onClick={() => handleCreatePhase()}
+                        >
                             Add Phase
                         </div>
                     </div>
