@@ -22,7 +22,12 @@ export const store = configureStore({
         [api.reducerPath]: api.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(api.middleware),
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ["persist/PERSIST"],
+                ignoredPaths: ["register"],
+            },
+        }).concat(api.middleware),
 });
 
 export const persistor = persistStore(store);
