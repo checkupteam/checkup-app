@@ -1,3 +1,4 @@
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
 import { useLongPress } from "@reactuses/core";
 import { ReactNode, useState } from "react";
 
@@ -8,6 +9,7 @@ const HoldMenu: React.FC<{
     const [visible, setVisible] = useState(false);
 
     const onLongPress = () => {
+        Haptics.impact({ style: ImpactStyle.Light });
         setVisible(true);
     };
 
