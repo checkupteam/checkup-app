@@ -34,7 +34,7 @@ const GoalList: React.FC = () => {
                     </div>
                 </IonToolbar>
             </IonHeader>
-            <IonContent scrollY={false} class="flex flex-col">
+            <IonContent scrollY={false} className="flex flex-col">
                 <div className="p-3 pb-24 overflow-auto flex flex-col gap-2 h-full">
                     {goals ? (
                         goals.map((goal) => (

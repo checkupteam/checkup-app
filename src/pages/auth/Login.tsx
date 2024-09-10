@@ -37,7 +37,7 @@ const Login: React.FC = () => {
     return (
         <IonPage>
             <IonHeader className="shadow-none">
-                <IonToolbar class="h-0"></IonToolbar>
+                <IonToolbar className="h-0"></IonToolbar>
             </IonHeader>
             <IonContent
                 scrollY={false}

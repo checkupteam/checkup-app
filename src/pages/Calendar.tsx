@@ -168,7 +168,7 @@ const Calendar: React.FC = () => {
                                 presentation="month-year"
                                 ref={datetime}
                                 value={currDate.toISOString()}
-                                onIonChange={({ detail }) =>
+                                onIonChange={({ detail }: { detail: any }) =>
                                     setDate((c) =>
                                         typeof detail.value == "string"
                                             ? new Date(detail.value)
