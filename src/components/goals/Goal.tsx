@@ -5,6 +5,7 @@ import { Goal } from "../../types/goals";
 import { Link } from "react-router-dom";
 import { useDeleteGoalMutation, useGetGoalQuery } from "../../api/goals";
 import GoalStep from "./Step";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
 
 const GoalDetails: React.FC<{ goal: Goal }> = ({ goal }) => {
     const { data } = useGetGoalQuery(goal.id);
@@ -52,6 +53,7 @@ const GoalElement: React.FC<{ goal: Goal }> = ({ goal }) => {
     const [deleteGoal] = useDeleteGoalMutation();
 
     const onLongPress = () => {
+        Haptics.impact({ style: ImpactStyle.Light });
         setExtended(false);
         setTooltip(true);
     };
