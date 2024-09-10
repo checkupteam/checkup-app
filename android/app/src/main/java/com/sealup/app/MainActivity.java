@@ -1,4 +1,4 @@
-package ionic.checkup;
+package com.sealup.app;
 
 import com.getcapacitor.BridgeActivity;
 
