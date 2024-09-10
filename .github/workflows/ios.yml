@@ -57,7 +57,7 @@ jobs:
               run: |
                   cd ios/App
                   project_name=$(xcodebuild -list -json | jq -r '.project.schemes[0]')
-                  xcodebuild -workspace App.xcworkspace -scheme "$project_name" clean archive -configuration Release -archivePath App.xcarchive CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=2CFKYLNGCB PROVISIONING_PROFILE_SPECIFIER=VT7HDW3Q62
+                  xcodebuild -workspace App.xcworkspace -scheme "$project_name" clean archive -configuration Release -archivePath App.xcarchive CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=2CFKYLNGCB PROVISIONING_PROFILE_SPECIFIER=sealupprofile
 
             - name: Create IPA
               run: |
