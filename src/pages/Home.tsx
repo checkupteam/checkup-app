@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import Mood from "../components/Mood";
 import { JournalEntry } from "../types/journal";
 import { useGetJournalEntriesQuery } from "../api/journal";
+import { useGetUserQuery } from "../api/auth";
 
 let date_time = new Date();
 let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
@@ -29,6 +30,7 @@ const weekDays = [
 ];
 
 const Home: React.FC = () => {
+    const { data: user } = useGetUserQuery();
     const { data: journalEntries } = useGetJournalEntriesQuery({
         year: date_time.getFullYear(),
         month: date_time.getMonth() + 1,
@@ -38,27 +40,21 @@ const Home: React.FC = () => {
     return (
         <IonPage>
             <IonHeader className="shadow-none">
-                <IonToolbar></IonToolbar>
+                <IonToolbar className="h-0"></IonToolbar>
             </IonHeader>
             <IonContent scrollY={false}>
                 <div className="grid grid-cols-2 w-full p-3 gap-3">
-                    <Link
-                        to={"/calendar"}
-                        className="flex flex-col p-3 gap-1 relative bg-black/30 aspect-square rounded-2xl overflow-hidden text-white"
-                    >
-                        <div className="text-2xl font-bold text-accent leading-7 z-10">
-                            {weekDays[day - 1]}
+                    <div className="flex flex-col p-3 py-12 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
+                        <div className="text-5xl font-bold text-accent">
+                            Hello, {user?.name}
                         </div>
-                        <div className="text-4xl leading-8 font-light z-10">
-                            {date}.{month}
+                        <div className="text-2xl font-semibold pl-0.5">
+                            Have a nice day!
                         </div>
-                        <div className="absolute text-accent/80 text-9xl -bottom-5 -right-2 rotate-[40deg]">
-                            <FaCalendarAlt />
-                        </div>
-                    </Link>
+                    </div>
                     <Link
                         to={"/journal"}
-                        className="flex flex-col p-3 px-2 gap-2 relative bg-black/30 aspect-square rounded-2xl text-white"
+                        className="flex flex-col p-3 gap-2 col-span-2 relative bg-black/30 h-44 rounded-2xl text-white"
                     >
                         <div className="text-3xl font-bold text-accent leading-7 mx-1">
                             Journal
@@ -81,24 +77,27 @@ const Home: React.FC = () => {
                             </div>
                         )}
                     </Link>
-                    <div className="flex flex-col p-3 gap-1 relative bg-black/30 aspect-square rounded-2xl text-white">
-                        <div className="text-3xl font-bold text-accent leading-7">
-                            Tasks
+                    <div className="flex flex-col p-3 col-span-2 gap-2 relative bg-black/30 h-44 rounded-2xl text-white">
+                        <div className="text-3xl font-bold text-accent leading-7 mx-1">
+                            Your Goals
                         </div>
-                        <div className="opacity-40 text-sm mt-1">
-                            NO TASKS ADDED
-                        </div>
-                    </div>
-                    <div className="flex flex-col p-3 gap-1 relative bg-black/30 aspect-square rounded-2xl overflow-hidden text-white">
-                        <div className="text-3xl font-bold text-accent leading-7 z-10">
-                            Health
-                        </div>
-                        <div className="text-lg font-semibold z-10">
-                            1235 steps
-                        </div>
-                        <div className="absolute text-accent/80 text-9xl -bottom-5 -right-0 rotate-[30deg]">
-                            <BsFillHeartPulseFill />
-                        </div>
+                        {!journalEntries || journalEntries.length == 0 ? (
+                            <div className="opacity-40 text-sm mx-1">
+                                NO ENTRIES TODAY
+                            </div>
+                        ) : (
+                            <div className="flex-1 shrink-0 h-0 overflow-auto flex flex-col gap-1">
+                                {journalEntries.map((entry) => (
+                                    <div
+                                        key={entry.id}
+                                        className="text-lg font-semibold bg-black/30 p-1 px-2 rounded-lg flex gap-1 items-center"
+                                    >
+                                        <Mood mood={entry.mood} />
+                                        <div>{entry.title}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-row p-3 mx-3 gap-1 relative bg-black/30 rounded-2xl items-center">
