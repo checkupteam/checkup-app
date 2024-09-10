@@ -6,7 +6,7 @@ import {
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: import.meta.env.VITE_SOME_KEY || "http://localhost:3000",
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as any).auth.token;
             if (token) {
