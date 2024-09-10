@@ -50,6 +50,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/global.css";
+import AccountPage from "./pages/Account";
 
 setupIonicReact();
 
@@ -74,6 +75,10 @@ const App: React.FC = () => (
                                     component={Calendar}
                                 />
                                 <Route path="/app/goals" component={Goals} />
+                                <Route
+                                    path="/app/account"
+                                    render={() => <AccountPage />}
+                                />
                                 <Redirect exact from="/app" to="/app/home" />
                             </IonRouterOutlet>
                             <IonTabBar

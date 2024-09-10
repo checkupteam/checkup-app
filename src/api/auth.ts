@@ -1,4 +1,5 @@
 import { api } from ".";
+import { User } from "../types/auth";
 
 const authApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -33,8 +34,11 @@ const authApi = api.injectEndpoints({
                 body,
             }),
         }),
+        getUser: build.query<User, void>({
+            query: () => "/user/info",
+        }),
     }),
     overrideExisting: false,
 });
 
-export const { useLoginMutation, useSingupMutation } = authApi;
+export const { useLoginMutation, useSingupMutation, useGetUserQuery } = authApi;
