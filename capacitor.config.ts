@@ -2,8 +2,8 @@ import type { CapacitorConfig } from "@capacitor/cli";
 import { KeyboardResize, KeyboardStyle } from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
-    appId: "com.checkup.app",
-    appName: "checkup",
+    appId: "com.sealup.app",
+    appName: "sealup",
     webDir: "dist",
     plugins: {
         Keyboard: {
