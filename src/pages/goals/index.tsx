@@ -7,8 +7,8 @@ const Goals: React.FC = () => {
     return (
         <IonPage>
             <IonRouterOutlet className="flex flex-col overflow-hidden">
-                <Route exact path="/goals" component={GoalList} />
-                <Route path="/goals/:id" component={GoalEdit} />
+                <Route exact path="/app/goals" component={GoalList} />
+                <Route path="/app/goals/:id" component={GoalEdit} />
             </IonRouterOutlet>
         </IonPage>
     );

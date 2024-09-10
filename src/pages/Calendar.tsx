@@ -121,7 +121,7 @@ const Calendar: React.FC = () => {
                     </div>
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
+            <IonContent scrollY={false}>
                 <div className="p-4">
                     <div className="grid grid-cols-7 text-center text-xs mb-2 gap-3">
                         {weekDays.map((day, index) => (

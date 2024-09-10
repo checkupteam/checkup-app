@@ -13,7 +13,7 @@ const GoalDetails: React.FC<{ goal: Goal }> = ({ goal }) => {
         data && (
             <div className="flex flex-col gap-2 p-3 pt-0">
                 {data.Phase.map((phase) => (
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1" key={phase.id}>
                         <div className="bg-black/20 rounded-md flex justify-between items-center px-2 font-semibold">
                             <div>{phase.title}</div>
                             <div className="text-white/50 text-sm">
@@ -49,8 +49,6 @@ const GoalElement: React.FC<{ goal: Goal }> = ({ goal }) => {
         setTooltip(true);
     };
 
-    console.log(goal);
-
     const longPressEvent = useLongPress(onLongPress, {
         isPreventDefault: false,
         delay: 300,
@@ -61,7 +59,7 @@ const GoalElement: React.FC<{ goal: Goal }> = ({ goal }) => {
             <>
                 {tooltip && (
                     <div
-                        className="z-40 absolute top-0 left-0 h-full w-full bg-black/30 backdrop-blur-xs animate-fadeIn"
+                        className="z-40 fixed bottom-0 top-0 left-0 h-full w-full bg-black/30 backdrop-blur-xs animate-fadeIn"
                         onClick={() => setTooltip(false)}
                     ></div>
                 )}
@@ -102,7 +100,7 @@ const GoalElement: React.FC<{ goal: Goal }> = ({ goal }) => {
                     {tooltip && (
                         <div className="absolute z-50 -bottom-2 translate-y-full rounded-lg p-1 w-full flex justify-center items-center h-12 bg-zinc-800 font-semibold">
                             <Link
-                                to={`/goals/${goal.id}`}
+                                to={`/app/goals/${goal.id}`}
                                 onClick={() => setTooltip(false)}
                                 className="rounded-md flex-1 text-center h-full flex justify-center items-center"
                             >

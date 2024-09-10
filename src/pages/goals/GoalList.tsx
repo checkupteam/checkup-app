@@ -22,7 +22,7 @@ const GoalList: React.FC = () => {
         });
 
         if (!newGoal.data) return;
-        router.push("/goals/" + newGoal.data.id);
+        router.push("/app/goals/" + newGoal.data.id);
     };
 
     return (
@@ -45,7 +45,7 @@ const GoalList: React.FC = () => {
                     )}
                 </div>
                 <div
-                    className="fixed bottom-24 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
+                    className="fixed bottom-3 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
                     onClick={() => handleCreateGoal()}
                 >
                     <FaPlus />

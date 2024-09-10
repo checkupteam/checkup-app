@@ -8,3 +8,7 @@ body {
 .header-ios ion-toolbar:last-of-type {
     --border-width: 0 0 0px;
 }
+
+.tab-selected {
+    color: rgb(201, 201, 201);
+}

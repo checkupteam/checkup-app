@@ -1,13 +1,22 @@
 import { KonstaProvider } from "konsta/react";
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import {
+    IonApp,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    setupIonicReact,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
-import NavBar from "./components/NavBar";
 import Journal from "./pages/journal";
 import Calendar from "./pages/Calendar";
 import AuthPage from "./pages/auth";
 import Goals from "./pages/goals";
+import PrivateRoute from "./components/PrivateRoute";
+import { FaBook, FaCalendarAlt, FaClipboardList, FaUser } from "react-icons/fa";
+import { FaHouse } from "react-icons/fa6";
 
 import "tailwindcss/tailwind.css";
 
@@ -41,7 +50,6 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/global.css";
-import PrivateRoute from "./components/PrivateRoute";
 
 setupIonicReact();
 
@@ -50,22 +58,69 @@ const App: React.FC = () => (
         <IonApp>
             <IonReactRouter>
                 <IonRouterOutlet>
+                    <PrivateRoute path="/app">
+                        <IonTabs>
+                            <IonRouterOutlet>
+                                <Route
+                                    path="/app/home"
+                                    render={() => <Home />}
+                                />
+                                <Route
+                                    path="/app/journal"
+                                    component={Journal}
+                                />
+                                <Route
+                                    path="/app/calendar"
+                                    component={Calendar}
+                                />
+                                <Route path="/app/goals" component={Goals} />
+                                <Redirect exact from="/app" to="/app/home" />
+                            </IonRouterOutlet>
+                            <IonTabBar
+                                slot="bottom"
+                                className="bg-primary/30 backdrop-blur-xs h-18 w-full"
+                            >
+                                <IonTabButton
+                                    tab="calendar"
+                                    href="/app/calendar"
+                                    className="bg-transparent text-2xl text-zinc-700"
+                                >
+                                    <FaCalendarAlt />
+                                </IonTabButton>
+                                <IonTabButton
+                                    tab="journal"
+                                    href="/app/journal"
+                                    className="bg-transparent text-2xl text-zinc-700"
+                                >
+                                    <FaBook />
+                                </IonTabButton>
+                                <IonTabButton
+                                    tab="home"
+                                    href="/app/home"
+                                    className="bg-transparent text-2xl text-zinc-700"
+                                >
+                                    <FaHouse />
+                                </IonTabButton>
+                                <IonTabButton
+                                    tab="goals"
+                                    href="/app/goals"
+                                    className="bg-transparent text-2xl text-zinc-700"
+                                >
+                                    <FaClipboardList />
+                                </IonTabButton>
+                                <IonTabButton
+                                    tab="account"
+                                    href="/app/account"
+                                    className="bg-transparent text-2xl text-zinc-700"
+                                >
+                                    <FaUser />
+                                </IonTabButton>
+                            </IonTabBar>
+                        </IonTabs>
+                    </PrivateRoute>
                     <Route path="/auth" component={AuthPage} />
-                    <PrivateRoute path="/home">
-                        <Home />
-                    </PrivateRoute>
-                    <PrivateRoute path="/journal">
-                        <Journal />
-                    </PrivateRoute>
-                    <PrivateRoute path="/calendar">
-                        <Calendar />
-                    </PrivateRoute>
-                    <PrivateRoute path="/goals">
-                        <Goals />
-                    </PrivateRoute>
-                    <Redirect exact from="/" to="/home" />
+                    <Redirect exact from="/" to="/app/home" />
                 </IonRouterOutlet>
-                <NavBar />
             </IonReactRouter>
         </IonApp>
     </KonstaProvider>
