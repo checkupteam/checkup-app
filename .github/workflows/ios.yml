@@ -73,6 +73,14 @@ jobs:
                   mkdir -p build
                   mv ios/App/App.ipa build/
 
+            - name: Upload to TestFlight
+              uses: Apple-Actions/upload-testflight-build@master
+              with:
+                  app-path: build/App.ipa
+                  api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+                  issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+                  api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+
             - name: Push
               uses: s0/git-publish-subdir-action@develop
               env:
