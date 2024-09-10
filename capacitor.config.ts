@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 import { KeyboardResize, KeyboardStyle } from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
-    appId: "ionic.checkup",
+    appId: "com.checkup.app",
     appName: "checkup",
     webDir: "dist",
     plugins: {
