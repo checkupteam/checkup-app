@@ -89,11 +89,12 @@ const Calendar: React.FC = () => {
     function displayCalendar() {
         const month = currDate.getMonth();
         const year = currDate.getFullYear();
-        const firstWeekDay = new Date(year, month, 1).getDay() - 1;
+        let firstWeekDay = new Date(year, month, 1).getDay() - 1;
+        if (firstWeekDay === -1) firstWeekDay = 6;
         const days = new Date(year, month + 1, 0).getDate();
         const calendar = [];
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 6; i++) {
             for (let j = 1; j <= 7; j++) {
                 const x = 7 * (i - 1) + j;
 
