@@ -65,13 +65,9 @@ const Home: React.FC = () => {
                         <div className="text-3xl font-bold text-accent leading-7 mx-1">
                             Journal
                         </div>
-                        {!journalEntries || journalEntries.length == 0 ? (
-                            <div className="opacity-40 text-sm mx-1 font-semibold">
-                                NO ENTRIES TODAY
-                            </div>
-                        ) : (
-                            <div className="flex-1 shrink-0 min-h-[6.5rem] overflow-auto flex flex-col gap-2">
-                                {journalEntries.slice(0, 2).map((entry) => (
+                        <div className="flex flex-col gap-2 min-h-[6.5rem]">
+                            {journalEntries ? (
+                                journalEntries.slice(0, 2).map((entry) => (
                                     <div
                                         key={entry.id}
                                         className="text-lg font-semibold bg-white/5 p-1 px-3 rounded-lg flex gap-2 h-12 items-center"
@@ -84,9 +80,16 @@ const Home: React.FC = () => {
                                             {entry.title}
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        )}
+                                ))
+                            ) : (
+                                <Loading />
+                            )}
+                            {journalEntries && journalEntries.length == 0 && (
+                                <div className="opacity-40 text-sm font-semibold mt-12 w-full text-center">
+                                    NO ENTRIES TODAY
+                                </div>
+                            )}
+                        </div>
                         {journalEntries && journalEntries.length > 2 && (
                             <div className="text-sm text-accent mx-1 text-center">
                                 +{journalEntries.length - 2} more

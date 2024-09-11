@@ -33,7 +33,7 @@ const ListItem: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
         <div className="bg-white/5 p-3 px-4 rounded-lg flex gap-3 items-center">
             <div
                 className="flex gap-3 flex-1 shrink-0 w-0 items-center"
-                onClick={() => router.push(`/journal/edit/${entry.id}`)}
+                onClick={() => router.push(`/app/journal/edit/${entry.id}`)}
             >
                 <Mood mood={entry.mood} className="text-4xl" />
                 <div className="flex flex-col justify-center flex-1">
