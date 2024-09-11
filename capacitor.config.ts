@@ -3,7 +3,7 @@ import { KeyboardResize, KeyboardStyle } from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
     appId: "com.sealup.app",
-    appName: "sealup",
+    appName: "SealUp",
     webDir: "dist",
     plugins: {
         Keyboard: {
