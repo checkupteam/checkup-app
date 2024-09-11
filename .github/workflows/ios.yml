@@ -24,7 +24,9 @@ jobs:
                 git add .
                 git commit -m "bump ios build number"
                 git push origin HEAD
+                
     build:
+        needs: bump
         name: Build app
         runs-on: macos-latest
         env:
