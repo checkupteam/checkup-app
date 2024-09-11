@@ -46,13 +46,17 @@ const GoalDetails: React.FC<{ goal: Goal }> = ({ goal }) => {
     );
 };
 
-const GoalElement: React.FC<{ goal: Goal }> = ({ goal }) => {
+const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
+    goal,
+    extendable = true,
+}) => {
     const { data } = useGetGoalQuery(goal.id);
     const [extended, setExtended] = useState(false);
     const [tooltip, setTooltip] = useState(false);
     const [deleteGoal] = useDeleteGoalMutation();
 
     const onLongPress = () => {
+        if (!extendable) return;
         Haptics.impact({ style: ImpactStyle.Light });
         setExtended(false);
         setTooltip(true);
@@ -81,7 +85,9 @@ const GoalElement: React.FC<{ goal: Goal }> = ({ goal }) => {
                 >
                     <div
                         className="flex items-center gap-2 cursor-pointer p-2.5 h-16"
-                        onClick={() => !tooltip && setExtended(!extended)}
+                        onClick={() =>
+                            extendable && !tooltip && setExtended(!extended)
+                        }
                         {...longPressEvent}
                     >
                         <div className="rounded-md h-full aspect-square bg-black/20 grid place-content-center font-bold">
