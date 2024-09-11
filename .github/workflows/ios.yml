@@ -17,7 +17,7 @@ jobs:
             
             - uses: yanamura/ios-bump-version@v1
               with:
-                project-path: ios
+                project-path: ios/App
             
             - name: update
               run: |
