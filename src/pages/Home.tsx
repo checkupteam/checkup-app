@@ -14,6 +14,9 @@ import Mood from "../components/Mood";
 import { JournalEntry } from "../types/journal";
 import { useGetJournalEntriesQuery } from "../api/journal";
 import { useGetUserQuery } from "../api/auth";
+import GoalElement from "../components/goals/Goal";
+import { useGetGoalsQuery } from "../api/goals";
+import Loading from "../components/Loading";
 
 let date_time = new Date();
 let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
@@ -36,6 +39,7 @@ const Home: React.FC = () => {
         month: date_time.getMonth() + 1,
         day: date_time.getDate(),
     });
+    const { data: goals } = useGetGoalsQuery();
 
     return (
         <IonPage>
@@ -44,7 +48,7 @@ const Home: React.FC = () => {
             </IonHeader>
             <IonContent scrollY={false}>
                 <div className="grid grid-cols-2 w-full p-3 gap-3">
-                    <div className="flex flex-col p-3 py-12 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
+                    <div className="flex flex-col p-3 py-8 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
                         <div className="text-5xl font-bold text-accent">
                             Hello, {user?.name}
                         </div>
@@ -53,7 +57,7 @@ const Home: React.FC = () => {
                         </div>
                     </div>
                     <Link
-                        to={"/journal"}
+                        to={"/app/journal"}
                         className="flex flex-col p-3 gap-2 col-span-2 relative bg-black/30 h-44 rounded-2xl text-white"
                     >
                         <div className="text-3xl font-bold text-accent leading-7 mx-1">
@@ -77,28 +81,20 @@ const Home: React.FC = () => {
                             </div>
                         )}
                     </Link>
-                    <div className="flex flex-col p-3 col-span-2 gap-2 relative bg-black/30 h-44 rounded-2xl text-white">
+                    <Link 
+                    to={"/app/goals"}
+                    className="flex flex-col p-3 col-span-2 gap-2 relative bg-black/30 h-44 rounded-2xl text-white">
                         <div className="text-3xl font-bold text-accent leading-7 mx-1">
                             Your Goals
                         </div>
-                        {!journalEntries || journalEntries.length == 0 ? (
-                            <div className="opacity-40 text-sm mx-1">
-                                NO ENTRIES TODAY
-                            </div>
-                        ) : (
-                            <div className="flex-1 shrink-0 h-0 overflow-auto flex flex-col gap-1">
-                                {journalEntries.map((entry) => (
-                                    <div
-                                        key={entry.id}
-                                        className="text-lg font-semibold bg-black/30 p-1 px-2 rounded-lg flex gap-1 items-center"
-                                    >
-                                        <Mood mood={entry.mood} />
-                                        <div>{entry.title}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                        {goals ? (
+                        goals.map((goal) => (
+                            <GoalElement key={goal.id} goal={goal} extendable={false}/>
+                        ))
+                    ) : (
+                        <Loading />
+                    )}
+                    </Link>
                 </div>
                 <div className="flex flex-row p-3 mx-3 gap-1 relative bg-black/30 rounded-2xl items-center">
                     <div className="text-accent text-8xl">
