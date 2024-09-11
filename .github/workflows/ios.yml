@@ -7,6 +7,23 @@ permissions:
     contents: write
 
 jobs:
+    bump:
+        name: Bump build number
+        runs-on: macos-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+            
+            - uses: yanamura/ios-bump-version@v1
+              with:
+                project-path: ios
+            
+            - name: update
+              run: |
+                git add .
+                git commit -m "bump ios build number"
+                git push origin HEAD
     build:
         name: Build app
         runs-on: macos-latest
