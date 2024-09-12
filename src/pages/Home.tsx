@@ -45,12 +45,9 @@ const Home: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="shadow-none">
-                <IonToolbar className="h-0"></IonToolbar>
-            </IonHeader>
-            <IonContent scrollY={false}>
+            <IonContent>
                 <div className="grid grid-cols-2 w-full p-3 gap-3">
-                    <div className="flex flex-col p-3 py-8 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
+                    <div className="flex flex-col p-3 py-4 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
                         <div className="text-5xl font-bold text-accent">
                             Hello, {user?.name}
                         </div>
@@ -58,6 +55,21 @@ const Home: React.FC = () => {
                             Have a nice day!
                         </div>
                     </div>
+                    {quote && (
+                        <div className="flex flex-row p-3 col-span-2 gap-1 relative bg-black/30 rounded-2xl animate-slideIn">
+                            <div className="text-accent text-8xl">
+                                <GiJugglingSeal />
+                            </div>
+                            <div className="flex flex-col">
+                                <div className="text-3xl font-bold text-accent">
+                                    Seal Quote
+                                </div>
+                                <div className="opacity-40 text-sm">
+                                    {quote}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <Link
                         to={"/app/journal"}
                         className="flex flex-col p-3 gap-3 col-span-2 relative bg-black/30 rounded-2xl text-white"
@@ -130,19 +142,6 @@ const Home: React.FC = () => {
                         )}
                     </Link>
                 </div>
-                {quote && (
-                    <div className="flex flex-row p-3 mx-3 gap-1 relative bg-black/30 rounded-2xl animate-slideIn">
-                        <div className="text-accent text-8xl">
-                            <GiJugglingSeal />
-                        </div>
-                        <div className="flex flex-col">
-                            <div className="text-3xl font-bold text-accent">
-                                Seal Quote
-                            </div>
-                            <div className="opacity-40 text-sm">{quote}</div>
-                        </div>
-                    </div>
-                )}
             </IonContent>
         </IonPage>
     );
