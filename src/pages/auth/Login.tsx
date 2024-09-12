@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         <IonPage>
             <IonContent
                 scrollY={false}
-                className="h-full flex flex-col items-center gap-20 pt-10"
+                className="h-full flex flex-col items-center gap-20"
             >
                 <div className="h-full flex flex-col items-center px-6 bg-gradient-to-b from-darker-violet-800 to-zinc-900 pt-safe">
                     <div className="text-5xl h-[30%] w-full flex flex-col justify-center relative uppercase font-bold px-2">
