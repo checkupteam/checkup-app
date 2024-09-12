@@ -18,6 +18,7 @@ import GoalElement from "../components/goals/Goal";
 import { useGetGoalsQuery } from "../api/goals";
 import Loading from "../components/Loading";
 import { useGetQuoteQuery } from "../api/home";
+import SealLong from "../assets/long_seal.svg";
 
 let date_time = new Date();
 let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
@@ -46,9 +47,9 @@ const Home: React.FC = () => {
     return (
         <IonPage>
             <IonContent>
-                <div className="grid grid-cols-2 w-full p-3 gap-3">
-                    <div className="flex flex-col p-3 py-4 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
-                        <div className="text-5xl font-bold text-accent">
+                <div className="grid grid-cols-2 w-full p-4 px-6 gap-3">
+                    <div className="flex flex-col p-1 py-4 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
+                        <div className="text-5xl font-bold text-darker-violet-500">
                             Hello, {user?.name}
                         </div>
                         <div className="text-2xl font-semibold pl-0.5">
@@ -56,18 +57,22 @@ const Home: React.FC = () => {
                         </div>
                     </div>
                     {quote && (
-                        <div className="flex flex-row p-3 col-span-2 gap-1 relative bg-black/30 rounded-2xl animate-slideIn">
-                            <div className="text-accent text-8xl">
-                                <GiJugglingSeal />
-                            </div>
-                            <div className="flex flex-col">
-                                <div className="text-3xl font-bold text-accent">
-                                    Seal Quote
+                        <div className="flex col-span-2">
+                            <div className="flex flex-1 w-0 flex-row p-2 min-h-36 px-3 col-span-2 overflow-hidden gap-3 relative bg-darker-violet-800 rounded-xl z-10">
+                                <div className="flex flex-col">
+                                    <div className="text-2xl font-bold text-darker-violet-300">
+                                        Seal Quote
+                                    </div>
+                                    <div className="opacity-60 font-semibold text-sm">
+                                        "{quote}"
+                                    </div>
                                 </div>
-                                <div className="opacity-40 text-sm">
-                                    {quote}
-                                </div>
                             </div>
+                            <img
+                                src={SealLong}
+                                alt=""
+                                className="h-32 rotate-[50deg] -mt-1 -ml-10"
+                            />
                         </div>
                     )}
                     <Link
