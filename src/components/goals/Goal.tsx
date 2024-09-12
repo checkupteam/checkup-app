@@ -110,16 +110,23 @@ const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
                                 <div
                                     className="bg-accent rounded-full h-full transition-all"
                                     style={{
-                                        width: `${data.Phase.reduce(
-                                            (acc, phase) =>
-                                                acc +
-                                                (phase.Subpoint.filter(
-                                                    (step) => step.isDone
-                                                ).length /
-                                                    phase.Subpoint.length) *
-                                                    100,
-                                            0
-                                        )}%`,
+                                        width: `${
+                                            (data.Phase.reduce(
+                                                (acc, phase) =>
+                                                    acc +
+                                                    phase.Subpoint.filter(
+                                                        (step) => step.isDone
+                                                    ).length,
+                                                0
+                                            ) /
+                                                data.Phase.reduce(
+                                                    (acc, phase) =>
+                                                        acc +
+                                                        phase.Subpoint.length,
+                                                    0
+                                                )) *
+                                            100
+                                        }%`,
                                     }}
                                 ></div>
                             </div>
