@@ -9,6 +9,17 @@ module.exports = konstaConfig({
                 background: "var(--background)",
                 accent: "#5938bc",
                 primary: "#000000",
+                ["darker-violet"]: {
+                    100: "#e3dcf0",
+                    200: "#c6b8e0",
+                    300: "#a994d1",
+                    400: "#8d70c2",
+                    500: "#704db3",
+                    600: "#5a3d8f",
+                    700: "#432e6b",
+                    800: "#2d1f47",
+                    900: "#160f24",
+                },
             },
             keyframes: {
                 fadeIn: {

@@ -11,6 +11,7 @@ import { FaAt, FaLock, FaMailBulk, FaUser } from "react-icons/fa";
 import { useSingupMutation } from "../../api/auth";
 import { useEffect, useState } from "react";
 import { QueryStatus } from "@reduxjs/toolkit/query";
+import LongSeal from "../../assets/long_seal.svg";
 
 const SignUp: React.FC = () => {
     const router = useIonRouter();
@@ -38,13 +39,18 @@ const SignUp: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="shadow-none">
-                <IonToolbar className="h-0"></IonToolbar>
-            </IonHeader>
-            <IonContent scrollY={false}>
-                <div className="h-full flex flex-col items-center px-6">
-                    <div className="text-7xl h-1/3 flex justify-center items-center">
-                        LOGO
+            <IonContent scrollY={false} className="">
+                <div className="h-full flex flex-col items-center px-6 bg-gradient-to-b from-darker-violet-800 to-zinc-900">
+                    <div className="text-5xl h-[30%] w-full flex flex-col justify-center relative uppercase font-bold px-2">
+                        <div className="text-xl text-darker-violet-400">
+                            Welcome
+                        </div>
+                        <div className="font-semibold">Sign up</div>
+                        <img
+                            src={LongSeal}
+                            alt=""
+                            className="absolute top-1/2 -translate-y-1/2 -right-[18%] -rotate-[55deg] h-[75%]"
+                        />
                     </div>
                     <div className="text-2xl font-semibold pb-1 border-b-2 border-black/20 w-full uppercase"></div>
                     <form
@@ -105,7 +111,7 @@ const SignUp: React.FC = () => {
                                 {errorText}
                             </div>
                         )}
-                        <button className="bg-accent text-white p-2 rounded-lg h-12 font-semibold mt-2 uppercase">
+                        <button className="bg-violet-800 text-white p-2 rounded-lg h-12 font-semibold mt-4 uppercase">
                             Sign Up
                         </button>
                         <div className="border-t-2 border-black/20 w-full mt-2 flex flex-col items-center pt-2 gap-2">
