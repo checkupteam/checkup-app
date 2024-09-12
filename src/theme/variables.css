@@ -3,8 +3,8 @@ http://ionicframework.com/docs/theming/ */
 
 :root {
     /* --background: #ffffff; */
-    --background: #e3dcf0;
-    --header: #222225;
+    --background: #160f24;
+    --header: #211435;
 }
 
 @media (prefers-color-scheme: dark) {
