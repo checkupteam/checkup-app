@@ -40,7 +40,7 @@ const SignUp: React.FC = () => {
     return (
         <IonPage>
             <IonContent scrollY={false} className="">
-                <div className="h-full flex flex-col items-center px-6 bg-gradient-to-b from-darker-violet-800 to-zinc-900 top-safe">
+                <div className="h-full flex flex-col items-center px-6 bg-gradient-to-b from-darker-violet-800 to-zinc-900 pt-safe">
                     <div className="text-5xl h-[30%] w-full flex flex-col justify-center relative uppercase font-bold px-2">
                         <div className="text-xl text-darker-violet-400">
                             Welcome

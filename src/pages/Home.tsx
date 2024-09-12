@@ -46,7 +46,7 @@ const Home: React.FC = () => {
     return (
         <IonPage>
             <IonContent>
-                <div className="grid grid-cols-2 w-full p-3 gap-3 top-safe">
+                <div className="grid grid-cols-2 w-full p-3 gap-3 pt-3-safe">
                     <div className="flex flex-col p-3 py-4 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
                         <div className="text-5xl font-bold text-accent">
                             Hello, {user?.name}
