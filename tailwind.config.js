@@ -19,6 +19,7 @@ module.exports = konstaConfig({
                     700: "#432e6b",
                     800: "#2d1f47",
                     900: "#160f24",
+                    950: "#0a0712",
                 },
             },
             keyframes: {
