@@ -56,7 +56,7 @@ setupIonicReact();
 
 const App: React.FC = () => (
     <KonstaProvider theme="parent">
-        <IonApp>
+        <IonApp className="safe-areas">
             <IonReactRouter>
                 <IonRouterOutlet>
                     <PrivateRoute path="/app">
