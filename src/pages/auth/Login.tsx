@@ -13,6 +13,7 @@ import { useLoginMutation } from "../../api/auth";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/auth";
+import LongSeal from "../../assets/long_seal.svg";
 
 const Login: React.FC = () => {
     const router = useIonRouter();
@@ -43,13 +44,19 @@ const Login: React.FC = () => {
                 scrollY={false}
                 className="h-full flex flex-col items-center gap-20 pt-10"
             >
-                <div className="h-full flex flex-col items-center px-6">
-                    <div className="text-7xl h-1/3 flex justify-center items-center">
-                        LOGO
+                <div className="h-full flex flex-col items-center px-6 bg-gradient-to-b from-darker-violet-800 to-zinc-900">
+                    <div className="text-5xl h-[30%] w-full flex flex-col justify-center relative uppercase font-bold px-2">
+                        <div className="text-xl text-darker-violet-400">
+                            Welcome
+                        </div>
+                        <div className="font-semibold">login</div>
+                        <img
+                            src={LongSeal}
+                            alt=""
+                            className="absolute top-1/2 -translate-y-1/2 -right-[18%] -rotate-[55deg] h-[75%]"
+                        />
                     </div>
-                    <div className="text-2xl font-semibold pb-1 border-b-2 border-black/20 w-full uppercase">
-                        {/* Login */}
-                    </div>
+                    <div className="text-2xl font-semibold pb-1 border-b-2 border-black/20 w-full uppercase"></div>
                     <form
                         className="flex flex-col gap-2 mt-5 w-full text-xl"
                         onSubmit={handleSubmit(onSubmit)}
