@@ -34,7 +34,7 @@ const AccountPage: React.FC = () => {
             <IonContent scrollY={false}>
                 {!isLoading && data ? (
                     <div className="flex flex-col w-full p-3 gap-3">
-                        <div className="bg-black/30 rounded-2xl p-3 px-5 gap-1 flex flex-col">
+                        <div className="bg-darker-violet-800 rounded-2xl p-3 px-5 gap-1 flex flex-col">
                             <div className="text-2xl font-semibold leading-6">
                                 {data.name} {data.surname}
                             </div>
@@ -42,7 +42,7 @@ const AccountPage: React.FC = () => {
                                 {data.email}
                             </div>
                         </div>
-                        <div className="bg-black/30 rounded-2xl p-3 px-5 gap-1 flex flex-col">
+                        <div className="bg-darker-violet-850 rounded-2xl p-3 px-5 gap-1 flex flex-col">
                             <div
                                 className="text-lg font-semibold leading-6 text-red-500 uppercase text-center"
                                 onClick={() => logout()}
