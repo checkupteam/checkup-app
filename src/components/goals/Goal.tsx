@@ -134,7 +134,7 @@ const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
                     </div>
                     {extended && <GoalDetails goal={goal} />}
                     {tooltip && (
-                        <div className="absolute z-50 -bottom-2 translate-y-full rounded-lg p-1 w-full flex justify-center items-center h-12 bg-zinc-800 font-semibold">
+                        <div className="absolute z-50 -bottom-2 translate-y-full rounded-lg p-1 w-full flex justify-center items-center h-12 bg-darker-violet-850 font-semibold">
                             <Link
                                 to={`/app/goals/${goal.id}`}
                                 onClick={() => setTooltip(false)}
@@ -142,7 +142,7 @@ const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
                             >
                                 Edit
                             </Link>
-                            <div className="h-full w-[2px] bg-zinc-700"></div>
+                            <div className="h-full w-[2px] bg-darker-violet-900"></div>
                             <div
                                 className="rounded-md flex-1 text-center h-full flex justify-center items-center text-red-500"
                                 onClick={() => deleteGoal(goal.id)}

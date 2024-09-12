@@ -83,40 +83,40 @@ const App: React.FC = () => (
                             </IonRouterOutlet>
                             <IonTabBar
                                 slot="bottom"
-                                className="bg-darker-violet-800 h-18 w-full"
+                                className="bg-darker-violet-850 h-18 w-full"
                             >
                                 <IonTabButton
                                     tab="calendar"
                                     href="/app/calendar"
-                                    className="bg-transparent text-2xl text-darker-violet-600"
+                                    className="bg-transparent text-2xl text-darker-violet-700"
                                 >
                                     <FaCalendarAlt />
                                 </IonTabButton>
                                 <IonTabButton
                                     tab="journal"
                                     href="/app/journal"
-                                    className="bg-transparent text-2xl text-darker-violet-600"
+                                    className="bg-transparent text-2xl text-darker-violet-700"
                                 >
                                     <FaBook />
                                 </IonTabButton>
                                 <IonTabButton
                                     tab="home"
                                     href="/app/home"
-                                    className="bg-transparent text-2xl text-darker-violet-600"
+                                    className="bg-transparent text-2xl text-darker-violet-700"
                                 >
                                     <FaHouse />
                                 </IonTabButton>
                                 <IonTabButton
                                     tab="goals"
                                     href="/app/goals"
-                                    className="bg-transparent text-2xl text-darker-violet-600"
+                                    className="bg-transparent text-2xl text-darker-violet-700"
                                 >
                                     <FaClipboardList />
                                 </IonTabButton>
                                 <IonTabButton
                                     tab="account"
                                     href="/app/account"
-                                    className="bg-transparent text-2xl text-darker-violet-600"
+                                    className="bg-transparent text-2xl text-darker-violet-700"
                                 >
                                     <FaUser />
                                 </IonTabButton>
