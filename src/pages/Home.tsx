@@ -18,6 +18,7 @@ import GoalElement from "../components/goals/Goal";
 import { useGetGoalsQuery } from "../api/goals";
 import Loading from "../components/Loading";
 import { useGetQuoteQuery } from "../api/home";
+import SealLong from "../assets/long_seal.svg";
 
 let date_time = new Date();
 let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
@@ -46,35 +47,39 @@ const Home: React.FC = () => {
     return (
         <IonPage>
             <IonContent>
-                <div className="grid grid-cols-2 w-full p-3 gap-3 pt-3-safe">
-                    <div className="flex flex-col p-3 py-4 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
-                        <div className="text-5xl font-bold text-accent">
+                <div className="grid grid-cols-2 w-full p-4 px-6 gap-3 pt-3-safe">
+                    <div className="flex flex-col p-1 py-4 gap-1 col-span-2 relative h-fit rounded-2xl text-white">
+                        <div className="text-5xl font-bold text-darker-violet-500">
                             Hello, {user?.name}
                         </div>
-                        <div className="text-2xl font-semibold pl-0.5">
+                        <div className="text-2xl font-semibold pl-0.5 opacity-90">
                             Have a nice day!
                         </div>
                     </div>
                     {quote && (
-                        <div className="flex flex-row p-3 col-span-2 gap-1 relative bg-black/30 rounded-2xl">
-                            <div className="text-accent text-8xl">
-                                <GiJugglingSeal />
-                            </div>
-                            <div className="flex flex-col">
-                                <div className="text-3xl font-bold text-accent">
-                                    Seal Quote
+                        <div className="flex col-span-2">
+                            <div className="flex flex-1 w-0 flex-row p-2 min-h-36 px-3 col-span-2 overflow-hidden gap-3 relative bg-gradient-to-br from-darker-violet-700 to-darker-violet-800 rounded-xl z-10">
+                                <div className="flex flex-col">
+                                    <div className="text-2xl font-bold text-darker-violet-300">
+                                        Seal Quote
+                                    </div>
+                                    <div className="opacity-60 font-semibold text-sm pb-1">
+                                        "{quote}"
+                                    </div>
                                 </div>
-                                <div className="opacity-40 text-sm">
-                                    {quote}
-                                </div>
                             </div>
+                            <img
+                                src={SealLong}
+                                alt=""
+                                className="h-32 rotate-[50deg] -mt-1 -ml-10"
+                            />
                         </div>
                     )}
                     <Link
                         to={"/app/journal"}
-                        className="flex flex-col p-3 gap-3 col-span-2 relative bg-black/30 rounded-2xl text-white"
+                        className="flex flex-col p-2 pt-3 gap-2 col-span-2 md:col-span-1 relative bg-gradient-to-br from-darker-violet-800 to-darker-violet-850 rounded-xl text-white shadow-md shadow-darker-violet-900"
                     >
-                        <div className="text-3xl font-bold text-accent leading-7 mx-1">
+                        <div className="text-lg font-bold text-darker-violet-300 leading-5 mx-1 uppercase">
                             Journal
                         </div>
                         <div className="flex flex-col gap-2 min-h-[6.5rem]">
@@ -97,22 +102,22 @@ const Home: React.FC = () => {
                                 <Loading />
                             )}
                             {journalEntries && journalEntries.length == 0 && (
-                                <div className="opacity-40 text-sm font-semibold mt-12 w-full text-center">
+                                <div className="opacity-40 text-violet-300 text-sm font-bold mt-8 w-full text-center">
                                     NO ENTRIES TODAY
                                 </div>
                             )}
                         </div>
                         {journalEntries && journalEntries.length > 2 && (
-                            <div className="text-sm text-accent mx-1 text-center">
+                            <div className="text-sm opacity-40 text-violet-300 mx-1 text-center">
                                 +{journalEntries.length - 2} more
                             </div>
                         )}
                     </Link>
                     <Link
                         to={"/app/goals"}
-                        className="flex flex-col p-3 col-span-2 gap-3 relative bg-black/30 rounded-2xl text-white"
+                        className="flex flex-col p-2 pt-3 gap-2 col-span-2 md:col-span-1 relative bg-gradient-to-br from-darker-violet-800 to-darker-violet-850 rounded-xl text-white shadow-md shadow-darker-violet-900"
                     >
-                        <div className="text-3xl font-bold text-accent leading-7 mx-1">
+                        <div className="text-lg font-bold text-darker-violet-300 leading-5 mx-1 uppercase">
                             Your Goals
                         </div>
                         <div className="flex flex-col gap-2 min-h-[8.5rem]">
@@ -130,13 +135,13 @@ const Home: React.FC = () => {
                                 <Loading />
                             )}
                             {goals && goals.length == 0 && (
-                                <div className="opacity-40 text-sm font-semibold mt-12 w-full text-center">
+                                <div className="opacity-40 text-violet-300 text-sm font-bold mt-8 w-full text-center">
                                     NO GOALS SET
                                 </div>
                             )}
                         </div>
                         {goals && goals.length > 2 && (
-                            <div className="text-sm text-accent mx-1 text-center">
+                            <div className="text-sm opacity-40 text-violet-300 mx-1 text-center">
                                 +{goals.length - 2} more
                             </div>
                         )}

@@ -44,7 +44,7 @@ const JournalItem: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
                     </div>
                     <div className="text-neutral-500 leading-5 font-semibold">
                         {new Date(entry.createdAt)
-                            .toLocaleString("en-US", {
+                            .toLocaleString("pl-PL", {
                                 month: "2-digit",
                                 day: "2-digit",
                                 year: "numeric",
