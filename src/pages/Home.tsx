@@ -56,7 +56,7 @@ const Home: React.FC = () => {
                         </div>
                     </div>
                     {quote && (
-                        <div className="flex flex-row p-3 col-span-2 gap-1 relative bg-black/30 rounded-2xl animate-slideIn">
+                        <div className="flex flex-row p-3 col-span-2 gap-1 relative bg-black/30 rounded-2xl">
                             <div className="text-accent text-8xl">
                                 <GiJugglingSeal />
                             </div>
