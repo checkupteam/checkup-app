@@ -19,7 +19,7 @@ const AccountPage: React.FC = () => {
         router.push("/auth/login");
         setTimeout(() => {
             dispatch(setToken(null));
-        }, 500);
+        }, 1000);
     };
 
     return (
