@@ -51,7 +51,7 @@ const GoalStepEditor: React.FC<{ close: () => void; step: Step }> = ({
                 className="absolute top-0 left-0 h-full w-full flex items-end bg-black/30 backdrop-blur-xs animate-fadeIn"
                 onClick={() => close()}
             ></div>
-            <div className="absolute bottom-0 left-0 z-50 w-full rounded-t-xl bg-zinc-800 flex flex-col gap-2 p-4">
+            <div className="absolute bottom-0 left-0 z-50 w-full rounded-t-xl bg-darker-violet-800 flex flex-col gap-2 p-4">
                 <div className="flex gap-1 items-center w-full">
                     {step.isDone ? (
                         <FaCheckCircle
