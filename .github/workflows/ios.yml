@@ -41,7 +41,9 @@ jobs:
                   node-version: "20"
 
             - name: Install dependencies
-              run: npm install
+              run: |
+                  npm install -g pnpm
+                  npm install
 
             - name: Build web
               run: npm run build
@@ -71,6 +73,11 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: web
+
+            - name: Install dependencies
+              run: |
+                  npm install -g pnpm
+                  npm install
 
             - name: Install CocoaPods
               run: sudo gem install cocoapods
