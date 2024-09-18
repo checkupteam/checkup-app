@@ -41,9 +41,7 @@ jobs:
                   node-version: "20"
 
             - name: Install dependencies
-              run: |
-                  npm install -g pnpm
-                  pnpm install
+              run: npm install
 
             - name: Build web
               run: npm run build
@@ -75,9 +73,7 @@ jobs:
                   name: web
 
             - name: Install dependencies
-              run: |
-                  npm install -g pnpm
-                  pnpm install
+              run: npm install
 
             - name: Install CocoaPods
               run: sudo gem install cocoapods
