@@ -43,7 +43,7 @@ jobs:
             - name: Install dependencies
               run: |
                   npm install -g pnpm
-                  npm install
+                  pnpm install
 
             - name: Build web
               run: npm run build
@@ -77,7 +77,7 @@ jobs:
             - name: Install dependencies
               run: |
                   npm install -g pnpm
-                  npm install
+                  pnpm install
 
             - name: Install CocoaPods
               run: sudo gem install cocoapods
