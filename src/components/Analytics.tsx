@@ -1,4 +1,4 @@
-import { FirebaseAnalytics } from "@capacitor-community/firebase-analytics";
+import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 import { useIonRouter } from "@ionic/react";
 import { ReactNode, useEffect } from "react";
 import { useGetUserQuery } from "../api/auth";
@@ -9,11 +9,11 @@ const Analytics: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     useEffect(() => {
         if (router.routeInfo.tab) {
-            FirebaseAnalytics.setScreenName({
+            FirebaseAnalytics.setCurrentScreen({
                 screenName: router.routeInfo.tab,
             });
         } else {
-            FirebaseAnalytics.setScreenName({
+            FirebaseAnalytics.setCurrentScreen({
                 screenName: router.routeInfo.pathname,
             });
         }
@@ -23,7 +23,7 @@ const Analytics: React.FC<{ children: ReactNode }> = ({ children }) => {
         if (user.data) {
             FirebaseAnalytics.setUserId({ userId: user.data.id.toString() });
         } else {
-            FirebaseAnalytics.reset();
+            FirebaseAnalytics.resetAnalyticsData();
         }
     }, [user]);
 
