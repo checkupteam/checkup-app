@@ -72,11 +72,11 @@ jobs:
               with:
                   name: web
 
-            - name: Sync native code
-              run: npx cap sync ios
-
             - name: Install dependencies
               run: npm install
+
+            - name: Sync native code
+              run: npx cap sync ios
 
             - name: Install CocoaPods
               run: sudo gem install cocoapods
