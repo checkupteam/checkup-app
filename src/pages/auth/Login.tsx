@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/auth";
 import LongSeal from "../../assets/long_seal.svg";
+import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 
 const Login: React.FC = () => {
     const router = useIonRouter();
@@ -29,6 +30,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         if (status === "fulfilled") {
             if (data.access_token) dispatch(setToken(data.access_token));
+            FirebaseAnalytics.logEvent({ name: "login" });
             router.push("/app");
         } else if (status === "rejected") {
             setErrorText((error as any).data.message);
