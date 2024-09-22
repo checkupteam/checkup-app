@@ -17,6 +17,7 @@ const authApi = api.injectEndpoints({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["Auth"],
         }),
         singup: build.mutation<
             void,
@@ -33,9 +34,11 @@ const authApi = api.injectEndpoints({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["Auth"],
         }),
         getUser: build.query<User, void>({
             query: () => "/user/info",
+            providesTags: ["Auth"],
         }),
     }),
     overrideExisting: false,

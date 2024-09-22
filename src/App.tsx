@@ -51,6 +51,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 import "./theme/variables.css";
 import "./theme/global.css";
 import AccountPage from "./pages/Account";
+import Analytics from "./components/Analytics";
 
 setupIonicReact();
 
@@ -58,74 +59,83 @@ const App: React.FC = () => (
     <KonstaProvider theme="parent">
         <IonApp className="safe-areas">
             <IonReactRouter>
-                <IonRouterOutlet>
-                    <PrivateRoute path="/app">
-                        <IonTabs>
-                            <IonRouterOutlet>
-                                <Route
-                                    path="/app/home"
-                                    render={() => <Home />}
-                                />
-                                <Route
-                                    path="/app/journal"
-                                    component={Journal}
-                                />
-                                <Route
-                                    path="/app/calendar"
-                                    component={Calendar}
-                                />
-                                <Route path="/app/goals" component={Goals} />
-                                <Route
-                                    path="/app/account"
-                                    render={() => <AccountPage />}
-                                />
-                                <Redirect exact from="/app" to="/app/home" />
-                            </IonRouterOutlet>
-                            <IonTabBar
-                                slot="bottom"
-                                className="bg-darker-violet-850 h-18 w-full"
-                            >
-                                <IonTabButton
-                                    tab="calendar"
-                                    href="/app/calendar"
-                                    className="bg-transparent text-2xl text-darker-violet-700"
+                <Analytics>
+                    <IonRouterOutlet>
+                        <PrivateRoute path="/app">
+                            <IonTabs>
+                                <IonRouterOutlet>
+                                    <Route
+                                        path="/app/home"
+                                        render={() => <Home />}
+                                    />
+                                    <Route
+                                        path="/app/journal"
+                                        component={Journal}
+                                    />
+                                    <Route
+                                        path="/app/calendar"
+                                        component={Calendar}
+                                    />
+                                    <Route
+                                        path="/app/goals"
+                                        component={Goals}
+                                    />
+                                    <Route
+                                        path="/app/account"
+                                        render={() => <AccountPage />}
+                                    />
+                                    <Redirect
+                                        exact
+                                        from="/app"
+                                        to="/app/home"
+                                    />
+                                </IonRouterOutlet>
+                                <IonTabBar
+                                    slot="bottom"
+                                    className="bg-darker-violet-850 h-18 w-full"
                                 >
-                                    <FaCalendarAlt />
-                                </IonTabButton>
-                                <IonTabButton
-                                    tab="journal"
-                                    href="/app/journal"
-                                    className="bg-transparent text-2xl text-darker-violet-700"
-                                >
-                                    <FaBook />
-                                </IonTabButton>
-                                <IonTabButton
-                                    tab="home"
-                                    href="/app/home"
-                                    className="bg-transparent text-2xl text-darker-violet-700"
-                                >
-                                    <FaHouse />
-                                </IonTabButton>
-                                <IonTabButton
-                                    tab="goals"
-                                    href="/app/goals"
-                                    className="bg-transparent text-2xl text-darker-violet-700"
-                                >
-                                    <FaClipboardList />
-                                </IonTabButton>
-                                <IonTabButton
-                                    tab="account"
-                                    href="/app/account"
-                                    className="bg-transparent text-2xl text-darker-violet-700"
-                                >
-                                    <FaUser />
-                                </IonTabButton>
-                            </IonTabBar>
-                        </IonTabs>
-                    </PrivateRoute>
-                    <Route path="/auth" component={AuthPage} />
-                    <Redirect exact from="/" to="/app/home" />
-                </IonRouterOutlet>
+                                    <IonTabButton
+                                        tab="calendar"
+                                        href="/app/calendar"
+                                        className="bg-transparent text-2xl text-darker-violet-700"
+                                    >
+                                        <FaCalendarAlt />
+                                    </IonTabButton>
+                                    <IonTabButton
+                                        tab="journal"
+                                        href="/app/journal"
+                                        className="bg-transparent text-2xl text-darker-violet-700"
+                                    >
+                                        <FaBook />
+                                    </IonTabButton>
+                                    <IonTabButton
+                                        tab="home"
+                                        href="/app/home"
+                                        className="bg-transparent text-2xl text-darker-violet-700"
+                                    >
+                                        <FaHouse />
+                                    </IonTabButton>
+                                    <IonTabButton
+                                        tab="goals"
+                                        href="/app/goals"
+                                        className="bg-transparent text-2xl text-darker-violet-700"
+                                    >
+                                        <FaClipboardList />
+                                    </IonTabButton>
+                                    <IonTabButton
+                                        tab="account"
+                                        href="/app/account"
+                                        className="bg-transparent text-2xl text-darker-violet-700"
+                                    >
+                                        <FaUser />
+                                    </IonTabButton>
+                                </IonTabBar>
+                            </IonTabs>
+                        </PrivateRoute>
+                        <Route path="/auth" component={AuthPage} />
+                        <Redirect exact from="/" to="/app/home" />
+                    </IonRouterOutlet>
+                </Analytics>
             </IonReactRouter>
         </IonApp>
     </KonstaProvider>

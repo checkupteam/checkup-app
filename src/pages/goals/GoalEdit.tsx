@@ -6,14 +6,7 @@ import {
     useIonRouter,
 } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
-import {
-    FaArrowLeft,
-    FaCheckCircle,
-    FaPen,
-    FaPlus,
-    FaRegCircle,
-} from "react-icons/fa";
-import GoalStep from "../../components/goals/Step";
+import { FaArrowLeft, FaPen } from "react-icons/fa";
 import GoalPhase from "../../components/goals/Phase";
 import { RouteComponentProps } from "react-router";
 import {
@@ -23,6 +16,8 @@ import {
 } from "../../api/goals";
 import { useDebounce } from "@reactuses/core";
 import Loading from "../../components/Loading";
+import { Capacitor } from "@capacitor/core";
+import { Keyboard } from "@capacitor/keyboard";
 
 interface GoalEditProps
     extends RouteComponentProps<{
@@ -34,12 +29,29 @@ const GoalEdit: React.FC<GoalEditProps> = ({ match }) => {
     if (!id) return null;
 
     const router = useIonRouter();
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
     const { data } = useGetGoalQuery(id);
     const [updateGoal] = useUpdateGoalMutation();
     const [createPhase] = useCreatePhaseMutation();
     const titleInput = useRef<HTMLInputElement | null>(null);
     const [title, setTitle] = useState("");
     const debouncedTitle = useDebounce(title, 500);
+
+    useEffect(() => {
+        if (Capacitor.getPlatform() != "web") {
+            Keyboard.addListener("keyboardWillShow", () => {
+                setKeyboardVisible(true);
+            });
+
+            Keyboard.addListener("keyboardDidHide", () => {
+                setKeyboardVisible(false);
+            });
+
+            return () => {
+                Keyboard.removeAllListeners();
+            };
+        }
+    }, []);
 
     useEffect(() => {
         if (!data) return;
@@ -92,7 +104,7 @@ const GoalEdit: React.FC<GoalEditProps> = ({ match }) => {
             <IonContent scrollY={false}>
                 <div className="h-full flex flex-col gap-3 p-3">
                     {data ? (
-                        <div className="flex flex-col gap-6 flex-1 h-0">
+                        <div className="flex flex-col gap-6 flex-1 h-0 overflow-auto pb-36">
                             {data.Phase.map((phase) => (
                                 <GoalPhase key={phase.id} phase={phase} />
                             ))}
@@ -100,14 +112,14 @@ const GoalEdit: React.FC<GoalEditProps> = ({ match }) => {
                     ) : (
                         <Loading />
                     )}
-                    <div className="flex gap-2 h-12">
+                    {!keyboardVisible && (
                         <div
-                            className="bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase"
+                            className="h-12 z-10 absolute left-3 right-3 bottom-3 bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase"
                             onClick={() => handleCreatePhase()}
                         >
                             Add Phase
                         </div>
-                    </div>
+                    )}
                 </div>
             </IonContent>
         </IonPage>

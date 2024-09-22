@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "818028737521",
+    "project_id": "sealup-dc6ed",
+    "storage_bucket": "sealup-dc6ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818028737521:android:1475f0745404ebbcd04a50",
+        "android_client_info": {
+          "package_name": "com.sealup.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh56b2MCRWD4umYNHo3B0YGSfCJCQzm4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

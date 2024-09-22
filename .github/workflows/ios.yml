@@ -13,20 +13,47 @@ jobs:
         steps:
             - uses: actions/checkout@v3
               with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-            
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
             - uses: yanamura/ios-bump-version@v1
               with:
-                project-path: ios/App
-            
+                  project-path: ios/App
+
             - name: update
               run: |
-                git add .
-                git commit -m "bump ios build number"
-                git push origin HEAD
-                
-    build:
+                  git add .
+                  git commit -m "bump ios build number"
+                  git push origin HEAD
+
+    web:
         needs: bump
+        name: Build web
+        runs-on: ubuntu-latest
+        env:
+            VITE_API_URL: ${{ vars.API_URL }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Build web
+              run: npm run build
+
+            - name: Upload build
+              uses: actions/upload-artifact@v4
+              with:
+                  name: web
+                  path: dist
+
+    build:
+        needs: web
         name: Build app
         runs-on: macos-latest
         env:
@@ -40,16 +67,17 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: Build web
-              run: |
-                  npm install
-                  npm run build
-                  npx cap sync
+            - name: Download web
+              uses: actions/download-artifact@v4
+              with:
+                  name: web
+                  path: dist
 
-            # - name: Recreate ios project
-            #   run: |
-            #       rm -rf ios
-            #       npx cap add ios
+            - name: Install dependencies
+              run: npm install
+
+            - name: Sync native code
+              run: npx cap sync ios
 
             - name: Install CocoaPods
               run: sudo gem install cocoapods

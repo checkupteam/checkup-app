@@ -12,6 +12,7 @@ import { useSingupMutation } from "../../api/auth";
 import { useEffect, useState } from "react";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import LongSeal from "../../assets/long_seal.svg";
+import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
 
 const SignUp: React.FC = () => {
     const router = useIonRouter();
@@ -31,6 +32,7 @@ const SignUp: React.FC = () => {
 
     useEffect(() => {
         if (status === QueryStatus.fulfilled) {
+            FirebaseAnalytics.logEvent({ name: "sign_up" });
             router.push("/auth/login");
         } else if (status === QueryStatus.rejected) {
             setErrorText((error as any).data.message);
