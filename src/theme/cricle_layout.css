@@ -1,8 +1,8 @@
 :root {
     --pi: 3.14159265359;
     --tan: calc(var(--pi) / 5); /* Adjust '5' based on the number of items */
-    --d: 8rem; /* Diameter of each child element */
-    --rel: 0.40; /* Adjust as needed for spacing */
+    --d: 7rem; /* Diameter of each child element */
+    --rel: 0.30; /* Adjust as needed for spacing */
     --r: calc(0.5 * (1 + var(--rel)) * var(--d) / var(--tan)); /* Radius calculation */
     --s: calc(2 * var(--r) + var(--d)); /* Size of the circle */
 }
