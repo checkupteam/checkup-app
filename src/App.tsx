@@ -50,6 +50,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/global.css";
+import "./theme/cricle_layout.css";
 import AccountPage from "./pages/Account";
 import Analytics from "./components/Analytics";
 import TabBarHidder from "./components/TabBarHidder";

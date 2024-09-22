@@ -1,13 +1,4 @@
-import {
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonToolbar,
-    useIonRouter,
-    useIonViewDidEnter,
-    useIonViewWillEnter,
-    useIonViewWillLeave,
-} from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonToolbar, useIonRouter, useIonViewDidEnter, useIonViewWillEnter, useIonViewWillLeave } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Moods } from "../../types/journal";
@@ -46,7 +37,7 @@ const JournalCreate: React.FC = () => {
 
             Keyboard.addListener("keyboardDidShow", () => {
                 activeElement?.scrollIntoView();
-            })
+            });
 
             Keyboard.addListener("keyboardDidHide", () => {
                 setKeyboardVisible(false);
@@ -95,15 +86,10 @@ const JournalCreate: React.FC = () => {
             <IonHeader className="shadow-none">
                 <IonToolbar>
                     <div className="flex justify-between items-center px-2 pl-3 text-xl font-bold gap-1 h-10">
-                        <div
-                            className="flex justify-center items-center h-10 w-10"
-                            onClick={() => router.goBack()}
-                        >
+                        <div className="flex justify-center items-center h-10 w-10" onClick={() => router.goBack()}>
                             <FaArrowLeft />
                         </div>
-                        <div className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap bg-transparent">
-                            Create Entry
-                        </div>
+                        <div className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap bg-transparent">Create Entry</div>
                     </div>
                 </IonToolbar>
             </IonHeader>
@@ -111,54 +97,29 @@ const JournalCreate: React.FC = () => {
                 <div className="w-full h-full p-3 flex flex-col gap-3">
                     <div className="flex gap-2">
                         {[...Array(3)].map((_, i) => (
-                            <div
-                                key={i}
-                                className="rounded-full h-2 flex-1 bg-darker-violet-800 overflow-hidden"
-                            >
-                                {i <= currStep && (
-                                    <div className="w-full animate-fill h-full bg-accent" />
-                                )}
+                            <div key={i} className="rounded-full h-2 flex-1 bg-darker-violet-800 overflow-hidden">
+                                {i <= currStep && <div className="w-full animate-fill h-full bg-accent" />}
                             </div>
                         ))}
                     </div>
                     {currStep == 0 && (
                         <div className="flex flex-1 shrink-0 h-0 flex-col gap-3">
-                            <div className="text-2xl font-bold px-2">
-                                {t("journal.question.1")}
-                            </div>
+                            <div className="text-2xl font-bold px-2">{t("journal.question.1")}</div>
                             {selectedMood !== null && (
                                 <div className="px-3 mt-1 flex gap-6 gap-y-4 items-center pl-3 min-h-36 flex-wrap">
                                     {Object.entries(moods).map(
                                         ([mood, label]: [any, string]) =>
                                             mood == selectedMood && (
-                                                <motion.div
-                                                    key={mood}
-                                                    className="flex flex-col gap-1 items-center w-fit text-2xl font-semibold text-white/40 z-10"
-                                                    layoutId={
-                                                        mood + "-journal-create"
-                                                    }
-                                                >
-                                                    <Mood
-                                                        mood={mood}
-                                                        className={"text-6xl"}
-                                                    />
+                                                <motion.div key={mood} className="flex flex-col gap-1 items-center w-fit text-2xl font-semibold text-white/40 z-10" layoutId={mood + "-journal-create"}>
+                                                    <Mood mood={mood} className={"text-6xl"} />
                                                     {/* <div>{moods[selectedMood]}</div> */}
                                                 </motion.div>
                                             )
                                     )}
                                     {showMotivation ? (
                                         <div className="rounded-xl bg-darker-violet-850 min-h-28 flex-1 p-2 px-3 pr-14 relative font-semibold overflow-hidden animate-fadeIn">
-                                            <div>
-                                                {t(
-                                                    "journal.motivation." +
-                                                        debouncedSelectedMood
-                                                )}
-                                            </div>
-                                            <img
-                                                src={LongSeal}
-                                                alt=""
-                                                className="absolute h-18 -rotate-45 -right-1 -bottom-2"
-                                            />
+                                            <div>{t("journal.motivation." + debouncedSelectedMood)}</div>
+                                            <img src={LongSeal} alt="" className="absolute h-18 -rotate-45 -right-1 -bottom-2" />
                                         </div>
                                     ) : (
                                         <div className="h-28"></div>
@@ -167,82 +128,59 @@ const JournalCreate: React.FC = () => {
                                 </div>
                             )}
                             {
-                                <div className="flex w-full gap-4 justify-evenly text-base text-white/40 mt-2">
+                                <div className="flex w-full h-full gap-4 justify-evenly text-base text-white/40 mt-2 circle">
+                                    <div className="spin">
                                     {Object.entries(moods).map(
-                                        ([mood, label]: [any, string]) =>
+                                        ([mood, label]: [any, string], index) =>
                                             mood !== selectedMood && (
                                                 <motion.div
-                                                    className="flex flex-col gap-1 items-center font-semibold z-10"
+                                                    className={`flex flex-col gap-1 items-center font-semibold z-10 circle-child`}
                                                     key={mood}
-                                                    onClick={() =>
-                                                        setSelectedMood(mood)
-                                                    }
-                                                    layoutId={
-                                                        mood + "-journal-create"
+                                                    onClick={() => setSelectedMood(mood)}
+                                                    layoutId={mood + "-journal-create"}
+                                                    style={
+                                                        {
+                                                            "--i": index,
+                                                            "--m": Object.keys(moods).length,
+                                                        } as React.CSSProperties
                                                     }
                                                 >
-                                                    <Mood
-                                                        mood={mood}
-                                                        className={
-                                                            selectedMood == null
-                                                                ? "text-5xl"
-                                                                : "text-6xl"
-                                                        }
-                                                    />
-                                                    <div>
-                                                        {t(
-                                                            "journal.mood." +
-                                                                mood
-                                                        )}
-                                                    </div>
+                                                    <Mood mood={mood} className={selectedMood == null ? "text-7xl" : "text-8xl"} />
+                                                    <div>{t("journal.mood." + mood)}</div>
                                                 </motion.div>
                                             )
                                     )}
+                                    </div>
                                 </div>
                             }
                         </div>
                     )}
                     {currStep == 1 && (
                         <div className="flex flex-1 shrink-0 h-0 overflow-auto flex-col gap-3">
-                            <div className="text-2xl font-bold px-2 mt-2">
-                                {t("journal.question.2")}
-                            </div>
+                            <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.2")}</div>
                             <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
-                            <div className="text-2xl font-bold px-2 mt-2">
-                                {t("journal.question.3")}
-                            </div>
+                            <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.3")}</div>
                             <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
-                            <div className="text-2xl font-bold px-2 mt-2">
-                                {t("journal.question.4")}
-                            </div>
+                            <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.4")}</div>
                             <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
                         </div>
                     )}
                     {currStep == 2 && (
                         <div className="flex flex-1 shrink-0 h-0 flex-col gap-3">
-                            <div className="text-2xl font-bold px-2">
-                                {t("journal.question.5")}
-                            </div>
+                            <div className="text-2xl font-bold px-2">{t("journal.question.5")}</div>
                             <textarea className="rounded-xl bg-darker-violet-950 w-full h-0 p-2 px-3 font-semibold resize-none outline-none flex-1" />
                         </div>
                     )}
-                    {!keyboardVisible && <div className="flex gap-2 h-12 mb-safe">
-                        <div
-                            className="bg-darker-violet-800 rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase"
-                            onClick={goBack}
-                        >
-                            back
+                    {!keyboardVisible && (
+                        <div className="flex gap-2 h-12 mb-safe">
+                            <div className="bg-darker-violet-800 rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase" onClick={goBack}>
+                                back
+                            </div>
+                            <div className={"bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase" + (canGoNext() ? "" : " bg-accent/50")} onClick={goNext}>
+                                {currStep == 2 ? "save" : "next"}
+                            </div>
                         </div>
-                        <div
-                            className={
-                                "bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase" +
-                                (canGoNext() ? "" : " bg-accent/50")
-                            }
-                            onClick={goNext}
-                        >
-                            {currStep == 2 ? "save" : "next"}
-                        </div>
-                    </div>}
+                    )}
                 </div>
             </IonContent>
         </IonPage>
