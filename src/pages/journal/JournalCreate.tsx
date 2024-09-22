@@ -128,8 +128,8 @@ const JournalCreate: React.FC = () => {
                                 </div>
                             )}
                             {
-                                <div className="flex w-full h-full gap-4 justify-evenly text-base text-white/40 mt-2 circle">
-                                    <div className="spin">
+                                <div className="flex w-full h-full gap-4 justify-evenly text-base text-white/40 mt-6 circle ">
+                                    <div className='spin '>
                                     {Object.entries(moods).map(
                                         ([mood, label]: [any, string], index) =>
                                             mood !== selectedMood && (
@@ -140,12 +140,12 @@ const JournalCreate: React.FC = () => {
                                                     layoutId={mood + "-journal-create"}
                                                     style={
                                                         {
-                                                            "--i": index,
-                                                            "--m": Object.keys(moods).length,
+                                                            "--i": index+1,
+                                                            "--m":  Object.keys(moods).length,
                                                         } as React.CSSProperties
                                                     }
                                                 >
-                                                    <Mood mood={mood} className={selectedMood == null ? "text-7xl" : "text-8xl"} />
+                                                    <Mood mood={mood} className="text-8xl" />
                                                     <div>{t("journal.mood." + mood)}</div>
                                                 </motion.div>
                                             )
