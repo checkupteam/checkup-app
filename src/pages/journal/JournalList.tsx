@@ -167,7 +167,7 @@ const JournalList: React.FC = () => {
                         )}
                         <div
                             className="fixed bottom-3 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
-                            onClick={() => history.push("/app/journal/add")}
+                            onClick={() => history.push("/app/journal/create")}
                         >
                             <FaPlus />
                         </div>
