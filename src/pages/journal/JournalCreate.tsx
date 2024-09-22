@@ -8,7 +8,7 @@ import {
     useIonViewWillEnter,
     useIonViewWillLeave,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { Moods } from "../../types/journal";
 import Mood from "../../components/Mood";
@@ -16,7 +16,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import LongSeal from "../../assets/long_seal.svg";
 import { hideTabBar, showTabBar } from "../../utils/tabBar";
 import { useTranslation } from "react-i18next";
-import { useDebounce } from "@reactuses/core";
+import { useActiveElement, useDebounce } from "@reactuses/core";
+import { Capacitor } from "@capacitor/core";
+import { Keyboard } from "@capacitor/keyboard";
 
 const moods: Record<Moods, string> = {
     [Moods.TERRIBLE]: "Terrible",
@@ -29,10 +31,36 @@ const moods: Record<Moods, string> = {
 const JournalCreate: React.FC = () => {
     const router = useIonRouter();
     const { t } = useTranslation();
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
     const [currStep, setCurrStep] = useState(0);
     const [selectedMood, setSelectedMood] = useState<Moods | null>(null);
     const [showMotivation, setShowMotivation] = useState(false);
     const debouncedSelectedMood = useDebounce(selectedMood, 50);
+    const activeElement = useActiveElement();
+
+    useEffect(() => {
+        if (Capacitor.getPlatform() != "web") {
+            Keyboard.addListener("keyboardWillShow", () => {
+                setKeyboardVisible(true);
+            });
+
+            Keyboard.addListener("keyboardDidShow", () => {
+                activeElement?.scrollIntoView();
+            })
+
+            Keyboard.addListener("keyboardDidHide", () => {
+                setKeyboardVisible(false);
+            });
+
+            return () => {
+                Keyboard.removeAllListeners();
+            };
+        }
+    }, [activeElement]);
+
+    useEffect(() => {
+        keyboardVisible && activeElement?.scrollIntoView({ behavior: "smooth" });
+    }, [activeElement]);
 
     const goBack = () => {
         if (currStep > 0) setCurrStep(currStep - 1);
@@ -99,7 +127,7 @@ const JournalCreate: React.FC = () => {
                                 {t("journal.question.1")}
                             </div>
                             {selectedMood !== null && (
-                                <div className="px-4 mt-1 flex gap-6 gap-y-4 items-center pl-6 min-h-36 flex-wrap">
+                                <div className="px-3 mt-1 flex gap-6 gap-y-4 items-center pl-3 min-h-36 flex-wrap">
                                     {Object.entries(moods).map(
                                         ([mood, label]: [any, string]) =>
                                             mood == selectedMood && (
@@ -112,7 +140,7 @@ const JournalCreate: React.FC = () => {
                                                 >
                                                     <Mood
                                                         mood={mood}
-                                                        className={"text-7xl"}
+                                                        className={"text-6xl"}
                                                     />
                                                     {/* <div>{moods[selectedMood]}</div> */}
                                                 </motion.div>
@@ -175,19 +203,19 @@ const JournalCreate: React.FC = () => {
                         </div>
                     )}
                     {currStep == 1 && (
-                        <div className="flex flex-1 shrink-0 h-0 flex-col gap-3">
+                        <div className="flex flex-1 shrink-0 h-0 overflow-auto flex-col gap-3">
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t("journal.question.2")}
                             </div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full h-36 p-2 px-3 font-semibold resize-none outline-none" />
+                            <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t("journal.question.3")}
                             </div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full h-36 p-2 px-3 font-semibold resize-none outline-none" />
+                            <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t("journal.question.4")}
                             </div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full h-36 p-2 px-3 font-semibold resize-none outline-none" />
+                            <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
                         </div>
                     )}
                     {currStep == 2 && (
@@ -198,7 +226,7 @@ const JournalCreate: React.FC = () => {
                             <textarea className="rounded-xl bg-darker-violet-950 w-full h-0 p-2 px-3 font-semibold resize-none outline-none flex-1" />
                         </div>
                     )}
-                    <div className="flex gap-2 h-12">
+                    {!keyboardVisible && <div className="flex gap-2 h-12 mb-safe">
                         <div
                             className="bg-darker-violet-800 rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase"
                             onClick={goBack}
@@ -214,7 +242,7 @@ const JournalCreate: React.FC = () => {
                         >
                             {currStep == 2 ? "save" : "next"}
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </IonContent>
         </IonPage>
