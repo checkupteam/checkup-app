@@ -32,10 +32,9 @@
     width: var(--d);
     height: var(--d);
     --az: calc(var(--i) * 1turn / var(--m));
-    transform:
-        rotate(calc(-1 * var(--az)))
-        translate(var(--r))
-        rotate(var(--az));
+    /* transform:
+        rotate(0deg); */
+    animation: c-spin 25s linear infinite;
 }
 
 @keyframes spin {
@@ -45,4 +44,20 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+@keyframes c-spin {
+    from {
+        transform:
+        rotate(calc(-1 * var(--az)))
+        translate(var(--r))
+        rotate(calc(360deg*25));
+    }
+    to {
+        transform:
+        rotate(calc(-1 * var(--az)))
+        translate(var(--r))
+        rotate(calc(1* var(--az)));
+    }
+    
 }
