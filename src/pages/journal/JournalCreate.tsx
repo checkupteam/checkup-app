@@ -160,7 +160,18 @@ const JournalCreate: React.FC = () => {
                             <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.2")}</div>
                             <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
                             <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.3")}</div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
+                            <div className="flex flex-row gap-5 items-center justify-center w-fulls">
+                                {Object.entries(moods).map(
+                                    (([mood, label] : [any, string]) => (
+                                        <div key={mood} className="flex flex-col items-center justify-center">
+                                            <Mood mood={mood} className="text-5xl"/>
+                                            <div>{t("journal.mood." + mood)}</div>
+                                        </div>
+                                    )
+                                    )
+                                )}
+                            </div>
+                            {/* <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" /> */}
                             <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.4")}</div>
                             <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
                         </div>

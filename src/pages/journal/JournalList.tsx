@@ -7,6 +7,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { FaPlus, FaRegStar, FaStar } from "react-icons/fa";
+import { IoMdCloseCircle } from "react-icons/io";
 import Mood from "../../components/Mood";
 import { JournalEntry } from "../../types/journal";
 import { useHistory } from "react-router";
@@ -75,6 +76,7 @@ const JournalList: React.FC = () => {
         month: new Date().getMonth() + 1,
     });
     const [favorites, setFavorites] = useState(false);
+    const [popup, setPopUp] = useState(true);
 
     const filtredEntries = entries?.filter(
         (entry) => !favorites || entry.isFavorite
@@ -132,12 +134,22 @@ const JournalList: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
+            <div className={`m-4 rounded-2xl bg-accent p-3 justify-between items-center ${popup ? 'flex' : 'hidden'}`}>
+                <div>
+                    <a href="https://www.innerdrive.co.uk/blog/benefits-of-keeping-a-diary/" className="text-white font-medium">
+                        Why is wrritting journal beneficial?
+                    </a>
+                    <div className="opacity-40">(click to find out)</div>
+                </div>
+                <div onClick={() => setPopUp((c) => !c)}><IoMdCloseCircle />
+                </div>
+            </div>
                 {isLoading ? (
                     <Loading />
                 ) : (
                     <div className="p-3 pb-0 overflow-auto flex flex-col gap-2 h-full">
                         {!filtredEntries || filtredEntries.length == 0 ? (
-                            <div className="text-center w-full text-neutral-600 font-bold uppercase py-4 mt-3">
+                            <div className="text-center w-full text-neutral-600 font-bold uppercase py-4">
                                 no entires
                             </div>
                         ) : (
