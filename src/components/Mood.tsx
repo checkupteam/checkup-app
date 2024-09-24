@@ -1,12 +1,12 @@
-import { IconType } from "react-icons";
-import { Moods } from "../types/journal";
+import { IconType } from 'react-icons';
+import { Moods } from '../types/journal';
 import {
     FaFaceFrown,
     FaFaceFrownOpen,
     FaFaceLaugh,
     FaFaceMeh,
     FaFaceSmile,
-} from "react-icons/fa6";
+} from 'react-icons/fa6';
 
 const moods: Record<Moods, IconType> = {
     [Moods.TERRIBLE]: FaFaceFrown,
@@ -17,11 +17,11 @@ const moods: Record<Moods, IconType> = {
 };
 
 const moodsColors: Record<Moods, string> = {
-    [Moods.TERRIBLE]: "text-red-500",
-    [Moods.BAD]: "text-orange-500",
-    [Moods.OKAY]: "text-yellow-500",
-    [Moods.GOOD]: "text-green-500",
-    [Moods.GREAT]: "text-green-700",
+    [Moods.TERRIBLE]: 'text-red-500',
+    [Moods.BAD]: 'text-orange-500',
+    [Moods.OKAY]: 'text-yellow-500',
+    [Moods.GOOD]: 'text-green-500',
+    [Moods.GREAT]: 'text-green-700',
 };
 
 const Mood: React.FC<{ mood: Moods; className?: string }> = ({

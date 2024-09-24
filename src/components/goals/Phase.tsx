@@ -1,9 +1,9 @@
-import { FaPlus, FaRegCircle } from "react-icons/fa";
-import GoalStep from "./Step";
-import { useEffect, useState } from "react";
-import { Phase } from "../../types/goals";
-import HoldMenu from "../HoldMenu";
-import { useDeletePhaseMutation } from "../../api/goals";
+import { FaPlus, FaRegCircle } from 'react-icons/fa';
+import GoalStep from './Step';
+import { useEffect, useState } from 'react';
+import { Phase } from '../../types/goals';
+import HoldMenu from '../HoldMenu';
+import { useDeletePhaseMutation } from '../../api/goals';
 
 const GoalPhase: React.FC<{ phase: Phase }> = ({ phase }) => {
     const [addingStep, setAddingStep] = useState(false);
@@ -16,7 +16,7 @@ const GoalPhase: React.FC<{ phase: Phase }> = ({ phase }) => {
 
     const PhaseMenu: React.FC<{ close: () => void }> = ({ close }) => {
         const handleDelete = () => {
-            console.log("delete phase", phase.id);
+            console.log('delete phase', phase.id);
             deletePhase(phase.id);
             close();
         };

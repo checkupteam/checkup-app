@@ -1,7 +1,7 @@
-import { IonPage, IonRouterOutlet } from "@ionic/react";
-import { Route } from "react-router";
-import GoalList from "./GoalList";
-import GoalEdit from "./GoalEdit";
+import { IonPage, IonRouterOutlet } from '@ionic/react';
+import { Route } from 'react-router';
+import GoalList from './GoalList';
+import GoalEdit from './GoalEdit';
 
 const Goals: React.FC = () => {
     return (

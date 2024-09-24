@@ -5,16 +5,16 @@ import {
     IonTitle,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { useForm } from "react-hook-form";
-import { FaLock, FaUser } from "react-icons/fa";
-import { Route, useHistory } from "react-router";
-import { useLoginMutation } from "../../api/auth";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setToken } from "../../store/auth";
-import LongSeal from "../../assets/long_seal.svg";
-import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
+} from '@ionic/react';
+import { useForm } from 'react-hook-form';
+import { FaLock, FaUser } from 'react-icons/fa';
+import { Route, useHistory } from 'react-router';
+import { useLoginMutation } from '../../api/auth';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../store/auth';
+import LongSeal from '../../assets/long_seal.svg';
+import { FirebaseAnalytics } from '@capacitor-firebase/analytics';
 
 const Login: React.FC = () => {
     const router = useIonRouter();
@@ -28,11 +28,11 @@ const Login: React.FC = () => {
     };
 
     useEffect(() => {
-        if (status === "fulfilled") {
+        if (status === 'fulfilled') {
             if (data.access_token) dispatch(setToken(data.access_token));
-            FirebaseAnalytics.logEvent({ name: "login" });
-            router.push("/app");
-        } else if (status === "rejected") {
+            FirebaseAnalytics.logEvent({ name: 'login' });
+            router.push('/app');
+        } else if (status === 'rejected') {
             setErrorText((error as any).data.message);
         }
     }, [status]);
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                {...register("email", { required: true })}
+                                {...register('email', { required: true })}
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
                             />
                         </div>
@@ -74,7 +74,7 @@ const Login: React.FC = () => {
                             <input
                                 type="password"
                                 placeholder="Password"
-                                {...register("pass", { required: true })}
+                                {...register('pass', { required: true })}
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
                             />
                         </div>
@@ -92,7 +92,7 @@ const Login: React.FC = () => {
                             </div>
                             <div
                                 className="text-white font-semibold cursor-pointer w-full bg-white/10 h-12 rounded-lg uppercase flex justify-center items-center"
-                                onClick={() => router.push("/auth/signup")}
+                                onClick={() => router.push('/auth/signup')}
                             >
                                 Sign Up
                             </div>

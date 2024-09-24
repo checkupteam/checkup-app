@@ -1,8 +1,8 @@
-import { IonPage, IonRouterOutlet } from "@ionic/react";
-import { Route } from "react-router";
-import JournalList from "./JournalList";
-import JournalEntry from "./JournalEntry";
-import JournalCreate from "./JournalCreate";
+import { IonPage, IonRouterOutlet } from '@ionic/react';
+import { Route } from 'react-router';
+import JournalList from './JournalList';
+import JournalEntry from './JournalEntry';
+import JournalCreate from './JournalCreate';
 
 const Journal: React.FC = () => {
     return (

@@ -2,8 +2,10 @@
     --pi: 3.14159265359;
     --tan: calc(var(--pi) / 5); /* Adjust '5' based on the number of items */
     --d: 7rem; /* Diameter of each child element */
-    --rel: 0.30; /* Adjust as needed for spacing */
-    --r: calc(0.5 * (1 + var(--rel)) * var(--d) / var(--tan)); /* Radius calculation */
+    --rel: 0.3; /* Adjust as needed for spacing */
+    --r: calc(
+        0.5 * (1 + var(--rel)) * var(--d) / var(--tan)
+    ); /* Radius calculation */
     --s: calc(2 * var(--r) + var(--d)); /* Size of the circle */
 }
 
@@ -22,7 +24,6 @@
     animation-play-state: paused;
 }
 
-
 .circle-child {
     position: absolute;
     top: 50%;
@@ -30,9 +31,7 @@
     margin: calc(-0.5 * var(--d));
     width: var(--d);
     height: var(--d);
-    --az: calc(var(--i) * 1turn / (-1*var(--m)));
-    transform: 
-    rotate(var(--az))
-    translate(var(--r))
-    rotate(calc(90deg - var(--az))) !important;
+    --az: calc(var(--i) * 1turn / (-1 * var(--m)));
+    transform: rotate(var(--az)) translate(var(--r))
+        rotate(calc(90deg - var(--az))) !important;
 }

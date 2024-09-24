@@ -5,14 +5,14 @@ import {
     IonTitle,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { useForm } from "react-hook-form";
-import { FaAt, FaLock, FaMailBulk, FaUser } from "react-icons/fa";
-import { useSingupMutation } from "../../api/auth";
-import { useEffect, useState } from "react";
-import { QueryStatus } from "@reduxjs/toolkit/query";
-import LongSeal from "../../assets/long_seal.svg";
-import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
+} from '@ionic/react';
+import { useForm } from 'react-hook-form';
+import { FaAt, FaLock, FaMailBulk, FaUser } from 'react-icons/fa';
+import { useSingupMutation } from '../../api/auth';
+import { useEffect, useState } from 'react';
+import { QueryStatus } from '@reduxjs/toolkit/query';
+import LongSeal from '../../assets/long_seal.svg';
+import { FirebaseAnalytics } from '@capacitor-firebase/analytics';
 
 const SignUp: React.FC = () => {
     const router = useIonRouter();
@@ -22,7 +22,7 @@ const SignUp: React.FC = () => {
 
     const onSubmit = (data: any) => {
         if (data.hash !== data.repeatPassword) {
-            setErrorText("Passwords do not match");
+            setErrorText('Passwords do not match');
             return;
         }
 
@@ -32,8 +32,8 @@ const SignUp: React.FC = () => {
 
     useEffect(() => {
         if (status === QueryStatus.fulfilled) {
-            FirebaseAnalytics.logEvent({ name: "sign_up" });
-            router.push("/auth/login");
+            FirebaseAnalytics.logEvent({ name: 'sign_up' });
+            router.push('/auth/login');
         } else if (status === QueryStatus.rejected) {
             setErrorText((error as any).data.message);
         }
@@ -66,7 +66,7 @@ const SignUp: React.FC = () => {
                                     type="text"
                                     placeholder="Name"
                                     className="bg-transparent border-none outline-none placeholder:text-white/20 w-0 flex-1"
-                                    {...register("name", { required: true })}
+                                    {...register('name', { required: true })}
                                 />
                             </div>
                             <div className="flex-1 w-0 rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
@@ -75,7 +75,7 @@ const SignUp: React.FC = () => {
                                     type="text"
                                     placeholder="Surname"
                                     className="bg-transparent border-none outline-none placeholder:text-white/20 w-0 flex-1"
-                                    {...register("surname", { required: true })}
+                                    {...register('surname', { required: true })}
                                 />
                             </div>
                         </div>
@@ -85,7 +85,7 @@ const SignUp: React.FC = () => {
                                 type="email"
                                 placeholder="Email"
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
-                                {...register("email", { required: true })}
+                                {...register('email', { required: true })}
                             />
                         </div>
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
@@ -94,7 +94,7 @@ const SignUp: React.FC = () => {
                                 type="password"
                                 placeholder="Password"
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
-                                {...register("hash", { required: true })}
+                                {...register('hash', { required: true })}
                             />
                         </div>
                         <div className="w-full rounded-lg flex bg-black/20 p-3 pl-4 items-center gap-3">
@@ -103,7 +103,7 @@ const SignUp: React.FC = () => {
                                 type="password"
                                 placeholder="Repeat Password"
                                 className="bg-transparent border-none outline-none placeholder:text-white/20"
-                                {...register("repeatPassword", {
+                                {...register('repeatPassword', {
                                     required: true,
                                 })}
                             />
@@ -122,7 +122,7 @@ const SignUp: React.FC = () => {
                             </div>
                             <div
                                 className="text-white font-semibold cursor-pointer w-full bg-white/10 h-12 rounded-lg uppercase flex justify-center items-center"
-                                onClick={() => router.push("/auth/login")}
+                                onClick={() => router.push('/auth/login')}
                             >
                                 Login
                             </div>

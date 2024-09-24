@@ -1,5 +1,5 @@
-import { api } from ".";
-import { JournalEntry } from "../types/journal";
+import { api } from '.';
+import { JournalEntry } from '../types/journal';
 
 const journalApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -14,8 +14,8 @@ const journalApi = api.injectEndpoints({
             query: (args) => ({
                 url: `/journal/entries`,
                 params: {
-                    day: args.day && args.day.toString().padStart(2, "0"),
-                    month: args.month.toString().padStart(2, "0"),
+                    day: args.day && args.day.toString().padStart(2, '0'),
+                    month: args.month.toString().padStart(2, '0'),
                     year: args.year,
                 },
             }),
@@ -23,17 +23,17 @@ const journalApi = api.injectEndpoints({
                 result
                     ? [
                           ...result.map(({ id }) => ({
-                              type: "JournalEntry" as const,
+                              type: 'JournalEntry' as const,
                               id,
                           })),
-                          "JournalEntry",
+                          'JournalEntry',
                       ]
-                    : ["JournalEntry"],
+                    : ['JournalEntry'],
         }),
         getJournalEntry: build.query<JournalEntry, number>({
             query: (id) => `/journal/entry/${id}`,
             providesTags: (result, error, id) =>
-                result ? [{ type: "JournalEntry", id }] : [],
+                result ? [{ type: 'JournalEntry', id }] : [],
         }),
         createJournalEntry: build.mutation<
             JournalEntry,
@@ -46,10 +46,10 @@ const journalApi = api.injectEndpoints({
         >({
             query: (body) => ({
                 url: `/journal/entry`,
-                method: "POST",
+                method: 'POST',
                 body,
             }),
-            invalidatesTags: ["JournalEntry"],
+            invalidatesTags: ['JournalEntry'],
         }),
         updateJournalEntry: build.mutation<
             JournalEntry,
@@ -57,19 +57,19 @@ const journalApi = api.injectEndpoints({
         >({
             query: ({ id, changes }) => ({
                 url: `/journal/update/${id}`,
-                method: "PATCH",
+                method: 'PATCH',
                 body: changes,
             }),
             invalidatesTags: (result, error, { id }) => [
-                { type: "JournalEntry", id },
+                { type: 'JournalEntry', id },
             ],
         }),
         deleteJournalEntry: build.mutation<void, number>({
             query: (id) => ({
                 url: `/journal/delete/${id}`,
-                method: "DELETE",
+                method: 'DELETE',
             }),
-            invalidatesTags: (result, error, id) => ["JournalEntry"],
+            invalidatesTags: (result, error, id) => ['JournalEntry'],
         }),
     }),
     overrideExisting: false,

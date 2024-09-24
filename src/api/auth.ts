@@ -1,5 +1,5 @@
-import { api } from ".";
-import { User } from "../types/auth";
+import { api } from '.';
+import { User } from '../types/auth';
 
 const authApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -13,11 +13,11 @@ const authApi = api.injectEndpoints({
             }
         >({
             query: (body) => ({
-                url: "/auth/loginin",
-                method: "POST",
+                url: '/auth/loginin',
+                method: 'POST',
                 body,
             }),
-            invalidatesTags: ["Auth"],
+            invalidatesTags: ['Auth'],
         }),
         singup: build.mutation<
             void,
@@ -30,15 +30,15 @@ const authApi = api.injectEndpoints({
             }
         >({
             query: (body) => ({
-                url: "/auth/signup",
-                method: "POST",
+                url: '/auth/signup',
+                method: 'POST',
                 body,
             }),
-            invalidatesTags: ["Auth"],
+            invalidatesTags: ['Auth'],
         }),
         getUser: build.query<User, void>({
-            query: () => "/user/info",
-            providesTags: ["Auth"],
+            query: () => '/user/info',
+            providesTags: ['Auth'],
         }),
     }),
     overrideExisting: false,

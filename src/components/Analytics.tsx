@@ -1,7 +1,7 @@
-import { FirebaseAnalytics } from "@capacitor-firebase/analytics";
-import { useIonRouter } from "@ionic/react";
-import { ReactNode, useEffect } from "react";
-import { useGetUserQuery } from "../api/auth";
+import { FirebaseAnalytics } from '@capacitor-firebase/analytics';
+import { useIonRouter } from '@ionic/react';
+import { ReactNode, useEffect } from 'react';
+import { useGetUserQuery } from '../api/auth';
 
 const Analytics: React.FC<{ children: ReactNode }> = ({ children }) => {
     const router = useIonRouter();

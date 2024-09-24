@@ -1,6 +1,6 @@
-import { useIonRouter, useIonViewDidEnter } from "@ionic/react";
-import { ReactNode, useEffect } from "react";
-import { showTabBar } from "../utils/tabBar";
+import { useIonRouter, useIonViewDidEnter } from '@ionic/react';
+import { ReactNode, useEffect } from 'react';
+import { showTabBar } from '../utils/tabBar';
 
 const TabBarHidder: React.FC<{ children: ReactNode }> = ({ children }) => {
     const router = useIonRouter();

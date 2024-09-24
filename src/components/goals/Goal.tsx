@@ -1,11 +1,11 @@
-import { useLongPress } from "@reactuses/core";
-import { useState } from "react";
-import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
-import { Goal } from "../../types/goals";
-import { Link } from "react-router-dom";
-import { useDeleteGoalMutation, useGetGoalQuery } from "../../api/goals";
-import GoalStep from "./Step";
-import { Haptics, ImpactStyle } from "@capacitor/haptics";
+import { useLongPress } from '@reactuses/core';
+import { useState } from 'react';
+import { FaCheckCircle, FaRegCircle } from 'react-icons/fa';
+import { Goal } from '../../types/goals';
+import { Link } from 'react-router-dom';
+import { useDeleteGoalMutation, useGetGoalQuery } from '../../api/goals';
+import GoalStep from './Step';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 const GoalDetails: React.FC<{ goal: Goal }> = ({ goal }) => {
     const { data } = useGetGoalQuery(goal.id);
@@ -21,7 +21,7 @@ const GoalDetails: React.FC<{ goal: Goal }> = ({ goal }) => {
                                 <div className="text-white/50 text-sm">
                                     {
                                         phase.Subpoint.filter(
-                                            (step) => step.isDone
+                                            (step) => step.isDone,
                                         ).length
                                     }
                                     /{phase.Subpoint.length}
@@ -78,9 +78,9 @@ const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
                 )}
                 <div
                     className={
-                        "flex flex-col bg-white/5 rounded-lg relative animate-slideIn " +
-                        (extended ? "h-fit" : "h-16") +
-                        (tooltip ? " z-50" : "")
+                        'flex flex-col bg-white/5 rounded-lg relative animate-slideIn ' +
+                        (extended ? 'h-fit' : 'h-16') +
+                        (tooltip ? ' z-50' : '')
                     }
                 >
                     <div
@@ -96,12 +96,12 @@ const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
                                     acc +
                                     phase.Subpoint.filter((step) => step.isDone)
                                         .length,
-                                0
+                                0,
                             )}
                             /
                             {data.Phase.reduce(
                                 (acc, phase) => acc + phase.Subpoint.length,
-                                0
+                                0,
                             )}
                         </div>
                         <div className="flex flex-col flex-1 font-bold text-lg gap-0.5 pr-1">
@@ -115,15 +115,15 @@ const GoalElement: React.FC<{ goal: Goal; extendable?: boolean }> = ({
                                                 (acc, phase) =>
                                                     acc +
                                                     phase.Subpoint.filter(
-                                                        (step) => step.isDone
+                                                        (step) => step.isDone,
                                                     ).length,
-                                                0
+                                                0,
                                             ) /
                                                 data.Phase.reduce(
                                                     (acc, phase) =>
                                                         acc +
                                                         phase.Subpoint.length,
-                                                    0
+                                                    0,
                                                 )) *
                                             100
                                         }%`,

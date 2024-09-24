@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { authSlice } from "./auth";
-import { api } from "../api";
-import CapacitorStorage from "redux-persist-capacitor";
-import { persistReducer, persistStore } from "redux-persist";
-import autoMergeLevel1 from "redux-persist/lib/stateReconciler/autoMergeLevel1";
+import { configureStore } from '@reduxjs/toolkit';
+import { authSlice } from './auth';
+import { api } from '../api';
+import CapacitorStorage from 'redux-persist-capacitor';
+import { persistReducer, persistStore } from 'redux-persist';
+import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
 const authPesistConfig = {
-    key: "auth",
+    key: 'auth',
     storage: CapacitorStorage,
     stateReconciler: autoMergeLevel1,
 };
@@ -24,8 +24,8 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
-                ignoredActions: ["persist/PERSIST"],
-                ignoredPaths: ["register"],
+                ignoredActions: ['persist/PERSIST'],
+                ignoredPaths: ['register'],
             },
         }).concat(api.middleware),
 });

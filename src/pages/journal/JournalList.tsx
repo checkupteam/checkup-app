@@ -4,18 +4,18 @@ import {
     IonPage,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { useState } from "react";
-import { FaPlus, FaRegStar, FaStar } from "react-icons/fa";
-import { IoMdCloseCircle } from "react-icons/io";
-import Mood from "../../components/Mood";
-import { JournalEntry } from "../../types/journal";
-import { useHistory } from "react-router";
+} from '@ionic/react';
+import { useState } from 'react';
+import { FaPlus, FaRegStar, FaStar } from 'react-icons/fa';
+import { IoMdCloseCircle } from 'react-icons/io';
+import Mood from '../../components/Mood';
+import { JournalEntry } from '../../types/journal';
+import { useHistory } from 'react-router';
 import {
     useGetJournalEntriesQuery,
     useUpdateJournalEntryMutation,
-} from "../../api/journal";
-import Loading from "../../components/Loading";
+} from '../../api/journal';
+import Loading from '../../components/Loading';
 
 const ListItem: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
     const router = useIonRouter();
@@ -43,12 +43,12 @@ const ListItem: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
                     </div>
                     <div className="text-neutral-500 leading-5 font-semibold">
                         {new Date(entry.createdAt)
-                            .toLocaleString("en-US", {
-                                month: "2-digit",
-                                day: "2-digit",
-                                year: "numeric",
+                            .toLocaleString('en-US', {
+                                month: '2-digit',
+                                day: '2-digit',
+                                year: 'numeric',
                             })
-                            .replaceAll("/", ".")}
+                            .replaceAll('/', '.')}
                     </div>
                 </div>
             </div>
@@ -79,19 +79,19 @@ const JournalList: React.FC = () => {
     const [popup, setPopUp] = useState(true);
 
     const filtredEntries = entries?.filter(
-        (entry) => !favorites || entry.isFavorite
+        (entry) => !favorites || entry.isFavorite,
     );
 
-    const getEntiresByRange = (type: "day" | "week" | "month") => {
+    const getEntiresByRange = (type: 'day' | 'week' | 'month') => {
         const today = new Date().setHours(0, 0, 0, 0);
         const weekStart = new Date(today - (today % 86400000) - 86400000 * 6);
         switch (type) {
-            case "day":
+            case 'day':
                 return filtredEntries?.filter((entry) => {
                     const date = new Date(entry.createdAt).setHours(0, 0, 0, 0);
                     return today === date;
                 });
-            case "week":
+            case 'week':
                 return filtredEntries?.filter((entry) => {
                     const date = new Date(entry.createdAt);
                     return (
@@ -100,9 +100,9 @@ const JournalList: React.FC = () => {
                         date <= new Date()
                     );
                 });
-            case "month":
+            case 'month':
                 const monthStart = new Date(
-                    today - (today % 86400000) - 86400000 * 30
+                    today - (today % 86400000) - 86400000 * 30,
                 );
                 return filtredEntries?.filter((entry) => {
                     const date = new Date(entry.createdAt);
@@ -123,7 +123,7 @@ const JournalList: React.FC = () => {
                         <div>Journal</div>
                         <div
                             className={`flex gap-1 px-2 p-1 items-center w-fit rounded-lg text-sm h-fit ${
-                                favorites ? "bg-accent" : "bg-white/10"
+                                favorites ? 'bg-accent' : 'bg-white/10'
                             }`}
                             onClick={() => setFavorites((c) => !c)}
                         >
@@ -134,16 +134,22 @@ const JournalList: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-            <div className={`m-4 rounded-2xl bg-accent p-3 justify-between items-center ${popup ? 'flex' : 'hidden'}`}>
-                <div>
-                    <a href="https://www.innerdrive.co.uk/blog/benefits-of-keeping-a-diary/" className="text-white font-medium">
-                        Why is wrritting journal beneficial?
-                    </a>
-                    <div className="opacity-40">(click to find out)</div>
+                <div
+                    className={`m-4 rounded-2xl bg-accent p-3 justify-between items-center ${popup ? 'flex' : 'hidden'}`}
+                >
+                    <div>
+                        <a
+                            href="https://www.innerdrive.co.uk/blog/benefits-of-keeping-a-diary/"
+                            className="text-white font-medium"
+                        >
+                            Why is wrritting journal beneficial?
+                        </a>
+                        <div className="opacity-40">(click to find out)</div>
+                    </div>
+                    <div onClick={() => setPopUp((c) => !c)}>
+                        <IoMdCloseCircle />
+                    </div>
                 </div>
-                <div onClick={() => setPopUp((c) => !c)}><IoMdCloseCircle />
-                </div>
-            </div>
                 {isLoading ? (
                     <Loading />
                 ) : (
@@ -157,21 +163,21 @@ const JournalList: React.FC = () => {
                                 <div className="text-center uppercase font-semibold text-sm text-white/20">
                                     today
                                 </div>
-                                {getEntiresByRange("day")?.map((entry) => (
+                                {getEntiresByRange('day')?.map((entry) => (
                                     <ListItem key={entry.id} entry={entry} />
                                 ))}
                                 <div className="bg-primary/20 h-[1px]"></div>
                                 <div className="text-center uppercase font-semibold text-sm text-white/20">
                                     this week
                                 </div>
-                                {getEntiresByRange("week")?.map((entry) => (
+                                {getEntiresByRange('week')?.map((entry) => (
                                     <ListItem key={entry.id} entry={entry} />
                                 ))}
                                 <div className="bg-primary/20 h-[1px]"></div>
                                 <div className="text-center uppercase font-semibold text-sm text-white/20">
                                     this month
                                 </div>
-                                {getEntiresByRange("month")?.map((entry) => (
+                                {getEntiresByRange('month')?.map((entry) => (
                                     <ListItem key={entry.id} entry={entry} />
                                 ))}
                                 <div className="bg-primary/20 h-[1px]"></div>
@@ -179,7 +185,7 @@ const JournalList: React.FC = () => {
                         )}
                         <div
                             className="fixed bottom-3 right-3 rounded-full bg-accent w-16 aspect-square flex justify-center items-center text-xl text-white"
-                            onClick={() => history.push("/app/journal/create")}
+                            onClick={() => history.push('/app/journal/create')}
                         >
                             <FaPlus />
                         </div>
