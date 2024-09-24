@@ -25,9 +25,11 @@ const JournalCreate: React.FC = () => {
     const [keyboardVisible, setKeyboardVisible] = useState(false);
     const [currStep, setCurrStep] = useState(0);
     const [selectedMood, setSelectedMood] = useState<Moods | null>(null);
+    const [sleepRating , setSleepRating] = useState<Moods | null>(null)
     const [showMotivation, setShowMotivation] = useState(false);
     const debouncedSelectedMood = useDebounce(selectedMood, 50);
     const activeElement = useActiveElement();
+    const [dreams, setDreams] = useState<boolean | null>(null)
 
     useEffect(() => {
         if (Capacitor.getPlatform() != "web") {
@@ -163,7 +165,7 @@ const JournalCreate: React.FC = () => {
                             <div className="flex flex-row gap-5 items-center justify-center w-fulls">
                                 {Object.entries(moods).map(
                                     (([mood, label] : [any, string]) => (
-                                        <div key={mood} className="flex flex-col items-center justify-center">
+                                        <div key={mood} className={`flex flex-col items-center justify-center ${sleepRating == mood ? 'opacity-100' : 'opacity-40'} `} onClick={() => setSleepRating(mood)}>
                                             <Mood mood={mood} className="text-5xl"/>
                                             <div>{t("journal.mood." + mood)}</div>
                                         </div>
@@ -173,7 +175,10 @@ const JournalCreate: React.FC = () => {
                             </div>
                             {/* <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" /> */}
                             <div className="text-2xl font-bold px-2 mt-2">{t("journal.question.4")}</div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
+                            <div className="flex flex-row items-center justify-center gap-2 h-12">
+                                <div className={`rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase ${dreams == true ? 'bg-accent' : 'bg-darker-violet-800'}`} onClick={() => setDreams(true)}>YES</div>
+                                <div className={`rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase ${dreams == false ? 'bg-accent' : 'bg-darker-violet-800'}`} onClick={() => setDreams(false)}>NO</div></div>
+                                <textarea className={`rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12 ${dreams == true ? 'flex' : 'hidden'}`}/>
                         </div>
                     )}
                     {currStep == 2 && (
