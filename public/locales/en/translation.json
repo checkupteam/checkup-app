@@ -1,0 +1,25 @@
+{
+    "journal": {
+        "motivation": {
+            "1": "Remember, It’s okay to feel sad sometimes. Tomorrow will be the new, much better day!",
+            "2": "I’m sorry to hear that, I hope things get better soon",
+            "3": "I’m sorry to hear that, I hope things get better soon",
+            "4": "I’m sorry to hear that, I hope things get better soon",
+            "5": "That is good to hear I’m excited to hear more"
+        },
+        "mood": {
+            "1": "Terrible",
+            "2": "Bad",
+            "3": "Okay",
+            "4": "Good",
+            "5": "Great"
+        },
+        "question": {
+            "1": "How are you feeling today?",
+            "2": "What made you feel happy?",
+            "3": "How was your sleep today?",
+            "4": "Did you have any dreams?",
+            "5": "Write what you want to remember about today..."
+        }
+    }
+}

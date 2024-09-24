@@ -7,6 +7,8 @@ import { ApiProvider } from "@reduxjs/toolkit/query/react";
 import { api } from "./api";
 import { PersistGate } from "redux-persist/integration/react";
 
+import "./i18n";
+
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
