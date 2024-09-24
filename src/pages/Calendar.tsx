@@ -74,12 +74,16 @@ const Calendar: React.FC = () => {
     const [currDate, setDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
     const datetime = useRef<null | HTMLIonDatetimeElement>(null);
-    const now = new Date();
     const { data: journalEntries, isLoading } = useGetJournalEntriesQuery({
         year: selectedDate.getFullYear(),
         month: selectedDate.getMonth() + 1,
         day: selectedDate.getDate(),
     });
+    const { data: mounthJournalEntries, isLoading: mounthIsLoading } =
+        useGetJournalEntriesQuery({
+            year: selectedDate.getFullYear(),
+            month: selectedDate.getMonth() + 1,
+        });
 
     function getWeekDay() {
         let day = selectedDate.getDay();
@@ -124,6 +128,22 @@ const Calendar: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent scrollY={false}>
+                <IonModal keepContentsMounted={true}>
+                    <IonDatetime
+                        id="datetime"
+                        className="bg-darker-violet-800"
+                        presentation="month-year"
+                        ref={datetime}
+                        value={currDate.toISOString()}
+                        onIonChange={({ detail }: { detail: any }) =>
+                            setDate((c) =>
+                                typeof detail.value == 'string'
+                                    ? new Date(detail.value)
+                                    : c,
+                            )
+                        }
+                    ></IonDatetime>
+                </IonModal>
                 <div className="p-4">
                     <div className="grid grid-cols-7 text-center text-xs mb-2 gap-3">
                         {weekDays.map((day, index) => (
@@ -140,12 +160,12 @@ const Calendar: React.FC = () => {
                         ))}
                     </div>
                     <div
-                        className={`grid grid-cols-7 text-center text-lg gap-x-3 mb-1`}
+                        className={`grid grid-cols-7 text-center text-lg gap-x-3`}
                     >
                         {displayCalendar().map((date, index) => (
                             <div
                                 key={index}
-                                className={`aspect-square content-center text-center rounded-full transition-colors duration-200 ${
+                                className={`aspect-square content-center text-center rounded-full transition-colors relative duration-200 ${
                                     date.toDateString() ==
                                     selectedDate.toDateString()
                                         ? 'bg-accent'
@@ -156,38 +176,22 @@ const Calendar: React.FC = () => {
                                 onClick={() => setSelectedDate(date)}
                             >
                                 {date.getDate()}
+                                {mounthJournalEntries &&
+                                    mounthJournalEntries.find(
+                                        (entry) =>
+                                            new Date(
+                                                entry.createdAt,
+                                            ).toDateString() ==
+                                            date.toDateString(),
+                                    ) && (
+                                        <div className="h-1 absolute left-1/2 -translate-x-1/2 bottom-1 aspect-square rounded-full bg-darker-violet-300"></div>
+                                    )}
                             </div>
                         ))}
                     </div>
                     <div
-                        className={`flex border-b w-full justify-center border-white/10 p-3`}
-                    >
-                        <IonModal keepContentsMounted={true}>
-                            <IonDatetime
-                                id="datetime"
-                                className="bg-darker-violet-800"
-                                presentation="month-year"
-                                ref={datetime}
-                                value={currDate.toISOString()}
-                                onIonChange={({ detail }: { detail: any }) =>
-                                    setDate((c) =>
-                                        typeof detail.value == 'string'
-                                            ? new Date(detail.value)
-                                            : c,
-                                    )
-                                }
-                            >
-                                {/* <IonButtons slot="buttons">
-                <IonButton onClick={() => datetime.current?.cancel(true)}>
-                  Cancel
-                </IonButton>
-                <IonButton onClick={() => datetime.current?.confirm(true)}>
-                  Confirm
-                </IonButton>
-              </IonButtons> */}
-                            </IonDatetime>
-                        </IonModal>
-                    </div>
+                        className={`flex border-b w-full justify-center border-white/10 mt-3`}
+                    ></div>
                 </div>
                 <div className="flex flex-col gap-3 px-4">
                     {isLoading ? (

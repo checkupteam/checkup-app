@@ -3,7 +3,9 @@ body {
     --ion-toolbar-background: var(--header);
     --ion-background-color: var(--background);
     --ion-background-color-rgb: 22, 15, 36;
-    --wheel-highlight-background: #432e6b;
+    --fade-background-rgb: 22, 15, 36;
+    --wheel-fade-background-rgb: 22, 15, 36;
+    --wheel-highlight-background: rgb(45, 31, 71);
     --ion-text-color: white;
 }
 
