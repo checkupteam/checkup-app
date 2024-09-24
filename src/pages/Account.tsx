@@ -4,11 +4,11 @@ import {
     IonPage,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { useDispatch } from "react-redux";
-import { setToken } from "../store/auth";
-import { useGetUserQuery } from "../api/auth";
-import Loading from "../components/Loading";
+} from '@ionic/react';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../store/auth';
+import { useGetUserQuery } from '../api/auth';
+import Loading from '../components/Loading';
 
 const AccountPage: React.FC = () => {
     const { data, isLoading } = useGetUserQuery();
@@ -16,7 +16,7 @@ const AccountPage: React.FC = () => {
     const router = useIonRouter();
 
     const logout = () => {
-        router.push("/auth/login");
+        router.push('/auth/login');
         setTimeout(() => {
             dispatch(setToken(null));
         }, 1000);

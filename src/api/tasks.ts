@@ -1,5 +1,5 @@
-import { api } from ".";
-import { TaskEntry } from "../types/tasks";
+import { api } from '.';
+import { TaskEntry } from '../types/tasks';
 
 const TaskApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -8,7 +8,7 @@ const TaskApi = api.injectEndpoints({
             {
                 page: number;
                 limit: number;
-                orderBy: "asc" | "desc";
+                orderBy: 'asc' | 'desc';
                 isDone?: boolean;
             }
         >({
@@ -20,17 +20,17 @@ const TaskApi = api.injectEndpoints({
                 result?.docs
                     ? [
                           ...result.docs.map(({ id }) => ({
-                              type: "Task" as const,
+                              type: 'Task' as const,
                               id,
                           })),
-                          "Task",
+                          'Task',
                       ]
-                    : ["Task"],
+                    : ['Task'],
         }),
         getTask: build.query<TaskEntry, number>({
             query: (id) => `/task${id}`,
             providesTags: (result, error, id) =>
-                result ? [{ type: "Task", id }] : [],
+                result ? [{ type: 'Task', id }] : [],
         }),
         createTask: build.mutation<
             TaskEntry,
@@ -42,10 +42,10 @@ const TaskApi = api.injectEndpoints({
         >({
             query: (body) => ({
                 url: `/taskManager/task`,
-                method: "POST",
+                method: 'POST',
                 body,
             }),
-            invalidatesTags: ["Task"],
+            invalidatesTags: ['Task'],
         }),
         updateTask: build.mutation<
             TaskEntry,
@@ -53,17 +53,17 @@ const TaskApi = api.injectEndpoints({
         >({
             query: ({ id, changes }) => ({
                 url: `/taskManager/task/${id}`,
-                method: "PATCH",
+                method: 'PATCH',
                 body: changes,
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: "Task", id }],
+            invalidatesTags: (result, error, { id }) => [{ type: 'Task', id }],
         }),
         deleteTask: build.mutation<void, number>({
             query: (id) => ({
                 url: `/task/delete/${id}`,
-                method: "DELETE",
+                method: 'DELETE',
             }),
-            invalidatesTags: (result, error, id) => ["Task"],
+            invalidatesTags: (result, error, id) => ['Task'],
         }),
     }),
     overrideExisting: false,

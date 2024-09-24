@@ -1,33 +1,33 @@
-import { api } from ".";
-import { Goal, Phase } from "../types/goals";
+import { api } from '.';
+import { Goal, Phase } from '../types/goals';
 
 const goalsApi = api.injectEndpoints({
     endpoints: (build) => ({
         getGoals: build.query<Goal[], void>({
-            query: () => "/goalManager/goals",
+            query: () => '/goalManager/goals',
             providesTags: (result) =>
                 result
                     ? [
                           ...result.map(({ id }) => ({
-                              type: "Goal" as const,
+                              type: 'Goal' as const,
                               id,
                           })),
-                          "Goal",
+                          'Goal',
                       ]
-                    : ["Goal"],
+                    : ['Goal'],
         }),
         getGoal: build.query<Goal & { Phase: Phase[] }, number>({
             query: (id) => `/goalManager/goal/${id}`,
             providesTags: (result) =>
-                result ? [{ type: "Goal", id: result.id }] : [],
+                result ? [{ type: 'Goal', id: result.id }] : [],
         }),
         createGoal: build.mutation<Goal, { title: string; isDone: boolean }>({
             query: (body) => ({
-                url: "/goalManager/goal",
-                method: "POST",
+                url: '/goalManager/goal',
+                method: 'POST',
                 body,
             }),
-            invalidatesTags: ["Goal"],
+            invalidatesTags: ['Goal'],
         }),
         updateGoal: build.mutation<
             Goal,
@@ -35,17 +35,17 @@ const goalsApi = api.injectEndpoints({
         >({
             query: ({ id, changes }) => ({
                 url: `/goalManager/goal/${id}`,
-                method: "PATCH",
+                method: 'PATCH',
                 body: changes,
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: "Goal", id }],
+            invalidatesTags: (result, error, { id }) => [{ type: 'Goal', id }],
         }),
         deleteGoal: build.mutation<void, number>({
             query: (id) => ({
                 url: `/goalManager/goal/${id}`,
-                method: "DELETE",
+                method: 'DELETE',
             }),
-            invalidatesTags: (result, error, id) => [{ type: "Goal", id }],
+            invalidatesTags: (result, error, id) => [{ type: 'Goal', id }],
         }),
         createPhase: build.mutation<
             any,
@@ -53,11 +53,11 @@ const goalsApi = api.injectEndpoints({
         >({
             query: ({ goalId, ...body }) => ({
                 url: `/goalManager/phase/${goalId}`,
-                method: "POST",
+                method: 'POST',
                 body,
             }),
             invalidatesTags: (result, error, { goalId }) => [
-                { type: "Goal", id: goalId },
+                { type: 'Goal', id: goalId },
             ],
         }),
         createStep: build.mutation<
@@ -71,10 +71,10 @@ const goalsApi = api.injectEndpoints({
         >({
             query: ({ phaseId, ...body }) => ({
                 url: `/goalManager/subpoint/${phaseId}`,
-                method: "POST",
+                method: 'POST',
                 body,
             }),
-            invalidatesTags: ["Goal"],
+            invalidatesTags: ['Goal'],
         }),
         updateStep: build.mutation<
             any,
@@ -89,24 +89,24 @@ const goalsApi = api.injectEndpoints({
         >({
             query: ({ id, changes }) => ({
                 url: `/goalManager/subpoint/${id}`,
-                method: "PATCH",
+                method: 'PATCH',
                 body: changes,
             }),
-            invalidatesTags: ["Goal"],
+            invalidatesTags: ['Goal'],
         }),
         deleteStep: build.mutation<void, number>({
             query: (id) => ({
                 url: `/goalManager/subpoint/${id}`,
-                method: "DELETE",
+                method: 'DELETE',
             }),
-            invalidatesTags: ["Goal"],
+            invalidatesTags: ['Goal'],
         }),
         deletePhase: build.mutation<void, number>({
             query: (id) => ({
                 url: `/goalManager/phase/${id}`,
-                method: "DELETE",
+                method: 'DELETE',
             }),
-            invalidatesTags: ["Goal"],
+            invalidatesTags: ['Goal'],
         }),
     }),
     overrideExisting: false,

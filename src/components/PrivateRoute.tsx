@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
-import { selectToken } from "../store/auth";
-import { Redirect, Route, RouteProps } from "react-router-dom";
-import { ReactNode } from "react";
+import { useSelector } from 'react-redux';
+import { selectToken } from '../store/auth';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 interface PrivateRouteProps extends RouteProps {
     children?: ReactNode;
@@ -22,7 +22,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, ...rest }) => {
                 ) : (
                     <Redirect
                         to={{
-                            pathname: "/auth/signup",
+                            pathname: '/auth/signup',
                             state: { from: location },
                         }}
                     />

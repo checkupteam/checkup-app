@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
     FaCheckCircle,
     FaRegCircle,
     FaTrash,
     FaTrashAlt,
-} from "react-icons/fa";
-import { Step } from "../../types/goals";
-import { useDebounce } from "@reactuses/core";
-import { useDeleteStepMutation, useUpdateStepMutation } from "../../api/goals";
+} from 'react-icons/fa';
+import { Step } from '../../types/goals';
+import { useDebounce } from '@reactuses/core';
+import { useDeleteStepMutation, useUpdateStepMutation } from '../../api/goals';
 
 const GoalStepEditor: React.FC<{ close: () => void; step: Step }> = ({
     close,
@@ -16,7 +16,7 @@ const GoalStepEditor: React.FC<{ close: () => void; step: Step }> = ({
     const [updateStep] = useUpdateStepMutation();
     const [deleteStep] = useDeleteStepMutation();
     const [title, setTitle] = useState(step.title);
-    const [description, setDescription] = useState(step.description || "");
+    const [description, setDescription] = useState(step.description || '');
     const debouncedTitle = useDebounce(title, 200);
     const debouncedDescription = useDebounce(description, 200);
 

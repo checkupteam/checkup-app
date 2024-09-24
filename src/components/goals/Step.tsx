@@ -1,9 +1,9 @@
-import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
-import GoalStepEditor from "./StepEditor";
-import { MouseEvent, useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useCreateStepMutation, useUpdateStepMutation } from "../../api/goals";
-import { Step } from "../../types/goals";
+import { FaCheckCircle, FaRegCircle } from 'react-icons/fa';
+import GoalStepEditor from './StepEditor';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useCreateStepMutation, useUpdateStepMutation } from '../../api/goals';
+import { Step } from '../../types/goals';
 
 const GoalStep: React.FC<{
     step?: Step;
@@ -68,7 +68,7 @@ const GoalStep: React.FC<{
             )}
             <div
                 className={
-                    "bg-white/5 rounded-md flex items-center px-2 font-semibold h-14 gap-3 " +
+                    'bg-white/5 rounded-md flex items-center px-2 font-semibold h-14 gap-3 ' +
                     className
                 }
                 onClick={() => editable && setInEdit(true)}
@@ -93,7 +93,7 @@ const GoalStep: React.FC<{
                         <input
                             className="h-full text-lg bg-transparent w-full outline-none overflow-x-auto whitespace-nowrap"
                             autoFocus
-                            {...register("title", { required: true })}
+                            {...register('title', { required: true })}
                         />
                     </form>
                 ) : (

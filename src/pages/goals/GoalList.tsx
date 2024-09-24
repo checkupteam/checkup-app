@@ -4,11 +4,11 @@ import {
     IonPage,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { FaPlus } from "react-icons/fa";
-import GoalElement from "../../components/goals/Goal";
-import { useCreateGoalMutation, useGetGoalsQuery } from "../../api/goals";
-import Loading from "../../components/Loading";
+} from '@ionic/react';
+import { FaPlus } from 'react-icons/fa';
+import GoalElement from '../../components/goals/Goal';
+import { useCreateGoalMutation, useGetGoalsQuery } from '../../api/goals';
+import Loading from '../../components/Loading';
 
 const GoalList: React.FC = () => {
     const router = useIonRouter();
@@ -17,12 +17,12 @@ const GoalList: React.FC = () => {
 
     const handleCreateGoal = async () => {
         const newGoal = await createGoal({
-            title: "New Goal",
+            title: 'New Goal',
             isDone: false,
         });
 
         if (!newGoal.data) return;
-        router.push("/app/goals/" + newGoal.data.id);
+        router.push('/app/goals/' + newGoal.data.id);
     };
 
     return (

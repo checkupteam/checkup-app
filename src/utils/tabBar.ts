@@ -1,14 +1,14 @@
 const hideTabBar = (): void => {
-    const tabBar = document.getElementById("app-tab-bar");
+    const tabBar = document.getElementById('app-tab-bar');
     if (tabBar !== null) {
-        tabBar.style.display = "none";
+        tabBar.style.display = 'none';
     }
 };
 
 const showTabBar = (): void => {
-    const tabBar = document.getElementById("app-tab-bar");
+    const tabBar = document.getElementById('app-tab-bar');
     if (tabBar !== null) {
-        tabBar.style.display = "flex";
+        tabBar.style.display = 'flex';
     }
 };
 

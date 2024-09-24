@@ -4,20 +4,20 @@ import {
     IonPage,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { useEffect, useRef, useState } from "react";
-import { FaArrowLeft, FaPen } from "react-icons/fa";
-import GoalPhase from "../../components/goals/Phase";
-import { RouteComponentProps } from "react-router";
+} from '@ionic/react';
+import { useEffect, useRef, useState } from 'react';
+import { FaArrowLeft, FaPen } from 'react-icons/fa';
+import GoalPhase from '../../components/goals/Phase';
+import { RouteComponentProps } from 'react-router';
 import {
     useCreatePhaseMutation,
     useGetGoalQuery,
     useUpdateGoalMutation,
-} from "../../api/goals";
-import { useDebounce } from "@reactuses/core";
-import Loading from "../../components/Loading";
-import { Capacitor } from "@capacitor/core";
-import { Keyboard } from "@capacitor/keyboard";
+} from '../../api/goals';
+import { useDebounce } from '@reactuses/core';
+import Loading from '../../components/Loading';
+import { Capacitor } from '@capacitor/core';
+import { Keyboard } from '@capacitor/keyboard';
 
 interface GoalEditProps
     extends RouteComponentProps<{
@@ -34,16 +34,16 @@ const GoalEdit: React.FC<GoalEditProps> = ({ match }) => {
     const [updateGoal] = useUpdateGoalMutation();
     const [createPhase] = useCreatePhaseMutation();
     const titleInput = useRef<HTMLInputElement | null>(null);
-    const [title, setTitle] = useState("");
+    const [title, setTitle] = useState('');
     const debouncedTitle = useDebounce(title, 500);
 
     useEffect(() => {
-        if (Capacitor.getPlatform() != "web") {
-            Keyboard.addListener("keyboardWillShow", () => {
+        if (Capacitor.getPlatform() != 'web') {
+            Keyboard.addListener('keyboardWillShow', () => {
                 setKeyboardVisible(true);
             });
 
-            Keyboard.addListener("keyboardDidHide", () => {
+            Keyboard.addListener('keyboardDidHide', () => {
                 setKeyboardVisible(false);
             });
 
@@ -72,7 +72,7 @@ const GoalEdit: React.FC<GoalEditProps> = ({ match }) => {
     const handleCreatePhase = () => {
         createPhase({
             goalId: id,
-            title: "Phase " + (data && data.Phase.length + 1),
+            title: 'Phase ' + (data && data.Phase.length + 1),
             isDone: false,
         });
     };

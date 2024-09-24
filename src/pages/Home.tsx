@@ -4,34 +4,34 @@ import {
     IonPage,
     IonTitle,
     IonToolbar,
-} from "@ionic/react";
-import { FaCalendarAlt } from "react-icons/fa";
-import { BsFillHeartPulseFill } from "react-icons/bs";
-import { GiJugglingSeal } from "react-icons/gi";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Mood from "../components/Mood";
-import { JournalEntry } from "../types/journal";
-import { useGetJournalEntriesQuery } from "../api/journal";
-import { useGetUserQuery } from "../api/auth";
-import GoalElement from "../components/goals/Goal";
-import { useGetGoalsQuery } from "../api/goals";
-import Loading from "../components/Loading";
-import { useGetQuoteQuery } from "../api/home";
-import SealLong from "../assets/long_seal.svg";
+} from '@ionic/react';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { BsFillHeartPulseFill } from 'react-icons/bs';
+import { GiJugglingSeal } from 'react-icons/gi';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Mood from '../components/Mood';
+import { JournalEntry } from '../types/journal';
+import { useGetJournalEntriesQuery } from '../api/journal';
+import { useGetUserQuery } from '../api/auth';
+import GoalElement from '../components/goals/Goal';
+import { useGetGoalsQuery } from '../api/goals';
+import Loading from '../components/Loading';
+import { useGetQuoteQuery } from '../api/home';
+import SealLong from '../assets/long_seal.svg';
 
 let date_time = new Date();
-let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
-let date = ("0" + date_time.getDate()).slice(-2);
+let month = ('0' + (date_time.getMonth() + 1)).slice(-2);
+let date = ('0' + date_time.getDate()).slice(-2);
 let day = date_time.getDay();
 const weekDays = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
 ];
 
 const Home: React.FC = () => {
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
                         </div>
                     )}
                     <Link
-                        to={"/app/journal"}
+                        to={'/app/journal'}
                         className="flex flex-col p-2 pt-3 gap-2 col-span-2 md:col-span-1 relative bg-gradient-to-br from-darker-violet-800 to-darker-violet-850 rounded-xl text-white shadow-md shadow-darker-violet-900"
                     >
                         <div className="text-lg font-bold text-darker-violet-300 leading-5 mx-1 uppercase">
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
                         )}
                     </Link>
                     <Link
-                        to={"/app/goals"}
+                        to={'/app/goals'}
                         className="flex flex-col p-2 pt-3 gap-2 col-span-2 md:col-span-1 relative bg-gradient-to-br from-darker-violet-800 to-darker-violet-850 rounded-xl text-white shadow-md shadow-darker-violet-900"
                     >
                         <div className="text-lg font-bold text-darker-violet-300 leading-5 mx-1 uppercase">

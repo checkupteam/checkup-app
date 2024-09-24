@@ -1,6 +1,6 @@
-import { Haptics, ImpactStyle } from "@capacitor/haptics";
-import { useLongPress } from "@reactuses/core";
-import { ReactNode, useState } from "react";
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { useLongPress } from '@reactuses/core';
+import { ReactNode, useState } from 'react';
 
 const HoldMenu: React.FC<{
     children: ReactNode;
@@ -27,7 +27,7 @@ const HoldMenu: React.FC<{
                 ></div>
             )}
             <div
-                className={"relative " + (visible ? "z-50" : "")}
+                className={'relative ' + (visible ? 'z-50' : '')}
                 {...longPressEvent}
             >
                 {children}

@@ -1,7 +1,7 @@
-import { IonPage, IonRouterOutlet } from "@ionic/react";
-import { Redirect, Route, RouteComponentProps } from "react-router";
-import Login from "./Login";
-import SignUp from "./SignUp";
+import { IonPage, IonRouterOutlet } from '@ionic/react';
+import { Redirect, Route, RouteComponentProps } from 'react-router';
+import Login from './Login';
+import SignUp from './SignUp';
 
 const AuthPage: React.FC<RouteComponentProps> = ({ match }) => {
     return (

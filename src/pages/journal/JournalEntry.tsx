@@ -1,38 +1,38 @@
-import { Camera, CameraResultType } from "@capacitor/camera";
-import { Keyboard } from "@capacitor/keyboard";
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { Keyboard } from '@capacitor/keyboard';
 import {
     IonContent,
     IonHeader,
     IonPage,
     IonToolbar,
     useIonRouter,
-} from "@ionic/react";
-import { useEffect, useState } from "react";
-import { IconType } from "react-icons";
+} from '@ionic/react';
+import { useEffect, useState } from 'react';
+import { IconType } from 'react-icons';
 import {
     FaArrowLeft,
     FaImage,
     FaMicrophone,
     FaRegStar,
     FaStar,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 import {
     FaFaceFrown,
     FaFaceFrownOpen,
     FaFaceLaugh,
     FaFaceMeh,
     FaFaceSmile,
-} from "react-icons/fa6";
-import { Moods } from "../../types/journal";
-import { useDispatch, useSelector } from "react-redux";
-import { RouteComponentProps, useHistory } from "react-router";
-import { Capacitor } from "@capacitor/core";
+} from 'react-icons/fa6';
+import { Moods } from '../../types/journal';
+import { useDispatch, useSelector } from 'react-redux';
+import { RouteComponentProps, useHistory } from 'react-router';
+import { Capacitor } from '@capacitor/core';
 import {
     useCreateJournalEntryMutation,
     useGetJournalEntryQuery,
     useUpdateJournalEntryMutation,
-} from "../../api/journal";
-import Loading from "../../components/Loading";
+} from '../../api/journal';
+import Loading from '../../components/Loading';
 
 interface JournalEntryPageProps
     extends RouteComponentProps<{
@@ -43,9 +43,9 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     const dispatch = useDispatch();
     const router = useIonRouter();
     const [keyboardVisible, setKeyboardVisible] = useState(false);
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState('');
     const [mood, setMood] = useState<Moods>(Moods.OKAY);
-    const [title, setTitle] = useState("New Entry");
+    const [title, setTitle] = useState('New Entry');
     const [favorite, setFavorite] = useState(false);
 
     const [createJournalEntry] = useCreateJournalEntryMutation();
@@ -57,12 +57,12 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     });
 
     useEffect(() => {
-        if (Capacitor.getPlatform() != "web") {
-            Keyboard.addListener("keyboardWillShow", () => {
+        if (Capacitor.getPlatform() != 'web') {
+            Keyboard.addListener('keyboardWillShow', () => {
                 setKeyboardVisible(true);
             });
 
-            Keyboard.addListener("keyboardDidHide", () => {
+            Keyboard.addListener('keyboardDidHide', () => {
                 setKeyboardVisible(false);
             });
 
@@ -90,7 +90,7 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
 
         setContent(
             content +
-                `<img src="${image.dataUrl}" alt="photo" class="w-full rounded-lg my-1" />`
+                `<img src="${image.dataUrl}" alt="photo" class="w-full rounded-lg my-1" />`,
         );
     };
 
@@ -108,7 +108,7 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                 onClick={() => setMood(name)}
             >
                 <Icon
-                    className={"text-5xl " + className}
+                    className={'text-5xl ' + className}
                     style={{
                         opacity: mood === name ? 1 : 0.4,
                     }}
