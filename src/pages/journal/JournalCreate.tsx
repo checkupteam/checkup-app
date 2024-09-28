@@ -93,6 +93,8 @@ const JournalCreate: React.FC = () => {
         };
     }, [selectedMood]);
 
+    const createJournal = () => {};
+
     return (
         <IonPage>
             <IonHeader className="shadow-none">
@@ -290,7 +292,7 @@ const JournalCreate: React.FC = () => {
                                     'bg-accent rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase' +
                                     (canGoNext() ? '' : ' bg-accent/50')
                                 }
-                                onClick={goNext}
+                                onClick={currStep == 2 ? createJournal : goNext}
                             >
                                 {currStep == 2 ? 'save' : 'next'}
                             </div>

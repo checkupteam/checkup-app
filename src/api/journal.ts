@@ -42,10 +42,11 @@ const journalApi = api.injectEndpoints({
                 mood: number;
                 isFavorite: boolean;
                 text: string;
+                answers: { answer: string }[];
             }
         >({
             query: (body) => ({
-                url: `/journal/entry`,
+                url: `/journal/fullEntry`,
                 method: 'POST',
                 body,
             }),
