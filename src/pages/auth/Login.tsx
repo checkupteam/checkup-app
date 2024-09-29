@@ -31,7 +31,9 @@ const Login: React.FC = () => {
         if (status === 'fulfilled') {
             if (data.access_token) dispatch(setToken(data.access_token));
             FirebaseAnalytics.logEvent({ name: 'login' });
-            router.push('/app');
+            setTimeout(() => {
+                router.push('/app');
+            }, 100);
         } else if (status === 'rejected') {
             setErrorText((error as any).data.message);
         }

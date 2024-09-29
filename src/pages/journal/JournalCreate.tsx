@@ -172,7 +172,7 @@ const JournalCreate: React.FC = () => {
                                 </div>
                             )}
                             {
-                                <div className="flex w-full h-full gap-4 justify-evenly text-base text-white/40 mt-6 circle ">
+                                <div className="flex w-full h-full gap-4 justify-evenly text-base text-white/40 mt-6 circle self-center ">
                                     <div className="spin ">
                                         {Object.entries(moods).map(
                                             (

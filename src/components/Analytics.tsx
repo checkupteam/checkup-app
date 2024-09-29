@@ -5,7 +5,7 @@ import { useGetUserQuery } from '../api/auth';
 
 const Analytics: React.FC<{ children: ReactNode }> = ({ children }) => {
     const router = useIonRouter();
-    const user = useGetUserQuery();
+    // const user = useGetUserQuery();
 
     useEffect(() => {
         if (router.routeInfo.tab) {
@@ -19,13 +19,13 @@ const Analytics: React.FC<{ children: ReactNode }> = ({ children }) => {
         }
     }, [router]);
 
-    useEffect(() => {
-        if (user.data) {
-            FirebaseAnalytics.setUserId({ userId: user.data.id.toString() });
-        } else {
-            FirebaseAnalytics.resetAnalyticsData();
-        }
-    }, [user]);
+    // useEffect(() => {
+    //     if (user.data) {
+    //         FirebaseAnalytics.setUserId({ userId: user.data.id.toString() });
+    //     } else {
+    //         FirebaseAnalytics.resetAnalyticsData();
+    //     }
+    // }, [user]);
 
     return <>{children}</>;
 };
