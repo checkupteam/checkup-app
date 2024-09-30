@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useActiveElement, useDebounce } from '@reactuses/core';
 import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
+import { useCreateJournalEntryMutation } from '../../api/journal';
 
 const moods: Record<Moods, string> = {
     [Moods.TERRIBLE]: 'Terrible',
@@ -38,7 +39,12 @@ const JournalCreate: React.FC = () => {
     const [showMotivation, setShowMotivation] = useState(false);
     const debouncedSelectedMood = useDebounce(selectedMood, 50);
     const activeElement = useActiveElement();
-    const [dreams, setDreams] = useState<boolean | null>(null);
+    const [title, setTitle] = useState<string>('New Entry');
+    const [firstQuestion, setFirstQuestion] = useState<string>('');
+    const [haveDreams, setHaveDreams] = useState<boolean | null>(null);
+    const [dreamText, setDreamText] = useState<string>('');
+    const [text, setText] = useState<string>('');
+    const [createJournalEntry] = useCreateJournalEntryMutation();
 
     useEffect(() => {
         if (Capacitor.getPlatform() != 'web') {
@@ -67,16 +73,19 @@ const JournalCreate: React.FC = () => {
 
     const goBack = () => {
         if (currStep > 0) setCurrStep(currStep - 1);
-        // else if (selectedMood !== null) setSelectedMood(null);
         else router.goBack();
     };
 
     const goNext = () => {
-        if (currStep < 2 && selectedMood !== null) setCurrStep(currStep + 1);
+        if (currStep < 2 && canGoNext()) setCurrStep(currStep + 1);
     };
 
     const canGoNext = () => {
-        return selectedMood !== null;
+        return (
+            selectedMood !== null &&
+            (currStep < 1 || (sleepRating !== null && haveDreams !== null)) &&
+            (currStep < 2 || text.length > 0)
+        );
     };
 
     useIonViewWillEnter(() => {
@@ -93,7 +102,38 @@ const JournalCreate: React.FC = () => {
         };
     }, [selectedMood]);
 
-    const createJournal = () => {};
+    const createJournal = async () => {
+        console.log(selectedMood);
+        console.log(firstQuestion);
+        console.log(sleepRating);
+        console.log(dreamText);
+        console.log(text);
+
+        if (!canGoNext()) return;
+
+        const result = await createJournalEntry({
+            title,
+            mood: selectedMood!,
+            isFavorite: false,
+            text,
+            answers: [
+                {
+                    answer: firstQuestion,
+                },
+                {
+                    answer: sleepRating!.toString(),
+                },
+                {
+                    answer: haveDreams!.toString(),
+                },
+                {
+                    answer: dreamText,
+                },
+            ],
+        });
+
+        result?.data && router.push('/app/journal/edit/' + result.data.id);
+    };
 
     return (
         <IonPage>
@@ -106,9 +146,11 @@ const JournalCreate: React.FC = () => {
                         >
                             <FaArrowLeft />
                         </div>
-                        <div className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap bg-transparent">
-                            Create Entry
-                        </div>
+                        <input
+                            className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap bg-transparent"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
                     </div>
                 </IonToolbar>
             </IonHeader>
@@ -225,7 +267,13 @@ const JournalCreate: React.FC = () => {
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t('journal.question.2')}
                             </div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12" />
+                            <textarea
+                                className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12"
+                                value={firstQuestion}
+                                onChange={(event) =>
+                                    setFirstQuestion(event.target.value)
+                                }
+                            />
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t('journal.question.3')}
                             </div>
@@ -252,23 +300,29 @@ const JournalCreate: React.FC = () => {
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t('journal.question.4')}
                             </div>
-                            <div className="flex flex-row items-center justify-center gap-2 h-12">
+                            <div className="flex flex-row items-center justify-center gap-2 h-10">
                                 <div
-                                    className={`rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase ${dreams == true ? 'bg-accent' : 'bg-darker-violet-800'}`}
-                                    onClick={() => setDreams(true)}
+                                    className={`rounded-full flex-1 h-full flex justify-center items-center transition-colors text-lg font-bold uppercase ${haveDreams == true ? 'bg-accent' : 'bg-darker-violet-800'}`}
+                                    onClick={() => setHaveDreams(true)}
                                 >
                                     YES
                                 </div>
                                 <div
-                                    className={`rounded-full flex-[2] flex justify-center items-center text-lg font-bold uppercase ${dreams == false ? 'bg-accent' : 'bg-darker-violet-800'}`}
-                                    onClick={() => setDreams(false)}
+                                    className={`rounded-full flex-1 h-full flex justify-center items-center transition-colors text-lg font-bold uppercase ${haveDreams == false ? 'bg-accent' : 'bg-darker-violet-800'}`}
+                                    onClick={() => setHaveDreams(false)}
                                 >
                                     NO
                                 </div>
                             </div>
-                            <textarea
-                                className={`rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12 ${dreams == true ? 'flex' : 'hidden'}`}
-                            />
+                            {haveDreams == true && (
+                                <textarea
+                                    className={`rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12`}
+                                    value={dreamText}
+                                    onChange={(event) =>
+                                        setDreamText(event.target.value)
+                                    }
+                                />
+                            )}
                         </div>
                     )}
                     {currStep == 2 && (
@@ -276,7 +330,13 @@ const JournalCreate: React.FC = () => {
                             <div className="text-2xl font-bold px-2">
                                 {t('journal.question.5')}
                             </div>
-                            <textarea className="rounded-xl bg-darker-violet-950 w-full h-0 p-2 px-3 font-semibold resize-none outline-none flex-1" />
+                            <textarea
+                                className="rounded-xl bg-darker-violet-950 w-full h-0 p-2 px-3 font-semibold resize-none outline-none flex-1"
+                                value={text}
+                                onChange={(event) =>
+                                    setText(event.target.value)
+                                }
+                            />
                         </div>
                     )}
                     {!keyboardVisible && (

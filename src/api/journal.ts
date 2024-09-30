@@ -48,7 +48,10 @@ const journalApi = api.injectEndpoints({
             query: (body) => ({
                 url: `/journal/fullEntry`,
                 method: 'POST',
-                body,
+                body: {
+                    ...body,
+                    mood: parseInt(body.mood as any),
+                },
             }),
             invalidatesTags: ['JournalEntry'],
         }),
