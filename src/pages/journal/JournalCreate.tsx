@@ -103,12 +103,6 @@ const JournalCreate: React.FC = () => {
     }, [selectedMood]);
 
     const createJournal = async () => {
-        console.log(selectedMood);
-        console.log(firstQuestion);
-        console.log(sleepRating);
-        console.log(dreamText);
-        console.log(text);
-
         if (!canGoNext()) return;
 
         const result = await createJournalEntry({
@@ -132,7 +126,12 @@ const JournalCreate: React.FC = () => {
             ],
         });
 
-        result?.data && router.push('/app/journal/edit/' + result.data.id);
+        result?.data &&
+            router.push(
+                '/app/journal/edit/' + result.data.id,
+                'forward',
+                'replace',
+            );
     };
 
     return (

@@ -6,6 +6,7 @@ import {
     IonPage,
     IonToolbar,
     useIonRouter,
+    useIonViewWillEnter,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
@@ -28,11 +29,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Capacitor } from '@capacitor/core';
 import {
-    useCreateJournalEntryMutation,
     useGetJournalEntryQuery,
     useUpdateJournalEntryMutation,
 } from '../../api/journal';
 import Loading from '../../components/Loading';
+import { hideTabBar } from '../../utils/tabBar';
 
 interface JournalEntryPageProps
     extends RouteComponentProps<{
@@ -47,13 +48,15 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     const [mood, setMood] = useState<Moods>(Moods.OKAY);
     const [title, setTitle] = useState('New Entry');
     const [favorite, setFavorite] = useState(false);
-
-    const [createJournalEntry] = useCreateJournalEntryMutation();
     const [updateJournalEntry] = useUpdateJournalEntryMutation();
 
     const id = match.params.id ? parseInt(match.params.id) : undefined;
     const { data: entry, isLoading } = useGetJournalEntryQuery(id!, {
         skip: id == undefined,
+    });
+
+    useIonViewWillEnter(() => {
+        hideTabBar();
     });
 
     useEffect(() => {
@@ -130,12 +133,6 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                 },
             });
         } else {
-            createJournalEntry({
-                title,
-                text: content,
-                mood,
-                isFavorite: favorite,
-            });
         }
         router.goBack();
     };
