@@ -34,6 +34,10 @@ import {
 } from '../../api/journal';
 import Loading from '../../components/Loading';
 import { hideTabBar } from '../../utils/tabBar';
+import Mood from '../../components/Mood';
+import { motion } from 'framer-motion';
+import LongSeal from '../../assets/long_seal.svg';
+import { useTranslation } from 'react-i18next';
 
 interface JournalEntryPageProps
     extends RouteComponentProps<{
@@ -41,6 +45,7 @@ interface JournalEntryPageProps
     }> {}
 
 const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const router = useIonRouter();
     const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -48,6 +53,7 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     const [mood, setMood] = useState<Moods>(Moods.OKAY);
     const [title, setTitle] = useState('New Entry');
     const [favorite, setFavorite] = useState(false);
+    const [changeMood, setChangeMood] = useState(false);
     const [updateJournalEntry] = useUpdateJournalEntryMutation();
 
     const id = match.params.id ? parseInt(match.params.id) : undefined;
@@ -94,30 +100,6 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
         setContent(
             content +
                 `<img src="${image.dataUrl}" alt="photo" class="w-full rounded-lg my-1" />`,
-        );
-    };
-
-    const Mood: React.FC<{
-        label: string;
-        icon: IconType;
-        className: string;
-        name: Moods;
-    }> = ({ label, icon, className, name }) => {
-        const Icon = icon;
-
-        return (
-            <div
-                className="flex flex-col gap-1 items-center"
-                onClick={() => setMood(name)}
-            >
-                <Icon
-                    className={'text-5xl ' + className}
-                    style={{
-                        opacity: mood === name ? 1 : 0.4,
-                    }}
-                />
-                <div>{label}</div>
-            </div>
         );
     };
 
@@ -171,43 +153,69 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                     <Loading />
                 ) : (
                     <div className="p-3 flex flex-col gap-3 w-full h-full">
-                        <div className="flex flex-col gap-3">
-                            <div className="text-xl font-bold px-2">
-                                How are you feeling today?
+                        <div className="px-3 mt-1 flex gap-6 gap-y-4 items-center pl-3 min-h-36 flex-wrap relative">
+                            {Object.entries(Moods).map(
+                                ([_, mood]) =>
+                                    mood == entry?.mood && (
+                                        <motion.div
+                                            key={mood}
+                                            className="flex flex-col gap-1 items-center w-fit text-2xl font-semibold text-white/40 z-10"
+                                            layoutId={mood + '-journal-edit'}
+                                            onClick={() =>
+                                                setChangeMood((c) => !c)
+                                            }
+                                        >
+                                            <Mood
+                                                mood={mood}
+                                                className={'text-6xl'}
+                                            />
+                                        </motion.div>
+                                    ),
+                            )}
+                            {changeMood && (
+                                <div className="absolute -bottom-2 flex gap-2">
+                                    {Object.values(Moods).map(
+                                        (mood) =>
+                                            (mood as Moods) && (
+                                                <motion.div
+                                                    key={mood}
+                                                    className="flex flex-col gap-1 items-center w-fit text-2xl font-semibold text-white/40"
+                                                    layoutId={
+                                                        mood + '-journal-edit'
+                                                    }
+                                                    onClick={() => {
+                                                        // setMood(mood);
+                                                        setChangeMood(false);
+                                                    }}
+                                                >
+                                                    {/* <Mood
+                                                mood={mood as Moods}
+                                                className={'text-6xl'}
+                                            /> */}
+                                                    <div>
+                                                        {t(
+                                                            'journal.mood.' +
+                                                                mood,
+                                                        )}
+                                                    </div>
+                                                </motion.div>
+                                            ),
+                                    )}
+                                </div>
+                            )}
+                            <div className="rounded-xl bg-darker-violet-850 min-h-28 flex-1 p-2 px-3 pr-14 relative font-semibold overflow-hidden animate-fadeIn">
+                                <div>
+                                    {t('journal.motivation.' + entry?.mood)}
+                                </div>
+                                <img
+                                    src={LongSeal}
+                                    alt=""
+                                    className="absolute h-18 -rotate-45 -right-1 -bottom-2"
+                                />
                             </div>
-                            <div className="flex justify-evenly font-bold text-xs text-white/40">
-                                <Mood
-                                    label="Terrible"
-                                    icon={FaFaceFrown}
-                                    className="text-red-500"
-                                    name={Moods.TERRIBLE}
-                                />
-                                <Mood
-                                    label="Bad"
-                                    icon={FaFaceFrownOpen}
-                                    className="text-orange-500"
-                                    name={Moods.BAD}
-                                />
-                                <Mood
-                                    label="Okay"
-                                    icon={FaFaceMeh}
-                                    className="text-yellow-500"
-                                    name={Moods.OKAY}
-                                />
-                                <Mood
-                                    label="Good"
-                                    icon={FaFaceSmile}
-                                    className="text-green-500"
-                                    name={Moods.GOOD}
-                                />
-                                <Mood
-                                    label="Great"
-                                    icon={FaFaceLaugh}
-                                    className="text-green-700"
-                                    name={Moods.GREAT}
-                                />
-                            </div>
+                            <div className="w-full h-0.5 bg-darker-violet-850"></div>
                         </div>
+
                         <div
                             className="flex-1 shrink-0 h-0 overflow-auto bg-primary/40 rounded-2xl p-3 outline-none relative pb-32"
                             contentEditable
