@@ -1,5 +1,5 @@
 import { api } from '.';
-import { JournalEntry } from '../types/journal';
+import { JournalAnswer, JournalEntry } from '../types/journal';
 
 const journalApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -75,6 +75,19 @@ const journalApi = api.injectEndpoints({
             }),
             invalidatesTags: (result, error, id) => ['JournalEntry'],
         }),
+        updateJournalAnswer: build.mutation<
+            JournalAnswer,
+            { id: number; answer: string }
+        >({
+            query: ({ id, answer }) => ({
+                url: `/journal/answer/${id}`,
+                method: 'PATCH',
+                body: { answer },
+            }),
+            invalidatesTags: (result, error, { id }) => [
+                { type: 'JournalEntry', id: result?.journalId },
+            ],
+        }),
     }),
     overrideExisting: false,
 });
@@ -85,4 +98,5 @@ export const {
     useCreateJournalEntryMutation,
     useUpdateJournalEntryMutation,
     useDeleteJournalEntryMutation,
+    useUpdateJournalAnswerMutation,
 } = journalApi;

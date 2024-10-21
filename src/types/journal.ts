@@ -15,5 +15,11 @@ export type JournalEntry = {
     isFavorite: boolean;
     text: string;
     createdDate: number;
-    Answer: { answer: string }[];
+    Answer: { answer: string; id: any }[];
+};
+
+export type JournalAnswer = {
+    id: number;
+    answer: string;
+    journalId: number;
 };

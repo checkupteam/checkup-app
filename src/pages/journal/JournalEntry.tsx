@@ -30,6 +30,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { Capacitor } from '@capacitor/core';
 import {
     useGetJournalEntryQuery,
+    useUpdateJournalAnswerMutation,
     useUpdateJournalEntryMutation,
 } from '../../api/journal';
 import Loading from '../../components/Loading';
@@ -38,6 +39,7 @@ import Mood from '../../components/Mood';
 import { motion } from 'framer-motion';
 import LongSeal from '../../assets/long_seal.svg';
 import { useTranslation } from 'react-i18next';
+import { useDebounce, useDebounceFn } from '@reactuses/core';
 
 interface JournalEntryPageProps
     extends RouteComponentProps<{
@@ -58,17 +60,52 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
     const [sleepRating, setSleepRating] = useState<String>(
         Moods.OKAY.toString(),
     );
+    const [feelHappy, setFeelHappy] = useState('');
     const [changeMood, setChangeMood] = useState(false);
+    const debouncedContent = useDebounce(content, 1000);
+    const debouncedFeelHappy = useDebounce(feelHappy, 1000);
+    const debouncedDreamText = useDebounce(dreamText, 1000);
+
     const [updateJournalEntry] = useUpdateJournalEntryMutation();
+    const [updateJournalAnswer] = useUpdateJournalAnswerMutation();
 
     const id = match.params.id ? parseInt(match.params.id) : undefined;
-    const { data: entry, isLoading } = useGetJournalEntryQuery(id!, {
-        skip: id == undefined,
-    });
+    if (!id) return null;
+    const { data: entry, isLoading } = useGetJournalEntryQuery(id);
 
     useIonViewWillEnter(() => {
         hideTabBar();
     });
+
+    const { run: saveEntry } = useDebounceFn(() => {
+        if (entry) {
+            updateJournalEntry({
+                id,
+                changes: {
+                    text: content,
+                    title: title,
+                },
+            });
+        }
+    }, 1000);
+
+    useEffect(() => {
+        if (debouncedFeelHappy && id) {
+            updateJournalAnswer({
+                id: entry!.Answer[0].id,
+                answer: debouncedFeelHappy,
+            });
+        }
+    }, [debouncedFeelHappy]);
+
+    useEffect(() => {
+        if (debouncedDreamText && id) {
+            updateJournalAnswer({
+                id: entry!.Answer[3].id,
+                answer: debouncedDreamText,
+            });
+        }
+    }, [debouncedDreamText]);
 
     useEffect(() => {
         if (Capacitor.getPlatform() != 'web') {
@@ -92,8 +129,11 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
             setMood(entry.mood);
             setTitle(entry.title);
             setFavorite(entry.isFavorite);
-            if (entry.Answer?.length > 0) {
+            if (entry.Answer?.length == 4) {
+                setFeelHappy(entry.Answer[0].answer);
                 setSleepRating(entry.Answer[1].answer);
+                setHaveDreams(entry.Answer[2].answer == 'true');
+                setDreamText(entry.Answer[3].answer);
             }
         }
     }, [entry]);
@@ -111,21 +151,9 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
         );
     };
 
-    const saveEntry = () => {
-        if (entry && id !== undefined) {
-            updateJournalEntry({
-                id,
-                changes: {
-                    title,
-                    text: content,
-                    mood,
-                    isFavorite: favorite,
-                },
-            });
-        } else {
-        }
-        router.goBack();
-    };
+    useEffect(() => {
+        return () => saveEntry();
+    }, []);
 
     return (
         <IonPage>
@@ -141,11 +169,20 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                         <input
                             className="py-2 flex-1 outline-none overflow-x-auto whitespace-nowrap bg-transparent"
                             value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            onChange={(e) => {
+                                setTitle(e.target.value);
+                                saveEntry();
+                            }}
                         />
                         <div
                             className="flex justify-center items-center h-10 w-10"
-                            onClick={() => setFavorite((c) => !c)}
+                            onClick={() =>
+                                id &&
+                                updateJournalEntry({
+                                    id,
+                                    changes: { isFavorite: !favorite },
+                                })
+                            }
                         >
                             {favorite ? (
                                 <FaStar className="text-accent" />
@@ -160,49 +197,53 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                 {id && isLoading ? (
                     <Loading />
                 ) : (
-                    <div className="p-3 flex flex-col gap-3 w-full h-full">
+                    <div className="p-3 flex flex-col gap-3 w-full h-full overflow-auto">
                         <div className="px-3 mt-1 flex gap-6 gap-y-4 items-center pl-3 min-h-36 flex-wrap relative">
-                            {Object.entries(Moods).map(
-                                ([_, mood]) =>
-                                    mood == entry?.mood && (
-                                        <motion.div
-                                            key={mood}
-                                            className="flex flex-col gap-1 items-center w-fit text-2xl font-semibold text-white/40 z-10"
-                                            layoutId={mood + '-journal-edit'}
-                                            onClick={() =>
-                                                startTransition(() => {
-                                                    setChangeMood((c) => !c);
-                                                })
-                                            }
-                                        >
-                                            <Mood
-                                                mood={mood}
-                                                className={'text-6xl'}
-                                            />
-                                        </motion.div>
-                                    ),
-                            )}
-                            {changeMood && (
-                                <div className="absolute w-full justify-evenly left-0 z-10 flex gap-2">
+                            {!changeMood &&
+                                Object.entries(Moods).map(
+                                    ([_, mood]) =>
+                                        mood == entry?.mood && (
+                                            <div
+                                                key={mood}
+                                                className="flex flex-col gap-1 items-center w-fit text-2xl font-semibold text-white/40 z-10"
+                                                onClick={() =>
+                                                    startTransition(() => {
+                                                        setChangeMood(
+                                                            (c) => !c,
+                                                        );
+                                                    })
+                                                }
+                                            >
+                                                <Mood
+                                                    mood={mood}
+                                                    className={'text-6xl'}
+                                                />
+                                            </div>
+                                        ),
+                                )}
+                            {changeMood && id && (
+                                <div className="absolute w-full top-0 h-full items-center justify-evenly left-0 z-10 flex gap-2">
                                     {Object.values(Moods)
                                         .filter(
                                             (mood) => typeof mood === 'number',
                                         )
                                         .map((mood, index) => (
-                                            <motion.div
+                                            <div
                                                 key={mood}
                                                 className="flex flex-col gap-1 items-center w-fit text-base font-semibold text-white/40"
-                                                layoutId={
-                                                    mood + '-journal-edit'
-                                                }
                                                 onClick={() => {
-                                                    // setMood(mood);
+                                                    updateJournalEntry({
+                                                        id,
+                                                        changes: {
+                                                            mood: mood as Moods,
+                                                        },
+                                                    });
                                                     setChangeMood(false);
                                                 }}
                                             >
                                                 <Mood
                                                     mood={mood}
-                                                    className={'text-6xl'}
+                                                    className={'text-5xl'}
                                                 />
                                                 <div>
                                                     {t(
@@ -210,7 +251,7 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                                                             (index + 1),
                                                     )}
                                                 </div>
-                                            </motion.div>
+                                            </div>
                                         ))}
                                 </div>
                             )}
@@ -228,16 +269,16 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                             )}
                             <div className="w-full h-0.5 bg-darker-violet-850"></div>
                         </div>
-                        <div className="flex-1 h-0 flex flex-col gap-3 overflow-auto">
+                        <div className="flex-1 h-0 flex flex-col gap-3">
                             <div className="text-2xl font-bold px-2">
                                 {t('journal.question.2')}
                             </div>
                             <textarea
                                 className="rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12"
-                                // value={firstQuestion}
-                                // onChange={(event) =>
-                                //     setFirstQuestion(event.target.value)
-                                // }
+                                value={feelHappy}
+                                onChange={(event) =>
+                                    setFeelHappy(event.target.value)
+                                }
                             />
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t('journal.question.3')}
@@ -248,9 +289,12 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                                     .map((mood) => (
                                         <div
                                             key={mood}
-                                            className={`flex flex-col items-center justify-center ${sleepRating == mood.toString() ? 'opacity-100' : 'opacity-40'} `}
+                                            className={`flex flex-col items-center justify-center gap-1 font-semibold ${sleepRating == mood.toString() ? 'opacity-100' : 'opacity-40'} `}
                                             onClick={() =>
-                                                setSleepRating(mood.toString())
+                                                updateJournalAnswer({
+                                                    id: entry!.Answer[1].id,
+                                                    answer: mood.toString(),
+                                                })
                                             }
                                         >
                                             <Mood
@@ -270,18 +314,28 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                             <div className="flex flex-row items-center justify-center gap-2 h-10">
                                 <div
                                     className={`rounded-full flex-1 h-full flex justify-center items-center transition-colors text-lg font-bold uppercase ${haveDreams == true ? 'bg-accent' : 'bg-darker-violet-800'}`}
-                                    // onClick={() => setHaveDreams(true)}
+                                    onClick={() =>
+                                        updateJournalAnswer({
+                                            id: entry!.Answer[2].id,
+                                            answer: 'true',
+                                        })
+                                    }
                                 >
                                     YES
                                 </div>
                                 <div
                                     className={`rounded-full flex-1 h-full flex justify-center items-center transition-colors text-lg font-bold uppercase ${haveDreams == false ? 'bg-accent' : 'bg-darker-violet-800'}`}
-                                    // onClick={() => setHaveDreams(false)}
+                                    onClick={() =>
+                                        updateJournalAnswer({
+                                            id: entry!.Answer[2].id,
+                                            answer: 'false',
+                                        })
+                                    }
                                 >
                                     NO
                                 </div>
                             </div>
-                            {/* {haveDreams == true && (
+                            {haveDreams == true && (
                                 <textarea
                                     className={`rounded-xl bg-darker-violet-950 w-full min-h-36 p-2 px-3 font-semibold resize-none outline-none scroll-mt-12`}
                                     value={dreamText}
@@ -289,7 +343,7 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                                         setDreamText(event.target.value)
                                     }
                                 />
-                            )} */}
+                            )}
                             <div className="text-2xl font-bold px-2 mt-2">
                                 {t('journal.question.5')}
                             </div>
@@ -297,9 +351,10 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                                 className="shrink-0 min-h-64 overflow-auto bg-primary/40 rounded-2xl p-3 outline-none relative pb-32"
                                 contentEditable
                                 dangerouslySetInnerHTML={{ __html: content }}
-                                onBlur={(e) =>
-                                    setContent(e.currentTarget.innerHTML)
-                                }
+                                onBlur={(e) => {
+                                    setContent(e.currentTarget.innerHTML);
+                                    saveEntry();
+                                }}
                             >
                                 {/* <textarea
                             className="w-full h-full bg-transparent outline-none placeholder:text-white/40 placeholder:font-bold resize-none"
