@@ -179,42 +179,42 @@ const JournalEntry: React.FC<JournalEntryPageProps> = ({ match }) => {
                                             (mood) => typeof mood === 'number',
                                         )
                                         .map((mood, index) => (
-                                                <motion.div
-                                                    key={mood}
+                                            <motion.div
+                                                key={mood}
                                                 className="flex flex-col gap-1 items-center w-fit text-base font-semibold text-white/40"
-                                                    layoutId={
-                                                        mood + '-journal-edit'
-                                                    }
-                                                    onClick={() => {
-                                                        // setMood(mood);
-                                                        setChangeMood(false);
-                                                    }}
-                                                >
+                                                layoutId={
+                                                    mood + '-journal-edit'
+                                                }
+                                                onClick={() => {
+                                                    // setMood(mood);
+                                                    setChangeMood(false);
+                                                }}
+                                            >
                                                 <Mood
                                                     mood={mood}
-                                                className={'text-6xl'}
+                                                    className={'text-6xl'}
                                                 />
-                                                    <div>
-                                                        {t(
-                                                            'journal.mood.' +
+                                                <div>
+                                                    {t(
+                                                        'journal.mood.' +
                                                             (index + 1),
-                                                        )}
-                                                    </div>
-                                                </motion.div>
+                                                    )}
+                                                </div>
+                                            </motion.div>
                                         ))}
                                 </div>
                             )}
                             {!changeMood && (
-                            <div className="rounded-xl bg-darker-violet-850 min-h-28 flex-1 p-2 px-3 pr-14 relative font-semibold overflow-hidden animate-fadeIn">
-                                <div>
-                                    {t('journal.motivation.' + entry?.mood)}
+                                <div className="rounded-xl bg-darker-violet-850 min-h-28 flex-1 p-2 px-3 pr-14 relative font-semibold overflow-hidden animate-fadeIn">
+                                    <div>
+                                        {t('journal.motivation.' + entry?.mood)}
+                                    </div>
+                                    <img
+                                        src={LongSeal}
+                                        alt=""
+                                        className="absolute h-18 -rotate-45 -right-1 -bottom-2"
+                                    />
                                 </div>
-                                <img
-                                    src={LongSeal}
-                                    alt=""
-                                    className="absolute h-18 -rotate-45 -right-1 -bottom-2"
-                                />
-                            </div>
                             )}
                             <div className="w-full h-0.5 bg-darker-violet-850"></div>
                         </div>
