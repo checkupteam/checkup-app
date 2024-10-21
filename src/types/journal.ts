@@ -15,4 +15,5 @@ export type JournalEntry = {
     isFavorite: boolean;
     text: string;
     createdDate: number;
+    Answer: { answer: string }[];
 };
